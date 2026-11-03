@@ -1,0 +1,17 @@
+node_modules
+.next
+out
+build
+dist
+coverage
+pnpm-lock.yaml
+package-lock.json
+*.min.js
+*.min.css
+.env
+.env.*
+public
+.agent
+.archify
+docs/architecture/*.html
+
