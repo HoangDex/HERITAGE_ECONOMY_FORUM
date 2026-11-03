@@ -9,6 +9,7 @@ export const siteConfig = {
   },
   navItems: [
     { title: "Trang chủ", href: "/" },
+    { title: "Giới thiệu", href: "/gioi-thieu" },
     { title: "Diễn đàn Thảo luận", href: "/forum" },
     { title: "Dự án Di sản", href: "/heritage" },
   ],
