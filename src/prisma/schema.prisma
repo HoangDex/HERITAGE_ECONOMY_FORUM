@@ -1,0 +1,131 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+}
+
+enum Role {
+  SUPER_ADMIN
+  CONTENT_ADMIN
+  EDITOR
+  PUBLISHER
+  EVENT_MANAGER
+  AWARD_MANAGER
+  PROJECT_MANAGER
+  EXPERT
+  POLICYMAKER
+  USER
+}
+
+model User {
+  id           String       @id @default(cuid())
+  email        String       @unique
+  name         String
+  passwordHash String?
+  role         Role         @default(USER)
+  organization String?
+  avatarUrl    String?
+  bio          String?      @db.Text
+  posts        Post[]
+  comments     Comment[]
+  upvotes      PostUpvote[]
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+
+  @@map("users")
+}
+
+/**
+ * BẢNG QUẢN LÝ CẤU TRÚC TRANG & DYNAMIC SECTIONS CHO CMS
+ * Lưu trữ linh hoạt toàn bộ cấu hình trang và các section động dưới dạng JSON
+ */
+model Page {
+  id          String    @id @default(cuid())
+  slug        String    @unique @db.VarChar(150)
+  name        String    @db.VarChar(150)
+  title       String    @db.VarChar(255)
+  description String?   @db.Text
+  seoProps    Json?     // { metaTitle, metaDescription, ogImage, keywords }
+  sections    Json      // Array of dynamic sections: [{ id, type, title, subtitle, props, order, isVisible }]
+  isPublished Boolean   @default(false)
+  order       Int       @default(0)
+  publishedAt DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([slug])
+  @@index([isPublished])
+  @@map("pages")
+}
+
+model Post {
+  id            String       @id @default(cuid())
+  title         String       @db.VarChar(255)
+  slug          String       @unique @db.VarChar(255)
+  content       String       @db.Text
+  category      String       @db.VarChar(100)
+  tags          Json?
+  upvotesCount  Int          @default(0)
+  commentsCount Int          @default(0)
+  viewsCount    Int          @default(0)
+  isPinned      Boolean      @default(false)
+  authorId      String
+  author        User         @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  comments      Comment[]
+  upvotes       PostUpvote[]
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+
+  @@index([category])
+  @@index([authorId])
+  @@map("posts")
+}
+
+model PostUpvote {
+  id        String   @id @default(cuid())
+  postId    String
+  userId    String
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@unique([postId, userId])
+  @@map("post_upvotes")
+}
+
+model Comment {
+  id        String   @id @default(cuid())
+  content   String   @db.Text
+  postId    String
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  authorId  String
+  author    User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([postId])
+  @@index([authorId])
+  @@map("comments")
+}
+
+model HeritageProject {
+  id                    String   @id @default(cuid())
+  name                  String   @db.VarChar(255)
+  slug                  String   @unique @db.VarChar(255)
+  location              String   @db.VarChar(150)
+  category              String   @db.VarChar(100)
+  status                String   @default("Đang vận hành") @db.VarChar(50)
+  description           String   @db.Text
+  highlights            Json?
+  annualRevenue         String?  @db.VarChar(100)
+  jobsCreated           Int      @default(0)
+  conservationFundShare String?  @db.VarChar(50)
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  @@index([location])
+  @@index([category])
+  @@map("heritage_projects")
+}
