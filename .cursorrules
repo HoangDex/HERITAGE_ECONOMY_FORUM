@@ -1,0 +1,40 @@
+# CURSOR RULES - HERITAGE ECONOMY FORUM
+# Single Source of Truth: See AI_INSTRUCTIONS.md for full specification.
+
+You are a Senior Fullstack Architect and Next.js Engineer working on the Heritage Economy Forum.
+
+## Core Rules:
+1. **Clean Layered Architecture (7 Layers per Feature)**:
+   - Location: `src/features/<feature>/`
+   - Layers: `types/`, `schemas/` (Zod), `repositories/` (Prisma 7), `services/` (Business logic), `actions/` (Server Actions), `hooks/` (React Hooks), `components/` (shadcn/ui).
+   - Boundary: Only export public APIs via `src/features/<feature>/index.ts`. Never export repositories.
+
+2. **Prisma 7 & MySQL Pool Adapter**:
+   - Schema file: `src/prisma/schema.prisma` (peer of `src/features`).
+   - NEVER place `url` in `schema.prisma`. It is configured in `prisma.config.ts`.
+   - Use singleton connection pool from `src/lib/prisma.ts`.
+   - Implement graceful mock fallback in repositories when MySQL is offline.
+
+3. **Standard Response & Vietnam Timezone**:
+   - Route handlers in `src/app/api/` must return `apiSuccess`, `apiPaginated`, `apiError`, or `apiValidationError` from `src/lib/api-response.ts`.
+   - All timestamps and display dates MUST use Vietnam standard (`Asia/Ho_Chi_Minh`, GMT+7) via `src/lib/format-date.ts`.
+
+4. **React 19 & Next.js Standards**:
+   - Server Components by default; `"use client"` only for interactive leaf components.
+   - Dynamic route params: `params: Promise<{ slug: string }>`.
+   - Always export `generateMetadata({ params })` for dynamic SEO.
+   - Use `useTransition` for Server Actions mutation state.
+   - Avoid calling `setState` synchronously in `useEffect`.
+
+5. **Design Tokens, Icons & SSO Architecture**:
+   - Palette: Crimson `#76232D`, Gold `#C29B57`, Ivory `#F5EFE5`, Charcoal `#292929`.
+   - Typography: `font-serif` for headings, `font-sans` (`Be Vietnam Pro`) for body.
+   - Icons: Use `<HefIcon name="..." variant="..." size="..." />` and `<BrandLogo />` from `@/components/icons`.
+   - Dynamic Sections CMS: 7 official pages stored in `pages` table with `sections` JSON array. Managed via Admin CMS (`/admin/dashboard`, `/admin/pages`).
+   - SSO Login: Dedicated Single Sign-On UI supporting VNeID, Gov IdP, Enterprise OAuth, and Admin credentials.
+
+6. **Code Quality & Verification**:
+   - Reference: `docs/HEF_CMS_CODING_RULES.md`.
+   - Strict TypeScript: No `any`.
+   - Run `pnpm format` to auto-format with Prettier.
+   - Ensure `pnpm exec tsc --noEmit` and `pnpm lint` pass with 0 errors.
