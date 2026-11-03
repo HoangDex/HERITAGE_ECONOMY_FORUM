@@ -1,0 +1,230 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "Heritage Economy Forum - Modular System Architecture",
+    "output": "docs/architecture/hef-architecture.html",
+    "quality_profile": "showcase"
+  },
+  "components": [
+    {
+      "id": "public_users",
+      "type": "external",
+      "label": "Độc Giả & Đại Biểu",
+      "sublabel": "Web, Mobile (7 Chuyên đề)",
+      "pos": [40, 280],
+      "size": [140, 64]
+    },
+    {
+      "id": "admin_operators",
+      "type": "external",
+      "label": "Ban Thư Ký / Admin",
+      "sublabel": "Quản trị CMS (/admin)",
+      "pos": [40, 420],
+      "size": [140, 64]
+    },
+    {
+      "id": "sso_gateway",
+      "type": "security",
+      "label": "Cổng SSO Quốc Gia",
+      "sublabel": "VNeID / CQNN / Entra",
+      "pos": [40, 140],
+      "size": [140, 64],
+      "tag": "OAuth 2.0 PKCE"
+    },
+    {
+      "id": "app_router",
+      "type": "backend",
+      "label": "Next.js App Router",
+      "sublabel": "Routes, SSR & Server Actions",
+      "pos": [260, 280],
+      "size": [150, 64]
+    },
+    {
+      "id": "section_engine",
+      "type": "backend",
+      "label": "Dynamic Section Engine",
+      "sublabel": "11 Block Types Compiler",
+      "pos": [490, 280],
+      "size": [160, 64],
+      "tag": "JSON Page Compiler"
+    },
+    {
+      "id": "auth_guard",
+      "type": "security",
+      "label": "SSO & RBAC Guard",
+      "sublabel": "Session & Permissions",
+      "pos": [260, 140],
+      "size": [150, 64]
+    },
+    {
+      "id": "cms_service",
+      "type": "backend",
+      "label": "Page CMS Service",
+      "sublabel": "Slug, order & sections DTO",
+      "pos": [490, 420],
+      "size": [160, 64]
+    },
+    {
+      "id": "session_store",
+      "type": "database",
+      "label": "Session & Fallback",
+      "sublabel": "In-memory cache & TTL",
+      "pos": [260, 420],
+      "size": [150, 64]
+    },
+    {
+      "id": "prisma_pool",
+      "type": "database",
+      "label": "Prisma 7 Pool",
+      "sublabel": "@prisma/adapter-mariadb",
+      "pos": [730, 280],
+      "size": [150, 64],
+      "tag": "MariaDB Pool"
+    },
+    {
+      "id": "pages_db",
+      "type": "database",
+      "label": "Table: pages",
+      "sublabel": "sections JSON store",
+      "pos": [960, 280],
+      "size": [140, 64]
+    },
+    {
+      "id": "relational_db",
+      "type": "database",
+      "label": "Relational Tables",
+      "sublabel": "projects, posts, users",
+      "pos": [960, 420],
+      "size": [140, 64]
+    },
+    {
+      "id": "media_cdn",
+      "type": "cloud",
+      "label": "Heritage Digital Assets",
+      "sublabel": "Cloudflare / S3 CDN",
+      "pos": [730, 140],
+      "size": [150, 64]
+    }
+  ],
+  "boundaries": [
+    {
+      "kind": "region",
+      "label": "HEF Platform Core Service (Modular Clean Monolith)",
+      "wraps": ["app_router", "section_engine", "auth_guard", "cms_service", "session_store"]
+    },
+    {
+      "kind": "security-group",
+      "label": "Persistence & Storage Tier (MariaDB 11+ & Prisma 7 Pool)",
+      "wraps": ["prisma_pool", "pages_db", "relational_db"]
+    }
+  ],
+  "connections": [
+    {
+      "id": "conn-users-router",
+      "from": "public_users",
+      "to": "app_router",
+      "label": "HTTPS GET /",
+      "variant": "emphasis"
+    },
+    {
+      "id": "conn-admin-router",
+      "from": "admin_operators",
+      "to": "app_router",
+      "label": "Server Action",
+      "variant": "emphasis"
+    },
+    {
+      "id": "conn-sso-auth",
+      "from": "sso_gateway",
+      "to": "auth_guard",
+      "label": "OIDC Token"
+    },
+    {
+      "id": "conn-guard-router",
+      "from": "auth_guard",
+      "to": "app_router",
+      "label": "verify RBAC",
+      "variant": "security"
+    },
+    {
+      "id": "conn-router-section",
+      "from": "app_router",
+      "to": "section_engine",
+      "label": "compile sections"
+    },
+    {
+      "id": "conn-router-cms",
+      "from": "app_router",
+      "to": "cms_service",
+      "label": "dispatch mutation"
+    },
+    {
+      "id": "conn-router-session",
+      "from": "app_router",
+      "to": "session_store",
+      "label": "session check",
+      "variant": "dashed"
+    },
+    {
+      "id": "conn-section-prisma",
+      "from": "section_engine",
+      "to": "prisma_pool",
+      "label": "fetch JSON",
+      "variant": "emphasis"
+    },
+    {
+      "id": "conn-cms-prisma",
+      "from": "cms_service",
+      "to": "prisma_pool",
+      "label": "save JSON",
+      "variant": "emphasis"
+    },
+    {
+      "id": "conn-prisma-pages",
+      "from": "prisma_pool",
+      "to": "pages_db",
+      "label": "SQL / JSON"
+    },
+    {
+      "id": "conn-prisma-relational",
+      "from": "prisma_pool",
+      "to": "relational_db",
+      "label": "TCP Pool"
+    },
+    {
+      "id": "conn-section-cdn",
+      "from": "section_engine",
+      "to": "media_cdn",
+      "label": "stream media",
+      "variant": "dashed"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "Giao Diện Người Dùng & Quản Trị",
+      "items": [
+        "7 Trang chuyên đề public render SSR theo chuẩn nhận diện Đỏ son & Vàng đồng",
+        "Dashboard Admin CMS quản trị kéo thả khối nội dung và cấu hình props JSON"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "Clean Layered Core Engine",
+      "items": [
+        "Mô hình 7 Layer khép kín: Types -> Schemas -> Repositories -> Services -> Actions",
+        "Zod Schema validation nghiêm ngặt trên mọi thao tác mutation và route"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "Tầng Lưu Trữ & An Toàn",
+      "items": [
+        "Prisma 7 MariaDB Driver Adapter Pool hiệu năng cao",
+        "Graceful In-Memory Fallback tự động bảo vệ hệ thống không bị crash khi CSDL offline"
+      ]
+    }
+  ]
+}
+
