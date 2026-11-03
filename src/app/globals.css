@@ -1,0 +1,107 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-sans);
+  --font-serif: var(--font-serif);
+  --font-heading: var(--font-serif);
+
+  /* Bảng màu nhận diện Diễn đàn Kinh tế Di sản (HEF Palette) */
+  --color-hef-crimson: var(--hef-crimson);
+  --color-hef-gold: var(--hef-gold);
+  --color-hef-ivory: var(--hef-ivory);
+  --color-hef-charcoal: var(--hef-charcoal);
+
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --radius-lg: var(--radius);
+}
+
+:root {
+  /* Bảng màu chuẩn Đề án Heritage Economy Forum 2026 */
+  --hef-crimson: #76232d; /* Đỏ son chủ đạo */
+  --hef-gold: #c29b57; /* Vàng đồng thứ cấp & điểm nhấn */
+  --hef-ivory: #f5efe5; /* Trắng ngà bề mặt / nền ấm */
+  --hef-charcoal: #292929; /* Đen than văn bản & tương phản */
+
+  /* Semantic Design Tokens ánh xạ vào Shadcn & Tailwind */
+  --background: #f5efe5; /* Nền trắng ngà nhận diện */
+  --foreground: #292929; /* Chữ đen than */
+
+  --card: #ffffff;
+  --card-foreground: #292929;
+
+  --popover: #ffffff;
+  --popover-foreground: #292929;
+
+  --primary: #76232d; /* Đỏ son #76232D */
+  --primary-foreground: #ffffff;
+
+  --secondary: #c29b57; /* Vàng đồng #C29B57 */
+  --secondary-foreground: #292929;
+
+  --muted: #eae3d6;
+  --muted-foreground: #5c554b;
+
+  --accent: #c29b57;
+  --accent-foreground: #ffffff;
+
+  --destructive: #b91c1c;
+  --border: #dfd7c8;
+  --input: #dfd7c8;
+  --ring: #76232d;
+  --radius: 0.5rem;
+
+  /* Typography chuẩn: Be Vietnam Pro & Serif tiếng Việt */
+  --font-sans:
+    "Be Vietnam Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue",
+    Arial, sans-serif;
+  --font-serif: "Merriweather", "Playfair Display", "Times New Roman", serif;
+}
+
+.dark {
+  --background: #1a1617;
+  --foreground: #f5efe5;
+
+  --card: #241e1f;
+  --card-foreground: #f5efe5;
+
+  --popover: #241e1f;
+  --popover-foreground: #f5efe5;
+
+  --primary: #c29b57; /* Trong dark mode, vàng đồng làm nổi bật */
+  --primary-foreground: #1a1617;
+
+  --secondary: #76232d;
+  --secondary-foreground: #ffffff;
+
+  --muted: #2e2627;
+  --muted-foreground: #a69c8f;
+
+  --accent: #c29b57;
+  --accent-foreground: #1a1617;
+
+  --destructive: #ef4444;
+  --border: #3d3335;
+  --input: #3d3335;
+  --ring: #c29b57;
+}
