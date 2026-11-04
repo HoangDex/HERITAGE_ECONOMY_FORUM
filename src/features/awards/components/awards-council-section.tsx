@@ -2,10 +2,9 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { Award, ArrowRight, Building2, ShieldCheck, Sparkles } from "lucide-react";
+import { ArrowRight, Building2, ShieldCheck, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Card, CardContent } from "@/components/ui/card";
 import { FadeIn, StaggerContainer, StaggerItem, InteractiveCard } from "@/components/animations";
 import type { AwardJudge } from "../types/awards.types";
 
@@ -35,9 +34,9 @@ export function AwardsCouncilSection({ judges }: AwardsCouncilSectionProps) {
           {judges.map((jd) => (
             <StaggerItem key={jd.id}>
               <InteractiveCard className="h-full">
-                <Card className="border border-[#dfd7c8] bg-white overflow-hidden shadow-xs hover:shadow-lg transition-all group flex flex-col justify-between h-full hover:border-[#C29B57]">
+                <div className="rounded-2xl border border-[#dfd7c8] bg-white overflow-hidden shadow-xs hover:shadow-lg transition-all group flex flex-col justify-between h-full hover:border-[#C29B57]">
                   <div>
-                    {/* Portrait container with subtle vignette */}
+                    {/* Portrait container flush with top - No white border */}
                     <div className="relative aspect-[4/5] w-full bg-[#dfd7c8]/30 overflow-hidden">
                       <Image
                         src={jd.avatarUrl}
@@ -46,7 +45,7 @@ export function AwardsCouncilSection({ judges }: AwardsCouncilSectionProps) {
                         className="object-cover object-top group-hover:scale-105 transition-transform duration-500"
                         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-60" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-70" />
 
                       {/* Role Badge */}
                       <div className="absolute top-3 right-3 z-10">
@@ -57,12 +56,12 @@ export function AwardsCouncilSection({ judges }: AwardsCouncilSectionProps) {
                       </div>
                     </div>
 
-                    <CardContent className="p-5 space-y-2">
-                      <h3 className="text-lg font-serif font-bold text-[#76232D] group-hover:text-[#52181F] transition-colors">
+                    <div className="p-5 space-y-1.5">
+                      <h3 className="text-lg font-serif font-bold text-[#76232D] group-hover:text-[#52181F] transition-colors leading-snug">
                         {jd.name}
                       </h3>
                       <p className="text-xs font-semibold text-[#292929]">{jd.title}</p>
-                    </CardContent>
+                    </div>
                   </div>
 
                   <div className="p-5 pt-0">
@@ -71,7 +70,7 @@ export function AwardsCouncilSection({ judges }: AwardsCouncilSectionProps) {
                       <span className="leading-snug">{jd.organization}</span>
                     </div>
                   </div>
-                </Card>
+                </div>
               </InteractiveCard>
             </StaggerItem>
           ))}
@@ -99,11 +98,19 @@ export function AwardsCouncilSection({ judges }: AwardsCouncilSectionProps) {
             <Link href="/lien-he?loai=giai-thuong">
               <Button
                 size="lg"
-                className="bg-[#C29B57] hover:bg-[#a98342] text-[#292929] font-bold gap-2 shadow-lg cursor-pointer h-12 px-6"
+                className="bg-[#C29B57] hover:bg-[#a98342] text-[#292929] font-bold shadow-lg h-12 px-8 cursor-pointer"
               >
-                <Award className="w-5 h-5" />
-                <span>Gửi Hồ Sơ Đề Cử Ngay</span>
-                <ArrowRight className="w-4 h-4" />
+                <span>Nộp Hồ Sơ Đề Cử</span>
+                <ArrowRight className="w-4 h-4 ml-2" />
+              </Button>
+            </Link>
+            <Link href="/giai-thuong#quy-che">
+              <Button
+                variant="outline"
+                size="lg"
+                className="border-white/40 text-[#F5EFE5] hover:bg-white/10 hover:text-white h-12 px-6 cursor-pointer"
+              >
+                <span>Xem Quy Chế Bình Chọn</span>
               </Button>
             </Link>
           </div>
