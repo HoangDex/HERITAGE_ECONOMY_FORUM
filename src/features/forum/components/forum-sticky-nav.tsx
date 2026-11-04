@@ -8,6 +8,7 @@ const NAV_LINKS = [
   { label: "Lịch trình (Timeline)", href: "#timeline" },
   { label: "Diễn giả Tiêu biểu", href: "#dien-gia" },
   { label: "Kỷ yếu & Tài liệu", href: "#tai-lieu" },
+  { label: "Đối tác Đồng hành", href: "#doi-tac" },
 ];
 
 export function ForumStickyNav() {
@@ -36,7 +37,7 @@ export function ForumStickyNav() {
                 onClick={() => setActiveHash(link.href)}
                 className={`whitespace-nowrap px-3 py-1.5 rounded-full transition-colors ${
                   isActive
-                    ? "bg-[#76232D] text-white shadow-xs"
+                    ? "bg-[#76232D] text-white shadow-xs font-semibold"
                     : "text-[#5c554b] hover:text-[#76232D] hover:bg-[#dfd7c8]/40"
                 }`}
               >

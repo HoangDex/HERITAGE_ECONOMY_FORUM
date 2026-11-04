@@ -9,6 +9,8 @@ export interface EconomicMetrics {
   annualRevenue: string;
   jobsCreated: number;
   conservationFundShare: string;
+  imageUrl?: string;
+  gallery?: string[];
 }
 
 /**
@@ -24,6 +26,8 @@ export interface HeritageProject {
   economicMetrics: EconomicMetrics;
   description: string;
   highlights: string[];
+  imageUrl?: string;
+  gallery?: string[];
   createdAt?: string;
   updatedAt?: string;
 }

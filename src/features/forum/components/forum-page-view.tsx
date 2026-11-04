@@ -4,6 +4,7 @@ import { ForumSessionsSection } from "./forum-sessions-section";
 import { ForumTimelineSection } from "./forum-timeline-section";
 import { ForumSpeakersSection } from "./forum-speakers-section";
 import { ForumResourcesSection } from "./forum-resources-section";
+import { ForumPartnersSection } from "./forum-partners-section";
 import type { ForumEdition } from "../types/forum-edition.types";
 
 interface ForumPageViewProps {
@@ -20,6 +21,7 @@ export function ForumPageView({ edition }: ForumPageViewProps) {
         <ForumTimelineSection timeline={edition.timeline} />
         <ForumSpeakersSection speakers={edition.speakers} />
         <ForumResourcesSection resources={edition.resources} />
+        <ForumPartnersSection />
       </div>
     </div>
   );

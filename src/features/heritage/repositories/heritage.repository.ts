@@ -28,6 +28,8 @@ export class HeritageRepository implements IHeritageRepository {
     status: string;
     description: string;
     highlights: unknown;
+    imageUrl?: string | null;
+    gallery?: unknown;
     annualRevenue: string | null;
     jobsCreated: number;
     conservationFundShare: string | null;
@@ -42,6 +44,8 @@ export class HeritageRepository implements IHeritageRepository {
       category: item.category,
       status: (item.status as ProjectStatus) || "Đang vận hành",
       description: item.description,
+      imageUrl: item.imageUrl || undefined,
+      gallery: Array.isArray(item.gallery) ? (item.gallery as string[]) : undefined,
       highlights: Array.isArray(item.highlights) ? (item.highlights as string[]) : [],
       economicMetrics: {
         annualRevenue: item.annualRevenue || "Đang cập nhật",

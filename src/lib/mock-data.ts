@@ -76,6 +76,13 @@ export const INITIAL_HERITAGE_PROJECTS: HeritageProject[] = [
     location: "Quảng Nam",
     category: "Đô thị Di sản",
     status: "Đang vận hành",
+    imageUrl:
+      "https://images.unsplash.com/photo-1559592413-7cec4d0cae2b?auto=format&fit=crop&w=1200&h=750&q=85",
+    gallery: [
+      "https://images.unsplash.com/photo-1559592413-7cec4d0cae2b?auto=format&fit=crop&w=800&h=500&q=80",
+      "https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=800&h=500&q=80",
+      "https://images.unsplash.com/photo-1528127269322-539801943592?auto=format&fit=crop&w=800&h=500&q=80",
+    ],
     economicMetrics: {
       annualRevenue: "350 tỷ VNĐ",
       jobsCreated: 2400,
@@ -86,15 +93,22 @@ export const INITIAL_HERITAGE_PROJECTS: HeritageProject[] = [
     highlights: [
       "100% người dân bản địa tham gia chuỗi cung ứng",
       "Quỹ bảo tồn trùng tu 150+ ngôi nhà cổ",
+      "Phân luồng du khách văn minh bảo vệ môi trường phố cổ",
     ],
   },
   {
     id: "her_2",
     name: "Hồi sinh Làng Lụa Vạn Phúc",
     slug: "hoi-sinh-lang-lua-van-phuc",
-    location: "Hà Nội",
+    location: "Hà Đông, Hà Nội",
     category: "Làng nghề Thủ công",
     status: "Mở rộng đầu tư",
+    imageUrl:
+      "https://images.unsplash.com/photo-1528127269322-539801943592?auto=format&fit=crop&w=1200&h=750&q=85",
+    gallery: [
+      "https://images.unsplash.com/photo-1528127269322-539801943592?auto=format&fit=crop&w=800&h=500&q=80",
+      "https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?auto=format&fit=crop&w=800&h=500&q=80",
+    ],
     economicMetrics: {
       annualRevenue: "120 tỷ VNĐ",
       jobsCreated: 850,
@@ -103,8 +117,9 @@ export const INITIAL_HERITAGE_PROJECTS: HeritageProject[] = [
     description:
       "Kết hợp xưởng dệt lụa tương tác, phố đi bộ cuối tuần và nền tảng thương mại điện tử xuất khẩu sản phẩm thủ công cao cấp sang châu Âu.",
     highlights: [
-      "Chuẩn hóa mã truy xuất nguồn gốc lụa tơ tằm",
+      "Chuẩn hóa mã truy xuất nguồn gốc lụa tơ tằm cổ truyền",
       "Thu hút hơn 500.000 lượt khách tham quan mỗi năm",
+      "Bảo tồn kỹ thuật dệt vân tơ tằm quý hiếm",
     ],
   },
   {
@@ -114,6 +129,12 @@ export const INITIAL_HERITAGE_PROJECTS: HeritageProject[] = [
     location: "Ninh Bình",
     category: "Di sản Kép UNESCO",
     status: "Đang vận hành",
+    imageUrl:
+      "https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=1200&h=750&q=85",
+    gallery: [
+      "https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=800&h=500&q=80",
+      "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&h=500&q=80",
+    ],
     economicMetrics: {
       annualRevenue: "600 tỷ VNĐ",
       jobsCreated: 5000,
@@ -122,8 +143,87 @@ export const INITIAL_HERITAGE_PROJECTS: HeritageProject[] = [
     description:
       "Mô hình người lái đò kiêm tuyên truyền viên bảo tồn di sản thiên nhiên và văn hóa, cân bằng giữa phát triển kinh tế du lịch và giữ gìn môi trường.",
     highlights: [
-      "Mô hình kiểu mẫu được UNESCO ghi nhận",
-      "Bảo hiểm và quỹ hưu trí cho cộng đồng chèo thuyền",
+      "Mô hình kiểu mẫu quản trị di sản bền vững được UNESCO ghi nhận",
+      "Bảo hiểm xã hội và quỹ phúc lợi cho cộng đồng chèo thuyền",
+      "Kiểm soát chặt chẽ tải trọng môi trường vùng lõi di sản",
+    ],
+  },
+  {
+    id: "her_4",
+    name: "Chuỗi Giá trị Sáng tạo Gốm Bát Tràng",
+    slug: "chuoi-gia-tri-sang-tao-gom-bat-trang",
+    location: "Gia Lâm, Hà Nội",
+    category: "Làng nghề & Thủ công",
+    status: "Đang vận hành",
+    imageUrl:
+      "https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?auto=format&fit=crop&w=1200&h=750&q=85",
+    gallery: [
+      "https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?auto=format&fit=crop&w=800&h=500&q=80",
+      "https://images.unsplash.com/photo-1528127269322-539801943592?auto=format&fit=crop&w=800&h=500&q=80",
+    ],
+    economicMetrics: {
+      annualRevenue: "180 tỷ VNĐ",
+      jobsCreated: 1200,
+      conservationFundShare: "10%",
+    },
+    description:
+      "Bảo tồn nghệ thuật làm gốm thủ công, số hóa hệ thống lò bầu cổ thế kỷ XIX và xây dựng trung tâm tinh hoa làng nghề kết hợp du lịch trải nghiệm sáng tạo.",
+    highlights: [
+      "Trung tâm Tinh hoa Làng nghề đón 600.000 lượt khách/năm",
+      "Đào tạo nghề gốm cho thế hệ trẻ gìn giữ men lam cổ truyền",
+      "Xuất khẩu gốm mỹ nghệ sang thị trường Nhật Bản và EU",
+    ],
+  },
+  {
+    id: "her_5",
+    name: "Bảo tồn Thích ứng & Tour Đêm Hoàng thành Thăng Long",
+    slug: "bao-ton-thich-ung-tour-dem-hoang-thanh-thang-long",
+    location: "Ba Đình, Hà Nội",
+    category: "Không gian Di sản",
+    status: "Đang vận hành",
+    imageUrl:
+      "https://images.unsplash.com/photo-1583417319070-4a69db38a482?auto=format&fit=crop&w=1200&h=750&q=85",
+    gallery: [
+      "https://images.unsplash.com/photo-1583417319070-4a69db38a482?auto=format&fit=crop&w=800&h=500&q=80",
+      "https://images.unsplash.com/photo-1559592413-7cec4d0cae2b?auto=format&fit=crop&w=800&h=500&q=80",
+    ],
+    economicMetrics: {
+      annualRevenue: "85 tỷ VNĐ",
+      jobsCreated: 450,
+      conservationFundShare: "35%",
+    },
+    description:
+      "Mô hình khai thác kinh tế đêm 'Giải mã Hoàng thành Thăng Long' kết hợp công nghệ trình chiếu 3D mapping, nghệ thuật diễn xướng cung đình và khảo cổ học cộng đồng.",
+    highlights: [
+      "Doanh thu trích lập trực tiếp vào quỹ khai quật khảo cổ học",
+      "Hệ thống diễn giải di sản và thuyết minh tự động đa ngôn ngữ",
+      "Trải nghiệm tương tác khảo cổ thu hút giới trẻ và học sinh",
+    ],
+  },
+  {
+    id: "her_6",
+    name: "Kinh tế Di sản Cộng đồng Bản Lác – Mai Châu",
+    slug: "kinh-te-di-san-cong-dong-ban-lac-mai-chau",
+    location: "Mai Châu, Hòa Bình",
+    category: "Kinh tế & Cộng đồng",
+    status: "Mở rộng đầu tư",
+    imageUrl:
+      "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&h=750&q=85",
+    gallery: [
+      "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&h=500&q=80",
+      "https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=800&h=500&q=80",
+    ],
+    economicMetrics: {
+      annualRevenue: "95 tỷ VNĐ",
+      jobsCreated: 1100,
+      conservationFundShare: "14%",
+    },
+    description:
+      "Bảo tồn nguyên vẹn kiến trúc nhà sàn người Thái, phát triển mô hình homestay cộng đồng gắn liền với nghề dệt thổ cẩm truyền thống và nông nghiệp sinh thái.",
+    highlights: [
+      "100% hộ dân địa phương làm chủ thể hưởng lợi du lịch",
+      "Thành lập hợp tác xã bảo tồn điệu xòe Thái và nghề dệt váy hoa",
+      "Mô hình kinh tế xanh tuần hoàn không rác thải nhựa",
     ],
   },
 ];
