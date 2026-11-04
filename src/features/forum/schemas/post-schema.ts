@@ -10,4 +10,12 @@ export const createPostSchema = z.object({
   tags: z.array(z.string()).default([]),
 });
 
+export const postFilterSchema = z.object({
+  category: z.string().optional(),
+  tag: z.string().optional(),
+  search: z.string().optional(),
+  sortBy: z.enum(["latest", "popular", "unanswered"]).optional(),
+});
+
 export type CreatePostInput = z.infer<typeof createPostSchema>;
+export type PostFilterInput = z.infer<typeof postFilterSchema>;
