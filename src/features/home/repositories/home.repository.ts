@@ -257,8 +257,7 @@ const fallbackHomePageData: HomePageData = {
       name: "Bộ Văn hóa, Thể thao và Du lịch",
       category: "STEERING",
       categoryLabel: "Cơ quan Chỉ đạo",
-      logoUrl:
-        "https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=240&h=120&q=80",
+      logoUrl: "/images/partners/bvhttdl.svg",
       websiteUrl: "https://bvhttdl.gov.vn",
       order: 1,
     },
@@ -267,8 +266,7 @@ const fallbackHomePageData: HomePageData = {
       name: "Hội Di sản Văn hóa Việt Nam",
       category: "HOSTING",
       categoryLabel: "Cơ quan Chủ trì",
-      logoUrl:
-        "https://images.unsplash.com/photo-1572945753563-804956783434?auto=format&fit=crop&w=240&h=120&q=80",
+      logoUrl: "/images/partners/vcha.svg",
       websiteUrl: "https://hoidisan.vn",
       order: 2,
     },
@@ -277,8 +275,7 @@ const fallbackHomePageData: HomePageData = {
       name: "Viện Nghiên cứu Kinh tế Di sản",
       category: "ORGANIZING",
       categoryLabel: "Đơn vị Tổ chức",
-      logoUrl:
-        "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=240&h=120&q=80",
+      logoUrl: "/images/partners/hei.svg",
       websiteUrl: "https://hef.vn",
       order: 3,
     },
@@ -287,8 +284,7 @@ const fallbackHomePageData: HomePageData = {
       name: "Văn phòng UNESCO tại Hà Nội",
       category: "COMPANION",
       categoryLabel: "Đối tác Đồng hành",
-      logoUrl:
-        "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=240&h=120&q=80",
+      logoUrl: "/images/partners/unesco.svg",
       websiteUrl: "https://unesco.org",
       order: 4,
     },
@@ -297,8 +293,7 @@ const fallbackHomePageData: HomePageData = {
       name: "Tập đoàn Sovico",
       category: "STRATEGIC",
       categoryLabel: "Đối tác Chiến lược",
-      logoUrl:
-        "https://images.unsplash.com/photo-1554469384-e58fac16e23a?auto=format&fit=crop&w=240&h=120&q=80",
+      logoUrl: "/images/partners/sovico.svg",
       websiteUrl: "https://sovicogroup.com",
       order: 5,
     },
@@ -307,8 +302,7 @@ const fallbackHomePageData: HomePageData = {
       name: "Đài Truyền hình Việt Nam (VTV)",
       category: "MEDIA",
       categoryLabel: "Bảo trợ Truyền thông",
-      logoUrl:
-        "https://images.unsplash.com/photo-1585829365295-ab7cd400c167?auto=format&fit=crop&w=240&h=120&q=80",
+      logoUrl: "/images/partners/vtv.svg",
       websiteUrl: "https://vtv.vn",
       order: 6,
     },

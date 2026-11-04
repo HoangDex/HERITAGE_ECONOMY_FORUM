@@ -6,11 +6,11 @@
 "use client";
 
 import React from "react";
-import Image from "next/image";
 import Link from "next/link";
-import { Award, ArrowRight, CheckCircle2, Clock, FileText, Send } from "lucide-react";
+import { CheckCircle2, Clock, FileText, Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { FadeIn, StaggerContainer, StaggerItem } from "@/components/animations";
 import type { AwardShowcase } from "../types/home.types";
 
 interface AwardsShowcaseSectionProps {
@@ -19,7 +19,10 @@ interface AwardsShowcaseSectionProps {
 
 export function AwardsShowcaseSection({ award }: AwardsShowcaseSectionProps) {
   return (
-    <div className="rounded-2xl bg-gradient-to-br from-[#76232D] via-[#52181F] to-[#292929] text-white border-2 border-[#C29B57] shadow-xl overflow-hidden p-6 sm:p-8 flex flex-col justify-between">
+    <FadeIn
+      direction="up"
+      className="rounded-2xl bg-gradient-to-br from-[#76232D] via-[#52181F] to-[#292929] text-white border-2 border-[#C29B57] shadow-xl overflow-hidden p-6 sm:p-8 flex flex-col justify-between"
+    >
       <div className="space-y-4">
         <div className="flex items-center justify-between">
           <Badge className="bg-[#C29B57] text-[#292929] text-xs font-bold px-3 py-1 uppercase tracking-wider">
@@ -46,14 +49,14 @@ export function AwardsShowcaseSection({ award }: AwardsShowcaseSectionProps) {
           <span className="text-[11px] font-bold uppercase tracking-wider text-[#C29B57] block mb-1">
             04 Tiêu chí đánh giá trọng tâm:
           </span>
-          <ul className="space-y-1.5 text-xs text-white/90">
+          <StaggerContainer className="space-y-1.5 text-xs text-white/90">
             {award.criteria.map((crit, idx) => (
-              <li key={idx} className="flex items-start gap-2">
+              <StaggerItem key={idx} className="flex items-start gap-2">
                 <CheckCircle2 className="w-3.5 h-3.5 text-[#C29B57] shrink-0 mt-0.5" />
                 <span>{crit}</span>
-              </li>
+              </StaggerItem>
             ))}
-          </ul>
+          </StaggerContainer>
         </div>
       </div>
 
@@ -62,7 +65,7 @@ export function AwardsShowcaseSection({ award }: AwardsShowcaseSectionProps) {
         <Link href={award.nominationUrl} className="flex-1">
           <Button
             size="lg"
-            className="w-full bg-[#C29B57] hover:bg-[#a98342] text-[#292929] font-bold border border-white/20 shadow-md cursor-pointer"
+            className="w-full bg-[#C29B57] hover:bg-[#a98342] text-[#292929] font-bold border border-white/20 shadow-md cursor-pointer h-11"
           >
             <Send className="w-4 h-4 mr-2" />
             <span>Nộp hồ sơ đề cử</span>
@@ -71,15 +74,14 @@ export function AwardsShowcaseSection({ award }: AwardsShowcaseSectionProps) {
 
         <Link href={award.regulationsUrl} className="flex-1">
           <Button
-            variant="outline"
             size="lg"
-            className="w-full border-white/30 text-white hover:bg-white/10 cursor-pointer"
+            className="w-full bg-white/10 hover:bg-white/20 text-[#F5EFE5] border border-white/30 hover:border-[#C29B57] font-semibold cursor-pointer h-11 backdrop-blur-xs"
           >
             <FileText className="w-4 h-4 mr-2 text-[#C29B57]" />
             <span>Xem quy chế giải thưởng</span>
           </Button>
         </Link>
       </div>
-    </div>
+    </FadeIn>
   );
 }

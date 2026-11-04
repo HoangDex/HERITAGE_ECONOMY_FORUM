@@ -14,6 +14,7 @@ import { ArrowRight, Calendar, Sparkles, MapPin, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { HefIcon } from "@/components/icons";
+import { FadeIn, AnimatedCounter } from "@/components/animations";
 import type { HomeHero as HomeHeroType } from "../types/home.types";
 
 interface HomeHeroProps {
@@ -22,14 +23,18 @@ interface HomeHeroProps {
 
 export function HomeHero({ hero }: HomeHeroProps) {
   return (
-    <section className="relative overflow-hidden bg-radial-[at_top] from-[#76232D] via-[#52181F] to-[#1F1416] text-white py-12 sm:py-20 px-4 sm:px-8 border-b-4 border-[#C29B57]">
+    <section className="relative overflow-hidden bg-radial-[at_top] from-[#76232D] via-[#52181F] to-[#1F1416] text-white py-14 sm:py-20 px-4 sm:px-8 border-b-4 border-[#C29B57]">
       {/* Pattern Họa Tiết Nền Trống Đồng Mờ */}
       <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#C29B57_1.5px,transparent_1.5px)] [background-size:28px_28px] pointer-events-none" />
 
       <div className="container mx-auto max-w-6xl relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
           {/* CỘT TRÁI (DESKTOP) / XẾP DƯỚI (MOBILE): HEADLINE, SLOGAN, MÔ TẢ & 2 CTA */}
-          <div className="lg:col-span-7 space-y-6 text-center lg:text-left order-2 lg:order-1">
+          <FadeIn
+            direction="right"
+            duration={0.6}
+            className="lg:col-span-7 space-y-6 text-center lg:text-left order-2 lg:order-1"
+          >
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#C29B57]/20 border border-[#C29B57]/50 text-[#C29B57] text-xs font-bold tracking-widest uppercase backdrop-blur-xs">
               <Sparkles className="w-3.5 h-3.5" />
               <span>{hero.badgeText}</span>
@@ -39,12 +44,12 @@ export function HomeHero({ hero }: HomeHeroProps) {
               <p className="text-xs sm:text-sm font-semibold tracking-wider text-white/70 uppercase">
                 {hero.title}
               </p>
-              <h1 className="text-3xl sm:text-5xl lg:text-6xl font-serif font-extrabold text-[#F5EFE5] leading-tight tracking-tight mt-1">
+              <h1 className="text-3xl sm:text-5xl lg:text-[54px] font-serif font-extrabold text-[#F5EFE5] leading-[1.15] tracking-tight mt-1 max-w-xl text-balance">
                 {hero.vietnameseTitle}
               </h1>
             </div>
 
-            <div className="border-l-4 border-[#C29B57] pl-4 py-1 mx-auto lg:mx-0 max-w-xl text-left bg-white/5 rounded-r-lg">
+            <div className="border-l-4 border-[#C29B57] pl-4 py-2 mx-auto lg:mx-0 max-w-xl text-left bg-white/10 rounded-r-xl backdrop-blur-xs">
               <p className="text-lg sm:text-xl font-serif font-bold text-[#C29B57] italic">
                 &ldquo;{hero.slogan}&rdquo;
               </p>
@@ -59,7 +64,7 @@ export function HomeHero({ hero }: HomeHeroProps) {
               <Link href={hero.primaryCta.href} className="w-full sm:w-auto">
                 <Button
                   size="lg"
-                  className="w-full sm:w-auto bg-[#C29B57] hover:bg-[#a98342] text-[#292929] font-bold border border-white/20 shadow-lg cursor-pointer px-6"
+                  className="w-full sm:w-auto bg-[#C29B57] hover:bg-[#a98342] text-[#292929] font-bold border border-white/20 shadow-lg cursor-pointer px-6 h-11"
                 >
                   <HefIcon name="Compass" size="sm" variant="charcoal" />
                   <span className="ml-2">{hero.primaryCta.label}</span>
@@ -69,8 +74,7 @@ export function HomeHero({ hero }: HomeHeroProps) {
               <Link href={hero.secondaryCta.href} className="w-full sm:w-auto">
                 <Button
                   size="lg"
-                  variant="outline"
-                  className="w-full sm:w-auto border-[#F5EFE5]/50 text-[#F5EFE5] hover:bg-white/10 hover:text-white cursor-pointer px-6"
+                  className="w-full sm:w-auto bg-white/10 hover:bg-white/20 text-[#F5EFE5] border border-white/30 hover:border-[#C29B57] font-bold cursor-pointer px-6 shadow-sm backdrop-blur-xs h-11"
                 >
                   <Calendar className="w-4 h-4 mr-2 text-[#C29B57]" />
                   <span>{hero.secondaryCta.label}</span>
@@ -83,27 +87,27 @@ export function HomeHero({ hero }: HomeHeroProps) {
             <div className="pt-4 border-t border-white/15 grid grid-cols-3 gap-4 text-center lg:text-left">
               <div>
                 <span className="block text-xl sm:text-2xl font-serif font-bold text-[#C29B57]">
-                  500+
+                  <AnimatedCounter to={500} suffix="+" />
                 </span>
                 <span className="text-[11px] text-white/70">Đại biểu dự kiến</span>
               </div>
               <div>
                 <span className="block text-xl sm:text-2xl font-serif font-bold text-[#C29B57]">
-                  04
+                  <AnimatedCounter to={4} prefix="0" />
                 </span>
                 <span className="text-[11px] text-white/70">Phiên chuyên đề</span>
               </div>
               <div>
                 <span className="block text-xl sm:text-2xl font-serif font-bold text-[#C29B57]">
-                  30+
+                  <AnimatedCounter to={30} suffix="+" />
                 </span>
                 <span className="text-[11px] text-white/70">Mô hình di sản</span>
               </div>
             </div>
-          </div>
+          </FadeIn>
 
           {/* CỘT PHẢI (DESKTOP) / PHÍA TRÊN 16:9 (MOBILE): ẢNH DI SẢN TỐI ƯU LCP */}
-          <div className="lg:col-span-5 order-1 lg:order-2">
+          <FadeIn direction="left" duration={0.6} className="lg:col-span-5 order-1 lg:order-2">
             <div className="relative w-full aspect-[16/10] sm:aspect-[16/9] lg:aspect-[4/3] rounded-2xl overflow-hidden border-2 border-[#C29B57]/60 shadow-2xl bg-black/40">
               <Image
                 src={hero.imageUrl}
@@ -130,7 +134,7 @@ export function HomeHero({ hero }: HomeHeroProps) {
                 </Badge>
               </div>
             </div>
-          </div>
+          </FadeIn>
         </div>
       </div>
     </section>

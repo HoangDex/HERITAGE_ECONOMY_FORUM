@@ -12,6 +12,7 @@ import { Calendar, MapPin, Clock, ArrowRight, Sparkles, Users, CheckCircle } fro
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { HefIcon } from "@/components/icons";
+import { FadeIn, StaggerContainer, StaggerItem, AnimatedCounter } from "@/components/animations";
 import type { EventHighlight } from "../types/home.types";
 
 interface EventHighlightSectionProps {
@@ -23,7 +24,10 @@ export function EventHighlightSection({ event }: EventHighlightSectionProps) {
     <section className="py-14 sm:py-20 bg-muted/30 border-b border-border">
       <div className="container mx-auto max-w-6xl px-4 sm:px-8">
         {/* Tiêu đề & Tag sự kiện */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
+        <FadeIn
+          direction="up"
+          className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8"
+        >
           <div>
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#C29B57]/15 text-[#C29B57] text-xs font-bold uppercase tracking-wider mb-2">
               <Sparkles className="w-3.5 h-3.5" />
@@ -42,10 +46,14 @@ export function EventHighlightSection({ event }: EventHighlightSectionProps) {
             <span className="w-2 h-2 rounded-full bg-emerald-400 mr-2 animate-pulse" />
             {event.statusBadge}
           </Badge>
-        </div>
+        </FadeIn>
 
         {/* Khối Banner Rộng Sự Kiện */}
-        <div className="rounded-2xl bg-card border-2 border-[#C29B57]/50 shadow-xl overflow-hidden">
+        <FadeIn
+          direction="up"
+          delay={0.1}
+          className="rounded-2xl bg-card border-2 border-[#C29B57]/50 shadow-xl overflow-hidden"
+        >
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-0">
             {/* Banner Ảnh Tỷ Lệ Rộng */}
             <div className="lg:col-span-5 relative min-h-[260px] lg:min-h-full bg-black">
@@ -108,7 +116,7 @@ export function EventHighlightSection({ event }: EventHighlightSectionProps) {
                       Quy mô đại biểu:
                     </span>
                     <span className="font-bold text-foreground">
-                      {event.attendeesExpected}+ Đại biểu
+                      <AnimatedCounter to={event.attendeesExpected} suffix="+ Đại biểu" />
                     </span>
                   </div>
                 </div>
@@ -133,9 +141,9 @@ export function EventHighlightSection({ event }: EventHighlightSectionProps) {
                   <span>Chương trình các phiên nghị sự trọng tâm:</span>
                 </h4>
 
-                <div className="space-y-2">
+                <StaggerContainer className="space-y-2">
                   {event.sessions.map((sess) => (
-                    <div
+                    <StaggerItem
                       key={sess.id}
                       className="p-3 rounded-lg bg-background border border-border/80 flex flex-col sm:flex-row sm:items-center justify-between gap-1 sm:gap-4 hover:border-[#C29B57]/60 transition-colors"
                     >
@@ -152,9 +160,9 @@ export function EventHighlightSection({ event }: EventHighlightSectionProps) {
                           {sess.chairperson}
                         </span>
                       )}
-                    </div>
+                    </StaggerItem>
                   ))}
-                </div>
+                </StaggerContainer>
               </div>
 
               {/* Nút CTA Đăng ký tham dự */}
@@ -169,7 +177,7 @@ export function EventHighlightSection({ event }: EventHighlightSectionProps) {
                   </Button>
                 </Link>
 
-                <Link href="/forum" className="w-full sm:w-auto">
+                <Link href="/dien-dan" className="w-full sm:w-auto">
                   <Button variant="outline" size="lg" className="w-full sm:w-auto cursor-pointer">
                     Xem chương trình chi tiết
                   </Button>
@@ -181,7 +189,7 @@ export function EventHighlightSection({ event }: EventHighlightSectionProps) {
               </div>
             </div>
           </div>
-        </div>
+        </FadeIn>
       </div>
     </section>
   );

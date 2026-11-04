@@ -6,7 +6,7 @@
 
 // Layer 1: Types & Entities
 export type {
-  HomeHero,
+  HomeHero as HomeHeroData,
   QuickIntro,
   Pillar,
   EventSession,
