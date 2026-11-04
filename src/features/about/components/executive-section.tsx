@@ -10,16 +10,7 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import {
-  Briefcase,
-  ArrowRight,
-  Mail,
-  Phone,
-  Layers,
-  CheckCircle,
-  Eye,
-  Building,
-} from "lucide-react";
+import { Briefcase, ArrowRight, Mail, Phone, Layers, CheckCircle, Eye } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import type { Person, ExecutiveDepartment } from "../types/about.types";
@@ -51,7 +42,7 @@ export function ExecutiveSection({
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-10">
           <div>
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#76232D]/10 text-[#76232D] dark:text-[#C29B57] text-xs font-semibold uppercase tracking-wider mb-2">
-              <Briefcase className="w-3.5 h-3.5" />
+              <Briefcase className="w-3.5 h-3.5 text-[#C29B57]" />
               <span>Mục 6.3 • Bộ Máy Vận Hành Chuyên Trách</span>
             </div>
             <h2 className="text-2xl sm:text-4xl font-serif font-bold text-[#76232D] dark:text-[#F5EFE5]">
@@ -68,7 +59,7 @@ export function ExecutiveSection({
               <Button
                 variant="outline"
                 size="sm"
-                className="border-[#76232D] text-[#76232D] dark:text-[#C29B57] hover:bg-[#76232D]/10"
+                className="border-[#76232D] text-[#76232D] hover:bg-[#76232D]/10 cursor-pointer"
               >
                 <span>Xem sơ đồ & nhân sự</span>
                 <ArrowRight className="w-4 h-4 ml-1.5" />
@@ -82,7 +73,7 @@ export function ExecutiveSection({
           {/* TRƯỞNG BAN */}
           <div
             onClick={() => onOpenPersonModal(head)}
-            className="group relative bg-card rounded-2xl border-2 border-[#76232D] p-5 shadow-md hover:shadow-xl transition-all cursor-pointer flex flex-col justify-between"
+            className="group relative bg-white dark:bg-card rounded-2xl border-2 border-[#76232D] p-5 shadow-sm hover:shadow-xl transition-all cursor-pointer flex flex-col justify-between"
           >
             <div>
               <div className="flex items-center justify-between mb-3">
@@ -92,7 +83,7 @@ export function ExecutiveSection({
                 </span>
               </div>
 
-              <div className="relative w-full aspect-[4/5] rounded-xl overflow-hidden bg-muted mb-4 border border-border">
+              <div className="relative w-full aspect-[4/5] rounded-xl overflow-hidden bg-muted mb-4 border border-[#dfd7c8]">
                 <Image
                   src={head.avatarUrl}
                   alt={head.altText}
@@ -107,7 +98,7 @@ export function ExecutiveSection({
                 </div>
               </div>
 
-              <h4 className="text-xl font-serif font-bold text-[#76232D] dark:text-[#F5EFE5] group-hover:text-[#C29B57] transition-colors">
+              <h4 className="text-xl font-serif font-bold text-[#76232D] group-hover:text-[#52181F] transition-colors">
                 {head.fullName}
               </h4>
               <p className="text-xs font-semibold text-foreground/90 mt-1">{head.positionTitle}</p>
@@ -127,20 +118,20 @@ export function ExecutiveSection({
             <div
               key={deputy.id}
               onClick={() => onOpenPersonModal(deputy)}
-              className="group relative bg-card rounded-2xl border border-border hover:border-[#C29B57] p-5 shadow-xs hover:shadow-md transition-all cursor-pointer flex flex-col justify-between"
+              className="group relative bg-white dark:bg-card rounded-2xl border border-[#dfd7c8] hover:border-[#C29B57] p-5 shadow-xs hover:shadow-md transition-all cursor-pointer flex flex-col justify-between"
             >
               <div>
                 <div className="flex items-center justify-between mb-3">
                   <Badge
                     variant="outline"
-                    className="border-[#C29B57] text-[#C29B57] text-xs font-semibold"
+                    className="border-[#C29B57] text-[#76232D] text-xs font-semibold bg-[#F5EFE5]/50"
                   >
                     PHÓ TRƯỞNG BAN
                   </Badge>
                   <span className="text-[11px] text-muted-foreground">Đã bổ nhiệm</span>
                 </div>
 
-                <div className="relative w-full aspect-[4/5] rounded-xl overflow-hidden bg-muted mb-4 border border-border">
+                <div className="relative w-full aspect-[4/5] rounded-xl overflow-hidden bg-muted mb-4 border border-[#dfd7c8]">
                   <Image
                     src={deputy.avatarUrl}
                     alt={deputy.altText}
@@ -155,7 +146,7 @@ export function ExecutiveSection({
                   </div>
                 </div>
 
-                <h4 className="text-lg font-serif font-bold text-foreground group-hover:text-[#76232D] dark:group-hover:text-[#C29B57] transition-colors">
+                <h4 className="text-lg font-serif font-bold text-foreground group-hover:text-[#76232D] transition-colors">
                   {deputy.fullName}
                 </h4>
                 <p className="text-xs font-semibold text-[#C29B57] mt-1 line-clamp-2">
@@ -176,133 +167,171 @@ export function ExecutiveSection({
           ))}
         </div>
 
-        {/* 2. SƠ ĐỒ CƠ CẤU 6 BỘ PHẬN CHỨC NĂNG & THÔNG TIN LIÊN HỆ */}
-        <div className="rounded-2xl bg-card border-2 border-border shadow-md overflow-hidden">
-          <div className="bg-muted/60 p-4 sm:p-6 border-b border-border flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        {/* 2. SƠ ĐỒ CƠ CẤU 6 BỘ PHẬN CHỨC NĂNG & THÔNG TIN LIÊN HỆ (BỐ CỤC MASTER-DETAIL GỌN GÀNG, KHÔNG THỪA) */}
+        <div className="rounded-2xl bg-white border border-[#dfd7c8] shadow-sm overflow-hidden">
+          {/* Header thanh gọn */}
+          <div className="bg-[#F5EFE5]/70 p-4 sm:p-5 border-b border-[#dfd7c8] flex flex-col sm:flex-row sm:items-center justify-between gap-2">
             <div className="flex items-center gap-2.5">
-              <Layers className="w-5 h-5 text-[#76232D] dark:text-[#C29B57]" />
-              <h3 className="text-base sm:text-lg font-serif font-bold text-foreground">
-                Cơ Cấu 6 Nhóm Chuyên Trách & Đầu Mối Liên Hệ
-              </h3>
+              <Layers className="w-5 h-5 text-[#76232D]" />
+              <div>
+                <h3 className="text-base sm:text-lg font-serif font-bold text-[#292929]">
+                  Cơ Cấu 6 Nhóm Chuyên Trách & Đầu Mối Liên Hệ
+                </h3>
+                <p className="text-xs text-[#5c554b]">
+                  Quy chế phân công nhiệm vụ và nhân sự thường trực Ban Điều hành
+                </p>
+              </div>
             </div>
-            <span className="text-xs text-muted-foreground">
-              Chọn nhóm để xem mô tả nhiệm vụ & nhân sự
+            <span className="text-[11px] font-semibold text-[#76232D] bg-[#76232D]/10 px-2.5 py-1 rounded-full self-start sm:self-auto border border-[#76232D]/20">
+              06 Bộ Phận Chức Năng
             </span>
           </div>
 
-          {/* Thanh chuyển Tab 6 bộ phận */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 border-b border-border bg-muted/20">
-            {departments.map((dept) => {
-              const isSelected = dept.id === selectedDeptId;
-              return (
-                <button
-                  key={dept.id}
-                  onClick={() => setSelectedDeptId(dept.id)}
-                  className={`p-3 text-xs font-semibold text-center transition-colors border-r border-b lg:border-b-0 border-border cursor-pointer ${
-                    isSelected
-                      ? "bg-[#76232D] text-white font-bold"
-                      : "text-muted-foreground hover:bg-muted hover:text-foreground"
-                  }`}
-                >
-                  {dept.name}
-                </button>
-              );
-            })}
-          </div>
+          {/* Master-Detail Layout */}
+          <div className="grid grid-cols-1 lg:grid-cols-12">
+            {/* Cột Trái (4 Cột): Menu 6 Nhóm theo chiều dọc (Desktop) hoặc cuộn ngang (Mobile) */}
+            <div className="lg:col-span-4 border-b lg:border-b-0 lg:border-r border-[#dfd7c8] bg-[#FDFBF7] p-2 sm:p-3 space-y-1 overflow-x-auto lg:overflow-x-visible flex lg:flex-col no-scrollbar">
+              {departments.map((dept, idx) => {
+                const isSelected = dept.id === selectedDeptId;
+                return (
+                  <button
+                    key={dept.id}
+                    onClick={() => setSelectedDeptId(dept.id)}
+                    className={`w-full text-left p-3 rounded-xl text-xs font-semibold transition-all flex items-center justify-between shrink-0 cursor-pointer ${
+                      isSelected
+                        ? "bg-[#76232D] text-white shadow-sm font-bold"
+                        : "text-[#5c554b] hover:bg-white hover:text-[#292929]"
+                    }`}
+                  >
+                    <div className="flex items-center gap-2.5">
+                      <span
+                        className={`w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-bold ${
+                          isSelected
+                            ? "bg-[#C29B57] text-[#292929]"
+                            : "bg-[#dfd7c8]/60 text-[#76232D]"
+                        }`}
+                      >
+                        0{idx + 1}
+                      </span>
+                      <span>{dept.name}</span>
+                    </div>
+                    <ArrowRight
+                      className={`w-3.5 h-3.5 transition-transform ${
+                        isSelected ? "text-[#C29B57] translate-x-0.5" : "text-[#dfd7c8] opacity-50"
+                      }`}
+                    />
+                  </button>
+                );
+              })}
+            </div>
 
-          {/* Chi tiết bộ phận được chọn */}
-          {activeDept && (
-            <div className="p-6 sm:p-8">
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-                {/* Thông tin nhiệm vụ & liên hệ */}
-                <div className="lg:col-span-6 space-y-4">
-                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#C29B57]/15 text-[#C29B57] text-xs font-bold uppercase">
-                    <Building className="w-3.5 h-3.5" />
-                    <span>Bộ phận chuyên trách</span>
+            {/* Cột Phải (8 Cột): Khối Nội Dung & Nhân Sự Gọn Gàng, Đầy Đặn */}
+            {activeDept && (
+              <div className="lg:col-span-8 p-5 sm:p-7 flex flex-col justify-between space-y-5 bg-white">
+                <div>
+                  {/* Top row: Badge + Title + Code */}
+                  <div className="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-[#dfd7c8]/60">
+                    <div>
+                      <span className="text-[11px] font-bold text-[#C29B57] uppercase tracking-wider block">
+                        Bộ phận chuyên trách
+                      </span>
+                      <h4 className="text-xl sm:text-2xl font-serif font-bold text-[#76232D] mt-0.5">
+                        {activeDept.name}
+                      </h4>
+                    </div>
+                    <Badge
+                      variant="outline"
+                      className="border-[#C29B57] text-[#76232D] text-[10px] font-mono px-2 py-0.5 bg-[#F5EFE5]/50"
+                    >
+                      MÃ: {activeDept.code}
+                    </Badge>
                   </div>
-                  <h4 className="text-2xl font-serif font-bold text-[#76232D] dark:text-[#F5EFE5]">
-                    {activeDept.name}
-                  </h4>
-                  <div className="bg-muted/40 p-4 rounded-xl border border-border">
-                    <h5 className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-1">
+
+                  {/* Mission Card */}
+                  <div className="mt-4 p-4 rounded-xl bg-[#F5EFE5]/50 border-l-4 border-[#C29B57] border border-[#dfd7c8]/80 space-y-1">
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-[#76232D] block">
                       Mô tả nhiệm vụ trọng tâm:
-                    </h5>
-                    <p className="text-sm text-foreground/90 leading-relaxed text-justify">
+                    </span>
+                    <p className="text-xs sm:text-sm text-[#292929] leading-relaxed">
                       {activeDept.mission}
                     </p>
                   </div>
-
-                  <div className="space-y-2 pt-2">
-                    <h5 className="text-xs font-bold uppercase tracking-wider text-[#C29B57]">
-                      Đầu mối liên hệ trực tiếp:
-                    </h5>
-                    <div className="flex flex-wrap gap-4 text-xs">
-                      <a
-                        href={`mailto:${activeDept.contactEmail}`}
-                        className="flex items-center gap-1.5 text-primary hover:underline bg-muted px-3 py-1.5 rounded-lg border border-border"
-                      >
-                        <Mail className="w-3.5 h-3.5 text-primary" />
-                        <span>{activeDept.contactEmail}</span>
-                      </a>
-                      <a
-                        href={`tel:${activeDept.contactPhone}`}
-                        className="flex items-center gap-1.5 text-foreground hover:underline bg-muted px-3 py-1.5 rounded-lg border border-border"
-                      >
-                        <Phone className="w-3.5 h-3.5 text-[#C29B57]" />
-                        <span>{activeDept.contactPhone}</span>
-                      </a>
-                    </div>
-                  </div>
                 </div>
 
-                {/* Danh sách nhân sự phụ trách nhóm */}
-                <div className="lg:col-span-6">
-                  <h5 className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-3 flex items-center justify-between">
-                    <span>Nhân sự phụ trách ({activeDept.members.length})</span>
-                    <span className="text-[11px] text-[#C29B57]">Bấm để xem hồ sơ</span>
-                  </h5>
-
-                  {activeDept.members.length === 0 ? (
-                    <div className="p-6 rounded-xl border border-dashed border-border text-center text-xs text-muted-foreground">
-                      Đang hoàn thiện cập nhật danh sách nhân sự bộ phận theo quyết định phê duyệt
-                      mới.
-                    </div>
-                  ) : (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      {activeDept.members.map((member) => (
+                {/* Row 2: Nhân sự phụ trách & Đầu mối liên hệ */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+                  {/* Nhân sự phụ trách */}
+                  <div className="space-y-2">
+                    <span className="text-[11px] font-bold uppercase tracking-wider text-[#5c554b] block">
+                      Trưởng nhóm phụ trách:
+                    </span>
+                    {activeDept.members.length > 0 ? (
+                      activeDept.members.map((member) => (
                         <div
                           key={member.id}
                           onClick={() => onOpenPersonModal(member)}
-                          className="group bg-muted/30 hover:bg-muted p-3.5 rounded-xl border border-border hover:border-[#C29B57] transition-all cursor-pointer flex gap-3 items-center"
+                          className="group bg-[#FDFBF7] hover:bg-white p-3 rounded-xl border border-[#dfd7c8] hover:border-[#C29B57] transition-all cursor-pointer flex gap-3 items-center shadow-2xs hover:shadow-xs"
                         >
-                          <div className="relative w-16 h-20 rounded-lg overflow-hidden shrink-0 border border-border bg-muted">
+                          <div className="relative w-12 h-15 rounded-lg overflow-hidden shrink-0 border border-[#dfd7c8] bg-muted">
                             <Image
                               src={member.avatarUrl}
                               alt={member.altText}
                               fill
-                              sizes="64px"
+                              sizes="50px"
                               className="object-cover"
                             />
                           </div>
-                          <div className="space-y-0.5 overflow-hidden">
-                            <span className="text-[10px] text-[#C29B57] font-semibold block">
+                          <div className="space-y-0.5 min-w-0 flex-1">
+                            <span className="text-[10px] text-[#C29B57] font-bold block">
                               {member.academicTitle}
                             </span>
-                            <h6 className="text-sm font-serif font-bold text-foreground group-hover:text-[#76232D] transition-colors truncate">
+                            <h5 className="text-xs sm:text-sm font-serif font-bold text-[#292929] group-hover:text-[#76232D] transition-colors truncate">
                               {member.fullName}
-                            </h6>
-                            <p className="text-xs text-muted-foreground truncate">
-                              {member.positionTitle}
+                            </h5>
+                            <p className="text-[11px] text-[#5c554b] truncate">
+                              {member.organization}
                             </p>
                           </div>
+                          <Eye className="w-3.5 h-3.5 text-[#C29B57] group-hover:scale-110 transition-transform shrink-0" />
                         </div>
-                      ))}
+                      ))
+                    ) : (
+                      <div className="p-3 rounded-xl border border-dashed border-[#dfd7c8] text-xs text-[#5c554b]">
+                        Đang cập nhật nhân sự bổ nhiệm.
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Đầu mối liên hệ */}
+                  <div className="space-y-2">
+                    <span className="text-[11px] font-bold uppercase tracking-wider text-[#5c554b] block">
+                      Đầu mối liên hệ trực tiếp:
+                    </span>
+                    <div className="space-y-2">
+                      <a
+                        href={`mailto:${activeDept.contactEmail}`}
+                        className="flex items-center gap-2 text-xs text-[#76232D] font-medium bg-[#FDFBF7] hover:bg-white p-2.5 rounded-xl border border-[#dfd7c8] hover:border-[#C29B57] transition-colors"
+                      >
+                        <div className="w-6 h-6 rounded-md bg-[#76232D]/10 text-[#76232D] flex items-center justify-center shrink-0">
+                          <Mail className="w-3.5 h-3.5" />
+                        </div>
+                        <span className="truncate">{activeDept.contactEmail}</span>
+                      </a>
+                      <a
+                        href={`tel:${activeDept.contactPhone}`}
+                        className="flex items-center gap-2 text-xs text-[#292929] font-medium bg-[#FDFBF7] hover:bg-white p-2.5 rounded-xl border border-[#dfd7c8] hover:border-[#C29B57] transition-colors"
+                      >
+                        <div className="w-6 h-6 rounded-md bg-[#C29B57]/15 text-[#C29B57] flex items-center justify-center shrink-0">
+                          <Phone className="w-3.5 h-3.5" />
+                        </div>
+                        <span className="truncate">{activeDept.contactPhone}</span>
+                      </a>
                     </div>
-                  )}
+                  </div>
                 </div>
               </div>
-            </div>
-          )}
+            )}
+          </div>
         </div>
       </div>
     </section>

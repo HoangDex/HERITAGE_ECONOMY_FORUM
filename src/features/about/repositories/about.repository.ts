@@ -73,7 +73,7 @@ const fallbackPersons: Person[] = [
     organization: "Hội Di sản Văn hóa Việt Nam / Nguyên Viện trưởng Viện Khảo cổ học",
     expertiseField: "Lịch sử – Khảo cổ học & Kinh tế Văn hóa Di sản",
     avatarUrl:
-      "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=600&h=750&q=80",
+      "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=600&h=750&q=80",
     altText: "Chân dung GS.TS Trần Quốc Vượng - Chủ tịch Hội đồng Diễn đàn Kinh tế Di sản",
     bio: "Hơn 40 năm kinh nghiệm nghiên cứu và tư vấn chiến lược di sản văn hóa quốc gia; chủ trì nhiều chương trình hợp tác quốc tế với UNESCO và các trường đại học hàng đầu khu vực.",
     papers: [
@@ -117,7 +117,7 @@ const fallbackPersons: Person[] = [
     organization: "Hội Kiến trúc sư Việt Nam – Văn phòng 1+1>2",
     expertiseField: "Kiến trúc Hạnh phúc & Tái thiết Không gian Di sản",
     avatarUrl:
-      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=600&h=750&q=80",
+      "https://images.unsplash.com/photo-1556157382-97eda2d62296?auto=format&fit=crop&w=600&h=750&q=80",
     altText: "Chân dung KTS Hoàng Thúc Hào - Phó Chủ tịch Hội đồng Diễn đàn",
     bio: "Giải thưởng kiến trúc quốc tế UIA và Vassilis Sgoutas Prize; tiên phong trường phái kiến trúc gắn liền sinh kế và cảnh quan di sản nông thôn.",
     papers: [
@@ -252,7 +252,7 @@ const fallbackPersons: Person[] = [
     organization: "Viện Nghiên cứu Kinh thành",
     expertiseField: "Thẩm định Khoa học & Biên soạn Kỷ yếu",
     avatarUrl:
-      "https://images.unsplash.com/photo-1519744655452-2b6356c1f107?auto=format&fit=crop&w=600&h=750&q=80",
+      "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=600&h=750&q=80",
     altText: "Chân dung TS Bùi Minh Trí - Nhóm Nội dung Học thuật",
     bio: "Điều phối tổng hợp các phiên tham luận chuyên đề và thẩm định học thuật các đề tài báo cáo.",
     papers: ["Khảo cổ học di sản và phát triển du lịch tại Hoàng thành Thăng Long (2025)"],
@@ -271,7 +271,7 @@ const fallbackPersons: Person[] = [
     organization: "Ban Vận hành HEF",
     expertiseField: "Hậu cần & Điều phối Nghi lễ Quốc gia",
     avatarUrl:
-      "https://images.unsplash.com/photo-1580894732488-883a6b57917f?auto=format&fit=crop&w=600&h=750&q=80",
+      "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=600&h=750&q=80",
     altText: "Chân dung Bà Nguyễn Mai Anh - Nhóm Tổ chức Vận hành",
     bio: "Đảm bảo hạ tầng hội trường, âm thanh ánh sáng, an ninh và lễ tân cho hơn 500 đại biểu mỗi kỳ Diễn đàn.",
     papers: [],
@@ -434,8 +434,7 @@ const fallbackPartners: PartnerOrganization[] = [
     id: "partner_steer_1",
     name: "Bộ Văn hóa, Thể thao và Du lịch",
     shortName: "BVHTTDL",
-    logoUrl:
-      "https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=300&h=150&q=80",
+    logoUrl: "/images/partners/bvhttdl.svg",
     category: "STEERING",
     roleDescription: "Cơ quan chỉ đạo định hướng chiến lược quốc gia về phát triển kinh tế di sản",
     websiteUrl: "https://bvhttdl.gov.vn",
@@ -449,8 +448,7 @@ const fallbackPartners: PartnerOrganization[] = [
     id: "partner_host_1",
     name: "Hội Di sản Văn hóa Việt Nam",
     shortName: "VCHA",
-    logoUrl:
-      "https://images.unsplash.com/photo-1572945753563-804956783434?auto=format&fit=crop&w=300&h=150&q=80",
+    logoUrl: "/images/partners/vcha.svg",
     category: "HOSTING",
     roleDescription: "Đơn vị chủ trì chuyên môn và thẩm định học thuật các chương trình Diễn đàn",
     websiteUrl: "https://hoidisan.vn",
@@ -463,8 +461,7 @@ const fallbackPartners: PartnerOrganization[] = [
     id: "partner_host_2",
     name: "Ủy ban Nhân dân Thành phố Hà Nội",
     shortName: "UBND TP Hà Nội",
-    logoUrl:
-      "https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?auto=format&fit=crop&w=300&h=150&q=80",
+    logoUrl: "/images/partners/hanoi.svg",
     category: "HOSTING",
     roleDescription:
       "Đơn vị đồng chủ trì và đăng cai tổ chức tại không gian Hoàng thành Thăng Long",
@@ -479,8 +476,7 @@ const fallbackPartners: PartnerOrganization[] = [
     id: "partner_org_1",
     name: "Viện Nghiên cứu Kinh tế Di sản & Phát triển Bền vững",
     shortName: "HEI",
-    logoUrl:
-      "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=300&h=150&q=80",
+    logoUrl: "/images/partners/hei.svg",
     category: "ORGANIZING",
     roleDescription: "Đơn vị thường trực tổ chức và quản trị nền tảng số HEF",
     websiteUrl: "https://hef.vn",
@@ -494,8 +490,7 @@ const fallbackPartners: PartnerOrganization[] = [
     id: "partner_comp_1",
     name: "Văn phòng UNESCO tại Hà Nội",
     shortName: "UNESCO Hanoi",
-    logoUrl:
-      "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=300&h=150&q=80",
+    logoUrl: "/images/partners/unesco.svg",
     category: "COMPANION",
     roleDescription: "Tổ chức quốc tế đồng hành về chuyên môn và bảo tồn di sản bền vững",
     websiteUrl: "https://unesco.org",
@@ -508,8 +503,7 @@ const fallbackPartners: PartnerOrganization[] = [
     id: "partner_comp_2",
     name: "Đại học Quốc gia Hà Nội",
     shortName: "VNU",
-    logoUrl:
-      "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=300&h=150&q=80",
+    logoUrl: "/images/partners/vnu.svg",
     category: "COMPANION",
     roleDescription: "Đối tác đồng hành học thuật, nghiên cứu và cung cấp chuyên gia phản biện",
     websiteUrl: "https://vnu.edu.vn",
@@ -523,8 +517,7 @@ const fallbackPartners: PartnerOrganization[] = [
     id: "partner_strat_1",
     name: "Tập đoàn Sovico",
     shortName: "Sovico Group",
-    logoUrl:
-      "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=300&h=150&q=80",
+    logoUrl: "/images/partners/sovico.svg",
     category: "STRATEGIC",
     roleDescription: "Đối tác chiến lược bảo trợ tài chính và phát triển dự án di sản đô thị",
     websiteUrl: "https://sovicogroup.com",
@@ -552,8 +545,7 @@ const fallbackPartners: PartnerOrganization[] = [
     id: "partner_media_1",
     name: "Đài Truyền hình Việt Nam",
     shortName: "VTV",
-    logoUrl:
-      "https://images.unsplash.com/photo-1585829365295-ab7cd400c167?auto=format&fit=crop&w=300&h=150&q=80",
+    logoUrl: "/images/partners/vtv.svg",
     category: "MEDIA",
     roleDescription: "Đối tác bảo trợ truyền hình và truyền thông đa phương tiện chính thức",
     websiteUrl: "https://vtv.vn",
