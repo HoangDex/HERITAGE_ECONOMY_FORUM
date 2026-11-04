@@ -2,229 +2,235 @@
   "schema_version": 1,
   "diagram_type": "architecture",
   "meta": {
-    "title": "Heritage Economy Forum - Modular System Architecture",
+    "title": "Heritage Economy Forum - Modular Architecture",
     "output": "docs/architecture/hef-architecture.html",
     "quality_profile": "showcase"
   },
   "components": [
     {
-      "id": "public_users",
-      "type": "external",
-      "label": "Độc Giả & Đại Biểu",
-      "sublabel": "Web, Mobile (7 Chuyên đề)",
-      "pos": [40, 280],
-      "size": [140, 64]
+      "id": "client_user",
+      "type": "frontend",
+      "label": "Client / User",
+      "sublabel": "Web, Mobile, Admin CMS",
+      "pos": [40, 240],
+      "size": [140, 68]
     },
     {
-      "id": "admin_operators",
-      "type": "external",
-      "label": "Ban Thư Ký / Admin",
-      "sublabel": "Quản trị CMS (/admin)",
-      "pos": [40, 420],
-      "size": [140, 64]
+      "id": "gateway",
+      "type": "backend",
+      "label": "Next.js Gateway",
+      "sublabel": "routes & validation",
+      "pos": [280, 240],
+      "size": [150, 68]
     },
     {
-      "id": "sso_gateway",
+      "id": "core_engine",
+      "type": "backend",
+      "label": "Clean Core Engine",
+      "sublabel": "business logic & workflow",
+      "pos": [540, 240],
+      "size": [160, 68]
+    },
+    {
+      "id": "safety_guard",
       "type": "security",
-      "label": "Cổng SSO Quốc Gia",
-      "sublabel": "VNeID / CQNN / Entra",
-      "pos": [40, 140],
-      "size": [140, 64],
-      "tag": "OAuth 2.0 PKCE"
-    },
-    {
-      "id": "app_router",
-      "type": "backend",
-      "label": "Next.js App Router",
-      "sublabel": "Routes, SSR & Server Actions",
-      "pos": [260, 280],
-      "size": [150, 64]
-    },
-    {
-      "id": "section_engine",
-      "type": "backend",
-      "label": "Dynamic Section Engine",
-      "sublabel": "11 Block Types Compiler",
-      "pos": [490, 280],
-      "size": [160, 64],
-      "tag": "JSON Page Compiler"
-    },
-    {
-      "id": "auth_guard",
-      "type": "security",
-      "label": "SSO & RBAC Guard",
-      "sublabel": "Session & Permissions",
-      "pos": [260, 140],
-      "size": [150, 64]
-    },
-    {
-      "id": "cms_service",
-      "type": "backend",
-      "label": "Page CMS Service",
-      "sublabel": "Slug, order & sections DTO",
-      "pos": [490, 420],
-      "size": [160, 64]
+      "label": "Safety Guard",
+      "sublabel": "red-flag triage & check",
+      "pos": [810, 240],
+      "size": [150, 68]
     },
     {
       "id": "session_store",
-      "type": "database",
-      "label": "Session & Fallback",
-      "sublabel": "In-memory cache & TTL",
-      "pos": [260, 420],
-      "size": [150, 64]
+      "type": "backend",
+      "label": "Session Store",
+      "sublabel": "capability token & TTL",
+      "pos": [280, 430],
+      "size": [150, 68]
+    },
+    {
+      "id": "cms_compiler",
+      "type": "backend",
+      "label": "CMS Compiler",
+      "sublabel": "11 block types & DTO hydrator",
+      "pos": [810, 430],
+      "size": [160, 68]
     },
     {
       "id": "prisma_pool",
       "type": "database",
-      "label": "Prisma 7 Pool",
-      "sublabel": "@prisma/adapter-mariadb",
-      "pos": [730, 280],
-      "size": [150, 64],
-      "tag": "MariaDB Pool"
+      "label": "Prisma 7 Adapter",
+      "sublabel": "canonical truth catalog",
+      "pos": [280, 620],
+      "size": [160, 68]
     },
     {
-      "id": "pages_db",
+      "id": "mariadb_relational",
       "type": "database",
-      "label": "Table: pages",
-      "sublabel": "sections JSON store",
-      "pos": [960, 280],
-      "size": [140, 64]
+      "label": "MariaDB 11+ DB",
+      "sublabel": "entity & project catalog",
+      "pos": [540, 620],
+      "size": [160, 68]
     },
     {
-      "id": "relational_db",
+      "id": "json_sections_db",
       "type": "database",
-      "label": "Relational Tables",
-      "sublabel": "projects, posts, users",
-      "pos": [960, 420],
-      "size": [140, 64]
+      "label": "Sections JSON DB",
+      "sublabel": "dynamic blocks & layout",
+      "pos": [810, 620],
+      "size": [160, 68]
     },
     {
-      "id": "media_cdn",
+      "id": "observability_sink",
       "type": "cloud",
-      "label": "Heritage Digital Assets",
-      "sublabel": "Cloudflare / S3 CDN",
-      "pos": [730, 140],
-      "size": [150, 64]
+      "label": "Observability Sink",
+      "sublabel": "audit log & OTel trace",
+      "pos": [40, 430],
+      "size": [140, 68]
+    },
+    {
+      "id": "asset_cdn",
+      "type": "external",
+      "label": "Digital Asset CDN",
+      "sublabel": "Cloudflare / Image Vault",
+      "pos": [1070, 240],
+      "size": [150, 68]
     }
   ],
   "boundaries": [
     {
       "kind": "region",
-      "label": "HEF Platform Core Service (Modular Clean Monolith)",
-      "wraps": ["app_router", "section_engine", "auth_guard", "cms_service", "session_store"]
+      "label": "HEF Core Platform (Modular Monolith)",
+      "wraps": ["gateway", "core_engine", "safety_guard", "session_store", "cms_compiler"]
     },
     {
       "kind": "security-group",
-      "label": "Persistence & Storage Tier (MariaDB 11+ & Prisma 7 Pool)",
-      "wraps": ["prisma_pool", "pages_db", "relational_db"]
+      "label": "Persistence & Storage Tier",
+      "wraps": ["prisma_pool", "mariadb_relational", "json_sections_db"]
     }
   ],
   "connections": [
     {
-      "id": "conn-users-router",
-      "from": "public_users",
-      "to": "app_router",
-      "label": "HTTPS GET /",
-      "variant": "emphasis"
+      "id": "conn-user-gateway",
+      "from": "client_user",
+      "to": "gateway",
+      "label": "HTTPS POST",
+      "fromSide": "right",
+      "toSide": "left"
     },
     {
-      "id": "conn-admin-router",
-      "from": "admin_operators",
-      "to": "app_router",
-      "label": "Server Action",
-      "variant": "emphasis"
+      "id": "conn-gateway-sink",
+      "from": "gateway",
+      "to": "observability_sink",
+      "label": "redacted traces",
+      "variant": "dashed",
+      "fromSide": "left",
+      "toSide": "top",
+      "via": [[230, 274], [230, 370], [110, 370]]
     },
     {
-      "id": "conn-sso-auth",
-      "from": "sso_gateway",
-      "to": "auth_guard",
-      "label": "OIDC Token"
-    },
-    {
-      "id": "conn-guard-router",
-      "from": "auth_guard",
-      "to": "app_router",
-      "label": "verify RBAC",
-      "variant": "security"
-    },
-    {
-      "id": "conn-router-section",
-      "from": "app_router",
-      "to": "section_engine",
-      "label": "compile sections"
-    },
-    {
-      "id": "conn-router-cms",
-      "from": "app_router",
-      "to": "cms_service",
-      "label": "dispatch mutation"
-    },
-    {
-      "id": "conn-router-session",
-      "from": "app_router",
+      "id": "conn-gateway-session",
+      "from": "gateway",
       "to": "session_store",
-      "label": "session check",
-      "variant": "dashed"
+      "label": "verify capability",
+      "fromSide": "bottom",
+      "toSide": "top"
     },
     {
-      "id": "conn-section-prisma",
-      "from": "section_engine",
+      "id": "conn-gateway-engine",
+      "from": "gateway",
+      "to": "core_engine",
+      "label": "dispatch turns",
+      "fromSide": "right",
+      "toSide": "left"
+    },
+    {
+      "id": "conn-engine-guard",
+      "from": "core_engine",
+      "to": "safety_guard",
+      "label": "input triage",
+      "variant": "dashed",
+      "fromSide": "right",
+      "toSide": "left"
+    },
+    {
+      "id": "conn-engine-cdn",
+      "from": "core_engine",
+      "to": "asset_cdn",
+      "label": "model inference",
+      "fromSide": "top",
+      "toSide": "top",
+      "via": [[620, 160], [1145, 160]]
+    },
+    {
+      "id": "conn-guard-compiler",
+      "from": "safety_guard",
+      "to": "cms_compiler",
+      "label": "query dispatch",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "conn-compiler-session",
+      "from": "cms_compiler",
+      "to": "session_store",
+      "label": "resolve canonical",
+      "variant": "dashed",
+      "fromSide": "left",
+      "toSide": "right"
+    },
+    {
+      "id": "conn-session-prisma",
+      "from": "session_store",
       "to": "prisma_pool",
-      "label": "fetch JSON",
-      "variant": "emphasis"
+      "label": "resolve canonical",
+      "variant": "dashed",
+      "fromSide": "bottom",
+      "toSide": "top"
     },
     {
-      "id": "conn-cms-prisma",
-      "from": "cms_service",
-      "to": "prisma_pool",
-      "label": "save JSON",
-      "variant": "emphasis"
+      "id": "conn-compiler-mariadb",
+      "from": "cms_compiler",
+      "to": "mariadb_relational",
+      "label": "vector search",
+      "variant": "dashed",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "via": [[890, 560], [620, 560]]
     },
     {
-      "id": "conn-prisma-pages",
-      "from": "prisma_pool",
-      "to": "pages_db",
-      "label": "SQL / JSON"
-    },
-    {
-      "id": "conn-prisma-relational",
-      "from": "prisma_pool",
-      "to": "relational_db",
-      "label": "TCP Pool"
-    },
-    {
-      "id": "conn-section-cdn",
-      "from": "section_engine",
-      "to": "media_cdn",
-      "label": "stream media",
-      "variant": "dashed"
+      "id": "conn-compiler-sections",
+      "from": "cms_compiler",
+      "to": "json_sections_db",
+      "label": "graph mentions",
+      "variant": "dashed",
+      "fromSide": "bottom",
+      "toSide": "top"
     }
   ],
   "cards": [
     {
       "dot": "cyan",
-      "title": "Giao Diện Người Dùng & Quản Trị",
+      "title": "Giao Diện Người Dùng & Cổng Gateway",
       "items": [
-        "7 Trang chuyên đề public render SSR theo chuẩn nhận diện Đỏ son & Vàng đồng",
-        "Dashboard Admin CMS quản trị kéo thả khối nội dung và cấu hình props JSON"
+        "Web Portal đại biểu & Admin CMS quản trị được phục vụ trên cùng nền tảng Next.js",
+        "Gateway điều phối Server Actions, SSR Pages và tự động kiểm tra Capability Token"
       ]
     },
     {
       "dot": "emerald",
-      "title": "Clean Layered Core Engine",
+      "title": "Clean Core Service & CMS Engine",
       "items": [
-        "Mô hình 7 Layer khép kín: Types -> Schemas -> Repositories -> Services -> Actions",
-        "Zod Schema validation nghiêm ngặt trên mọi thao tác mutation và route"
+        "Mô hình 7 tầng nghiêm ngặt: Types -> Schemas -> Repositories -> Services -> Actions",
+        "Section CMS Compiler biên dịch động 11 loại khối JSON thành giao diện trực quan"
       ]
     },
     {
       "dot": "rose",
-      "title": "Tầng Lưu Trữ & An Toàn",
+      "title": "Persistence Tier & Lưu Trữ Dữ Liệu",
       "items": [
-        "Prisma 7 MariaDB Driver Adapter Pool hiệu năng cao",
-        "Graceful In-Memory Fallback tự động bảo vệ hệ thống không bị crash khi CSDL offline"
+        "Prisma 7 Driver Adapter Pool kết nối MariaDB 11+ hiệu năng cao",
+        "Đồng bộ hóa mượt mà giữa dữ liệu quan hệ bảng và tài liệu bán cấu trúc JSON sections"
       ]
     }
   ]
 }
-

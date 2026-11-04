@@ -58,4 +58,5 @@ next-env.d.ts
 .archify-delivery.lock
 .archify-delivery.journal
 .agent/skills/archify/examples/*.html
+docs/architecture/*.json
 *.tmp

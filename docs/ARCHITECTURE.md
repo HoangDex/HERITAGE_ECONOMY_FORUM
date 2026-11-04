@@ -9,7 +9,6 @@ Dự án **Heritage Economy Forum** được xây dựng dựa trên sự kết 
 > **Sơ đồ trực quan tương tác (Archify HTML):**
 >
 > - 🏛️ **Kiến trúc hệ thống:** [`docs/architecture/hef-architecture.html`](./architecture/hef-architecture.html)
-> - ⚡ **Luồng quy trình dự án:** [`docs/architecture/hef-project-flow.html`](./architecture/hef-project-flow.html)
 > - Sinh lại sơ đồ: `pnpm run archify:generate`
 
 Hệ thống được tổ chức theo từng domain nghiệp vụ độc lập đặt tại `src/features/`. Mỗi module đóng gói toàn bộ vòng đời của nó từ Định nghĩa Dữ liệu, Xác thực, Nghiệp vụ, Truy cập cơ sở dữ liệu đến Giao diện người dùng.
