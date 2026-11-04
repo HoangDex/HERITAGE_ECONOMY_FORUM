@@ -48,6 +48,8 @@ export function formatDateVN(dateInput: Date | string | number | null | undefine
   }).format(date);
 }
 
+export const formatVietnameseDate = formatDateVN;
+
 /**
  * Định dạng giờ: "HH:mm:ss"
  * Ví dụ: "14:30:45"

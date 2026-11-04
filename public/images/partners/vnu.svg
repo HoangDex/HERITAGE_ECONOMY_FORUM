@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 160" width="100%" height="100%">
+  <rect width="320" height="160" rx="12" fill="#FDFBF7"/>
+  <circle cx="80" cy="80" r="48" fill="#005A36" stroke="#C29B57" stroke-width="3"/>
+  <!-- VNU Book & Laurel -->
+  <path d="M60 88 C68 84 75 85 80 88 C85 85 92 84 100 88 L100 70 C92 66 85 67 80 70 C75 67 68 66 60 70 Z" fill="#F5EFE5"/>
+  <path d="M80 58 L83 66 L91 66 L85 71 L87 79 L80 74 L73 79 L75 71 L69 66 L77 66 Z" fill="#C29B57"/>
+  <!-- Typography -->
+  <text x="145" y="65" font-family="'Be Vietnam Pro', sans-serif" font-size="12" font-weight="800" fill="#005A36" letter-spacing="0.5">ĐẠI HỌC QUỐC GIA</text>
+  <text x="145" y="83" font-family="'Be Vietnam Pro', sans-serif" font-size="11" font-weight="700" fill="#292929">HÀ NỘI (VNU)</text>
+  <text x="145" y="103" font-family="'Be Vietnam Pro', sans-serif" font-size="9" font-weight="600" fill="#C29B57" letter-spacing="1">ĐỐI TÁC HỌC THUẬT & PHẢN BIỆN</text>
+</svg>
+

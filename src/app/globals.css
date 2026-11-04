@@ -9,7 +9,7 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-sans);
   --font-serif: var(--font-serif);
-  --font-heading: var(--font-serif);
+  --font-heading: var(--font-sans);
 
   /* Bảng màu nhận diện Diễn đàn Kinh tế Di sản (HEF Palette) */
   --color-hef-crimson: var(--hef-crimson);
@@ -71,11 +71,12 @@
   --ring: #76232d;
   --radius: 0.5rem;
 
-  /* Typography chuẩn: Be Vietnam Pro & Serif tiếng Việt */
+  /* Typography chuẩn: Be Vietnam Pro / Inter cho nội dung; Playfair Display / Serif cho tiêu đề đặc biệt */
   --font-sans:
-    "Be Vietnam Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue",
-    Arial, sans-serif;
-  --font-serif: "Merriweather", "Playfair Display", "Times New Roman", serif;
+    var(--font-sans), "Be Vietnam Pro", Inter, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-serif: var(--font-serif), "Playfair Display", "Merriweather", "Times New Roman", serif;
+  --font-heading: var(--font-sans);
 }
 
 .dark {
