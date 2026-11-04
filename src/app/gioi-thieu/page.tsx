@@ -1,6 +1,4 @@
 import { Metadata } from "next";
-import { Header } from "@/components/layout/header";
-import { Footer } from "@/components/layout/footer";
 import { aboutService, AboutPageView } from "@/features/about";
 
 export const metadata: Metadata = {
@@ -16,13 +14,5 @@ export const metadata: Metadata = {
 export default async function AboutPage() {
   const data = await aboutService.getAboutPageData();
 
-  return (
-    <div className="flex min-h-screen flex-col bg-background">
-      <Header />
-      <div className="flex-1">
-        <AboutPageView initialData={data} />
-      </div>
-      <Footer />
-    </div>
-  );
+  return <AboutPageView initialData={data} />;
 }
