@@ -1,5 +1,6 @@
 generator client {
   provider = "prisma-client-js"
+  output   = "generated/client"
 }
 
 datasource db {
@@ -47,8 +48,8 @@ model Page {
   name        String    @db.VarChar(150)
   title       String    @db.VarChar(255)
   description String?   @db.Text
-  seoProps    Json?     // { metaTitle, metaDescription, ogImage, keywords }
-  sections    Json      // Array of dynamic sections: [{ id, type, title, subtitle, props, order, isVisible }]
+  seoProps    Json? // { metaTitle, metaDescription, ogImage, keywords }
+  sections    Json // Array of dynamic sections: [{ id, type, title, subtitle, props, order, isVisible }]
   isPublished Boolean   @default(false)
   order       Int       @default(0)
   publishedAt DateTime?

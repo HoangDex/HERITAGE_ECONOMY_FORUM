@@ -60,3 +60,7 @@ next-env.d.ts
 .agent/skills/archify/examples/*.html
 docs/architecture/*.json
 *.tmp
+
+# Prisma Generated Clients
+/src/prisma/generated/
+**/generated/
