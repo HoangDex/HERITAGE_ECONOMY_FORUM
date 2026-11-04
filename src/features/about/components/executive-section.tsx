@@ -272,7 +272,7 @@ export function ExecutiveSection({
                           onClick={() => onOpenPersonModal(member)}
                           className="group bg-[#FDFBF7] hover:bg-white p-3 rounded-xl border border-[#dfd7c8] hover:border-[#C29B57] transition-all cursor-pointer flex gap-3 items-center shadow-2xs hover:shadow-xs"
                         >
-                          <div className="relative w-12 h-15 rounded-lg overflow-hidden shrink-0 border border-[#dfd7c8] bg-muted">
+                          <div className="relative w-12 h-14 rounded-lg overflow-hidden shrink-0 border border-[#dfd7c8] bg-muted">
                             <Image
                               src={member.avatarUrl}
                               alt={member.altText}

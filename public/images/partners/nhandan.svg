@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 160" width="100%" height="100%">
+  <rect width="320" height="160" rx="12" fill="#FDFBF7"/>
+  <rect x="36" y="36" width="88" height="88" rx="16" fill="#76232D" stroke="#C29B57" stroke-width="2"/>
+  <!-- Pen & Star Monogram -->
+  <path d="M80 50 L84 62 L96 62 L86 70 L90 82 L80 74 L70 82 L74 70 L64 62 L76 62 Z" fill="#C29B57"/>
+  <text x="80" y="104" font-family="'Be Vietnam Pro', sans-serif" font-size="14" font-weight="900" fill="#FFFFFF" text-anchor="middle" letter-spacing="1">ND</text>
+  <!-- Typography -->
+  <text x="145" y="65" font-family="'Be Vietnam Pro', sans-serif" font-size="13" font-weight="800" fill="#76232D" letter-spacing="0.5">BÁO NHÂN DÂN</text>
+  <text x="145" y="83" font-family="'Be Vietnam Pro', sans-serif" font-size="10" font-weight="700" fill="#292929">CƠ QUAN TRUNG ƯƠNG</text>
+  <text x="145" y="103" font-family="'Be Vietnam Pro', sans-serif" font-size="9" font-weight="600" fill="#C29B57" letter-spacing="0.5">BẢO TRỢ BÁO CHÍ CHÍNH TRỊ</text>
+</svg>
+

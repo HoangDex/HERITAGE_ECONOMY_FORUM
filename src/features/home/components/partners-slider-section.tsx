@@ -80,6 +80,7 @@ export function PartnersSliderSection({ partners }: PartnersSliderSectionProps) 
                     alt={partner.name}
                     fill
                     sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 16vw"
+                    unoptimized
                     className="object-contain p-1 transition-transform group-hover:scale-105"
                   />
                 </div>

@@ -198,7 +198,7 @@ const MOCK_AWARDS_DATA: AwardsPageData = {
       title: "Chủ tịch Hội đồng Khoa học",
       organization: "Viện Nghiên cứu Kinh tế Di sản Văn hóa",
       avatarUrl:
-        "https://images.unsplash.com/photo-1556157382-97eda2d62296?auto=format&fit=crop&w=600&h=750&q=80",
+        "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=600&h=750&q=80",
       role: "Chủ tịch Hội đồng",
     },
     {

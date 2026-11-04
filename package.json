@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build --webpack",
+    "build": "prisma generate && next build --webpack",
     "start": "next start",
     "lint": "eslint",
     "format": "prettier --write .",
@@ -16,7 +16,8 @@
     "prisma:validate": "prisma validate",
     "prisma:studio": "prisma studio",
     "db:seed": "tsx src/prisma/seed.ts",
-    "demo:prisma": "tsx src/scripts/demo-prisma.ts"
+    "demo:prisma": "tsx src/scripts/demo-prisma.ts",
+    "postinstall": "prisma generate"
   },
   "prisma": {
     "seed": "tsx src/prisma/seed.ts"

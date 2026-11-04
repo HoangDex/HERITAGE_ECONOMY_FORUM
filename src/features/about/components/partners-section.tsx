@@ -117,6 +117,7 @@ export function PartnersSection({ partners }: PartnersSectionProps) {
                       alt={`Logo ${partner.name}`}
                       fill
                       sizes="(max-width: 640px) 100vw, (max-width: 1024px) 33vw, 25vw"
+                      unoptimized
                       className="object-contain p-2 transition-transform duration-300 group-hover:scale-105"
                     />
                   </div>
@@ -184,8 +185,9 @@ export function PartnersSection({ partners }: PartnersSectionProps) {
               </Link>
               <Link href="/lien-he?loai=tai-tro" className="w-full sm:w-auto">
                 <Button
+                  variant="outline"
                   size="lg"
-                  className="w-full bg-white/10 hover:bg-white/20 text-[#F5EFE5] border border-white/30 hover:border-[#C29B57] font-semibold cursor-pointer h-11 backdrop-blur-xs"
+                  className="w-full bg-[#F5EFE5] hover:bg-white text-[#76232D] hover:text-[#52181F] border border-[#C29B57]/60 font-bold cursor-pointer h-11 shadow-md transition-all"
                 >
                   <span>Tài trợ & Đồng hành</span>
                 </Button>

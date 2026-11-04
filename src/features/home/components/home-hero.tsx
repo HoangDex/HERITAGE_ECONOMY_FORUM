@@ -73,12 +73,13 @@ export function HomeHero({ hero }: HomeHeroProps) {
 
               <Link href={hero.secondaryCta.href} className="w-full sm:w-auto">
                 <Button
+                  variant="outline"
                   size="lg"
-                  className="w-full sm:w-auto bg-white/10 hover:bg-white/20 text-[#F5EFE5] border border-white/30 hover:border-[#C29B57] font-bold cursor-pointer px-6 shadow-sm backdrop-blur-xs h-11"
+                  className="w-full sm:w-auto bg-[#F5EFE5] hover:bg-white text-[#76232D] hover:text-[#52181F] border border-[#C29B57]/60 font-bold cursor-pointer px-6 shadow-md h-11 transition-all"
                 >
-                  <Calendar className="w-4 h-4 mr-2 text-[#C29B57]" />
+                  <Calendar className="w-4 h-4 mr-2 text-[#76232D]" />
                   <span>{hero.secondaryCta.label}</span>
-                  <ArrowRight className="w-4 h-4 ml-1.5" />
+                  <ArrowRight className="w-4 h-4 ml-1.5 text-[#76232D]" />
                 </Button>
               </Link>
             </div>

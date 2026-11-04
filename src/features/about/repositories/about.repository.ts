@@ -530,8 +530,7 @@ const fallbackPartners: PartnerOrganization[] = [
     id: "partner_strat_2",
     name: "Tập đoàn Vingroup – Quỹ Thiện Tâm",
     shortName: "Vingroup",
-    logoUrl:
-      "https://images.unsplash.com/photo-1554469384-e58fac16e23a?auto=format&fit=crop&w=300&h=150&q=80",
+    logoUrl: "/images/partners/vingroup.svg",
     category: "STRATEGIC",
     roleDescription: "Đối tác chiến lược tài trợ công tác số hóa di sản 3D quốc gia",
     websiteUrl: "https://vingroup.net",
@@ -558,8 +557,7 @@ const fallbackPartners: PartnerOrganization[] = [
     id: "partner_media_2",
     name: "Báo Nhân Dân",
     shortName: "Báo Nhân Dân",
-    logoUrl:
-      "https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=300&h=150&q=80",
+    logoUrl: "/images/partners/nhandan.svg",
     category: "MEDIA",
     roleDescription: "Đối tác bảo trợ báo chí chính trị và chuyên trang Di sản & Phát triển",
     websiteUrl: "https://nhandan.vn",
