@@ -24,3 +24,6 @@ export * from "./components/heritage-grid";
 export * from "./components/heritage-detail";
 export * from "./components/create-heritage-dialog";
 export * from "./components/economic-stats";
+export * from "./components/projects-hero";
+export * from "./components/projects-directory-view";
+export * from "./components/project-proposal-form";
