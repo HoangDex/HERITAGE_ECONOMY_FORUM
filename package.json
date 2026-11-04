@@ -10,7 +10,7 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "check:compliance": "tsx src/scripts/check-compliance.ts",
-    "archify:generate": "node .agent/skills/archify/bin/archify.mjs render architecture .archify/hef-architecture.candidate.json docs/architecture/hef-architecture.html && node .agent/skills/archify/bin/archify.mjs render workflow .archify/hef-project-flow.candidate.json docs/architecture/hef-project-flow.html",
+    "archify:generate": "node .agent/skills/archify/bin/archify.mjs finalize architecture .archify/hef-architecture.candidate.json docs/architecture/hef-architecture.html --quality showcase --json",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev",
     "prisma:validate": "prisma validate",
