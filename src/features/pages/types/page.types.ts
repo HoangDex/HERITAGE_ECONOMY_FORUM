@@ -4,27 +4,43 @@
  */
 
 export type SectionType =
-  | "HERO" // Hero banner chính với thông điệp & CTA
-  | "PILLARS_5" // 5 trụ cột: Nghiên cứu, Đối thoại, Kết nối, Ghi nhận, Phát triển
-  | "EVENT_HIGHLIGHT" // Kỳ diễn đàn nổi bật (ngày, địa điểm, chủ đề, phiên)
-  | "AWARDS_SHOWCASE" // Banner Giải thưởng Phát triển Bền vững Chủ động
-  | "PROJECT_GRID" // Danh mục 3-6 dự án kinh tế di sản tiêu biểu
-  | "NEWS_FEED" // Tin tức & góc chuyên gia (1 bài nổi bật + 3 bài mới)
-  | "PARTNERS_SLIDER" // Logo đối tác (Chỉ đạo, Chủ trì, Tổ chức, Đồng hành, Truyền thông)
-  | "ABOUT_COUNCIL" // Hội đồng Diễn đàn (Chủ tịch, Phó Chủ tịch, Cố vấn)
-  | "ABOUT_EXECUTIVE" // Ban Điều hành theo từng nhóm chức năng
-  | "TIMELINE" // Trục thời gian phiên hội thảo
-  | "SPEAKERS_GRID" // Lưới hồ sơ diễn giả
-  | "CONTACT_FORM" // Form liên hệ & đăng ký tham dự / tài trợ
-  | "CTA_BANNER" // Khối kêu gọi cuối trang: Cùng kiến tạo giá trị di sản
-  | "CUSTOM_HTML"; // Khối tùy biến văn bản / nhúng đa phương tiện
+  // Home Sections
+  | "HOME_HERO"
+  | "HOME_INTRO_PILLARS"
+  | "HOME_EVENT_HIGHLIGHT"
+  | "HOME_AWARDS_SHOWCASE"
+  | "HOME_FEATURED_PROJECTS"
+  | "HOME_NEWS_FEED"
+  | "HOME_PARTNERS_SLIDER"
+  | "HOME_CONVERSION_CTA"
+  // About Sections
+  | "ABOUT_BANNER"
+  | "ABOUT_VISION_MISSION"
+  | "ABOUT_COUNCIL"
+  | "ABOUT_EXECUTIVE"
+  | "ABOUT_PARTNERS"
+  // Generic / Legacy Sections
+  | "HERO"
+  | "PILLARS_5"
+  | "EVENT_HIGHLIGHT"
+  | "AWARDS_SHOWCASE"
+  | "PROJECT_GRID"
+  | "NEWS_FEED"
+  | "PARTNERS_SLIDER"
+  | "ABOUT_COUNCIL"
+  | "ABOUT_EXECUTIVE"
+  | "TIMELINE"
+  | "SPEAKERS_GRID"
+  | "CONTACT_FORM"
+  | "CTA_BANNER"
+  | "CUSTOM_HTML";
 
 /**
  * Định nghĩa cấu trúc chuẩn của một Section bên trong mảng JSON của Page
  */
 export interface PageSection<TProps = Record<string, unknown>> {
   id: string;
-  type: SectionType;
+  type: SectionType | string;
   title?: string;
   subtitle?: string;
   order: number;
@@ -81,7 +97,7 @@ export type UpdatePageDTO = Partial<CreatePageDTO>;
  * DTOs thao tác với Section bên trong Page
  */
 export interface AddSectionDTO {
-  type: SectionType;
+  type: SectionType | string;
   title?: string;
   subtitle?: string;
   order?: number;
@@ -98,24 +114,25 @@ export interface UpdateSectionDTO {
 }
 
 export interface ReorderSectionsDTO {
-  sectionIds: string[]; // Mảng các ID theo thứ tự mới
+  sectionIds: string[];
 }
 
 /**
- * Interface Repository Contract (Data Access Layer)
+ * Interface cho Data Access Layer (Repository)
  */
 export interface IPageRepository {
   findAll(publishedOnly?: boolean): Promise<PageEntity[]>;
   findById(id: string): Promise<PageEntity | null>;
   findBySlug(slug: string): Promise<PageEntity | null>;
-  create(data: CreatePageDTO): Promise<PageEntity>;
-  update(id: string, data: UpdatePageDTO): Promise<PageEntity | null>;
+  create(page: CreatePageDTO): Promise<PageEntity>;
+  update(id: string, page: UpdatePageDTO): Promise<PageEntity | null>;
   delete(id: string): Promise<boolean>;
   updateSections(pageId: string, sections: PageSection[]): Promise<PageEntity | null>;
+  updateSectionsBySlug(slug: string, sections: PageSection[]): Promise<PageEntity | null>;
 }
 
 /**
- * Interface Service Contract (Business Logic Layer)
+ * Interface cho Business Logic Layer (Service)
  */
 export interface IPageService {
   getAllPages(publishedOnly?: boolean): Promise<PageEntity[]>;
@@ -124,13 +141,15 @@ export interface IPageService {
   createPage(dto: CreatePageDTO): Promise<PageEntity>;
   updatePage(id: string, dto: UpdatePageDTO): Promise<PageEntity | null>;
   deletePage(id: string): Promise<boolean>;
-  addSection(pageId: string, sectionDto: AddSectionDTO): Promise<PageEntity | null>;
+  addSection(pageId: string, section: AddSectionDTO): Promise<PageEntity | null>;
   updateSection(
     pageId: string,
     sectionId: string,
-    sectionDto: UpdateSectionDTO
+    section: UpdateSectionDTO
   ): Promise<PageEntity | null>;
+  updateSections(pageId: string, sections: PageSection[]): Promise<PageEntity | null>;
+  updateSectionsBySlug(slug: string, sections: PageSection[]): Promise<PageEntity | null>;
   removeSection(pageId: string, sectionId: string): Promise<PageEntity | null>;
-  reorderSections(pageId: string, newOrderIds: string[]): Promise<PageEntity | null>;
+  reorderSections(pageId: string, sectionIds: string[]): Promise<PageEntity | null>;
   toggleSection(pageId: string, sectionId: string, isVisible: boolean): Promise<PageEntity | null>;
 }

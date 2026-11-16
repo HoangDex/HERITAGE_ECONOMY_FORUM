@@ -11,253 +11,9 @@ import type {
   IPageRepository,
   PageSection,
 } from "../types/page.types";
+import { DEFAULT_HEF_PAGES } from "../data/default-pages.data";
 
-/**
- * 7 Trang cốt lõi của Diễn đàn Kinh tế Di sản theo Đề án phiên bản 1.0
- */
-const DEFAULT_HEF_PAGES: PageEntity[] = [
-  {
-    id: "page_home",
-    slug: "trang-chu",
-    name: "Trang chủ",
-    title: "Diễn đàn Kinh tế Di sản | Heritage Economy Forum",
-    description: "Di sản kiến tạo giá trị – Phát triển hướng tương lai",
-    isPublished: true,
-    order: 1,
-    sections: [
-      {
-        id: "sec_hero",
-        type: "HERO",
-        title: "Di sản kiến tạo giá trị – Phát triển hướng tương lai",
-        subtitle:
-          "Kết nối tri thức, nguồn lực và cộng đồng để nhận diện, bảo tồn và phát huy giá trị di sản trong nền kinh tế đương đại.",
-        order: 1,
-        isVisible: true,
-        props: {
-          ctaPrimaryText: "Khám phá Diễn đàn",
-          ctaPrimaryLink: "/dien-dan",
-          ctaSecondaryText: "Đăng ký Tham dự",
-          ctaSecondaryLink: "/lien-he?loai=tham-du",
-        },
-      },
-      {
-        id: "sec_pillars",
-        type: "PILLARS_5",
-        title: "05 Trụ Cột Hoạt Động",
-        subtitle: "Định hướng chiến lược dài hạn của Diễn đàn",
-        order: 2,
-        isVisible: true,
-        props: {
-          pillars: ["Nghiên cứu", "Đối thoại", "Kết nối", "Ghi nhận", "Phát triển"],
-        },
-      },
-      {
-        id: "sec_event",
-        type: "EVENT_HIGHLIGHT",
-        title: "Kỳ Diễn Đàn Nổi Bật 2026",
-        subtitle: "Không gian hội tụ các nhà khoa học, nhà quản lý và doanh nghiệp",
-        order: 3,
-        isVisible: true,
-        props: {
-          eventDate: "18/11/2026",
-          location: "Hà Nội / Cố đô Huế",
-          theme: "Kinh tế Di sản trong bối cảnh Chuyển đổi số và Phát triển Xanh",
-        },
-      },
-      {
-        id: "sec_awards",
-        type: "AWARDS_SHOWCASE",
-        title: "Giải Thưởng Phát Triển Bền Vững Chủ Động",
-        subtitle: "Kiến tạo giá trị – Phụng sự vị nhân sinh",
-        order: 4,
-        isVisible: true,
-        props: {
-          ctaText: "Xem Quy chế & Đề cử",
-          ctaLink: "/giai-thuong",
-        },
-      },
-      {
-        id: "sec_projects",
-        type: "PROJECT_GRID",
-        title: "Mô Hình & Sáng Kiến Điển Hình",
-        subtitle: "Các dự án cân bằng giữa giữ gìn bản sắc và tạo sinh kế cộng đồng",
-        order: 5,
-        isVisible: true,
-        props: { limit: 3, viewAllLink: "/du-an" },
-      },
-      {
-        id: "sec_news",
-        type: "NEWS_FEED",
-        title: "Tin Tức & Góc Chuyên Gia",
-        subtitle: "Thông tin hoạt động, nghiên cứu và quan điểm chính sách",
-        order: 6,
-        isVisible: true,
-        props: { limit: 4, viewAllLink: "/tin-tuc" },
-      },
-      {
-        id: "sec_partners",
-        type: "PARTNERS_SLIDER",
-        title: "Mạng Lưới Đối Tác Đồng Hành",
-        subtitle: "Đơn vị Chỉ đạo, Chủ trì, Tổ chức và Đối tác Chiến lược",
-        order: 7,
-        isVisible: true,
-        props: {},
-      },
-      {
-        id: "sec_cta_end",
-        type: "CTA_BANNER",
-        title: "Cùng Kiến Tạo Giá Trị Di Sản",
-        subtitle:
-          "Đồng hành cùng Diễn đàn trong các hoạt động nghiên cứu, đề cử giải thưởng và hợp tác dự án.",
-        order: 8,
-        isVisible: true,
-        props: {
-          actions: [
-            { text: "Đăng ký tham dự", link: "/lien-he?loai=tham-du" },
-            { text: "Hợp tác chiến lược", link: "/lien-he?loai=hop-tac" },
-          ],
-        },
-      },
-    ],
-  },
-  {
-    id: "page_about",
-    slug: "gioi-thieu",
-    name: "Giới thiệu",
-    title: "Về Diễn Đàn Kinh Tế Di Sản",
-    description: "Tôn chỉ, sứ mệnh, Hội đồng Diễn đàn và Ban Điều hành",
-    isPublished: true,
-    order: 2,
-    sections: [
-      {
-        id: "sec_about_intro",
-        type: "CUSTOM_HTML",
-        title: "Tôn chỉ & Sứ mệnh",
-        order: 1,
-        isVisible: true,
-        props: {},
-      },
-      {
-        id: "sec_council",
-        type: "ABOUT_COUNCIL",
-        title: "Hội Đồng Diễn Đàn",
-        subtitle: "Chủ tịch, các Phó Chủ tịch và Hội đồng Cố vấn Khoa học",
-        order: 2,
-        isVisible: true,
-        props: {},
-      },
-      {
-        id: "sec_executive",
-        type: "ABOUT_EXECUTIVE",
-        title: "Ban Điều Hành",
-        subtitle: "Cơ cấu chuyên trách điều phối và triển khai các chương trình",
-        order: 3,
-        isVisible: true,
-        props: {},
-      },
-    ],
-  },
-  {
-    id: "page_forum",
-    slug: "dien-dan",
-    name: "Diễn đàn",
-    title: "Các Kỳ Diễn Đàn & Phiên Thảo Luận",
-    isPublished: true,
-    order: 3,
-    sections: [
-      {
-        id: "sec_timeline",
-        type: "TIMELINE",
-        title: "Chương Trình & Các Phiên Làm Việc",
-        order: 1,
-        isVisible: true,
-        props: {},
-      },
-      {
-        id: "sec_speakers",
-        type: "SPEAKERS_GRID",
-        title: "Diễn Giả Chuyên Gia",
-        order: 2,
-        isVisible: true,
-        props: {},
-      },
-    ],
-  },
-  {
-    id: "page_awards",
-    slug: "giai-thuong",
-    name: "Giải thưởng",
-    title: "Giải Thưởng Phát Triển Bền Vững Chủ Động",
-    isPublished: true,
-    order: 4,
-    sections: [
-      {
-        id: "sec_awards_hero",
-        type: "HERO",
-        title: "Giải Thưởng Phát Triển Bền Vững Chủ Động",
-        subtitle:
-          "Tôn vinh các sáng kiến tiêu biểu kiến tạo giá trị nhân văn và phát triển hài hòa.",
-        order: 1,
-        isVisible: true,
-        props: {},
-      },
-    ],
-  },
-  {
-    id: "page_projects",
-    slug: "du-an",
-    name: "Dự án",
-    title: "Hồ Sơ Sáng Kiến & Mô Hình Kinh Tế Di Sản",
-    isPublished: true,
-    order: 5,
-    sections: [
-      {
-        id: "sec_proj_grid",
-        type: "PROJECT_GRID",
-        title: "Danh Mục Dự Án Đã Thẩm Định",
-        order: 1,
-        isVisible: true,
-        props: {},
-      },
-    ],
-  },
-  {
-    id: "page_news",
-    slug: "tin-tuc",
-    name: "Tin tức",
-    title: "Trung Tâm Báo Chí & Nghiên Cứu",
-    isPublished: true,
-    order: 6,
-    sections: [
-      {
-        id: "sec_news_feed",
-        type: "NEWS_FEED",
-        title: "Tin Tức & Hoạt Động",
-        order: 1,
-        isVisible: true,
-        props: {},
-      },
-    ],
-  },
-  {
-    id: "page_contact",
-    slug: "lien-he",
-    name: "Liên hệ",
-    title: "Kết Nối Cùng Diễn Đàn",
-    isPublished: true,
-    order: 7,
-    sections: [
-      {
-        id: "sec_contact_form",
-        type: "CONTACT_FORM",
-        title: "Gửi Yêu Cầu Kết Nối",
-        order: 1,
-        isVisible: true,
-        props: {},
-      },
-    ],
-  },
-];
+export { DEFAULT_HEF_PAGES };
 
 export class PageRepository implements IPageRepository {
   private inMemoryPages: PageEntity[] = [...DEFAULT_HEF_PAGES];
@@ -276,6 +32,17 @@ export class PageRepository implements IPageRepository {
     createdAt?: Date;
     updatedAt?: Date;
   }): PageEntity {
+    // Nếu sections trong DB rỗng, fallback về default sections của page đó
+    let resolvedSections: PageSection[] = [];
+    if (Array.isArray(item.sections) && item.sections.length > 0) {
+      resolvedSections = item.sections as PageSection[];
+    } else {
+      const defaultPage = DEFAULT_HEF_PAGES.find((p) => p.slug === item.slug);
+      if (defaultPage?.sections) {
+        resolvedSections = defaultPage.sections;
+      }
+    }
+
     return {
       id: item.id,
       slug: item.slug,
@@ -283,7 +50,7 @@ export class PageRepository implements IPageRepository {
       title: item.title,
       description: item.description || undefined,
       seoProps: (item.seoProps as PageEntity["seoProps"]) || undefined,
-      sections: Array.isArray(item.sections) ? (item.sections as PageSection[]) : [],
+      sections: resolvedSections,
       isPublished: item.isPublished,
       order: item.order,
       publishedAt: item.publishedAt?.toISOString(),
@@ -417,7 +184,24 @@ export class PageRepository implements IPageRepository {
       });
       return this.mapToEntity(updated);
     } catch {
-      const page = this.inMemoryPages.find((p) => p.id === pageId);
+      const page = this.inMemoryPages.find((p) => p.id === pageId || p.slug === pageId);
+      if (!page) return null;
+      page.sections = sections;
+      return page;
+    }
+  }
+
+  async updateSectionsBySlug(slug: string, sections: PageSection[]): Promise<PageEntity | null> {
+    try {
+      const updated = await prisma.page.update({
+        where: { slug },
+        data: {
+          sections: sections as object,
+        },
+      });
+      return this.mapToEntity(updated);
+    } catch {
+      const page = this.inMemoryPages.find((p) => p.slug === slug);
       if (!page) return null;
       page.sections = sections;
       return page;

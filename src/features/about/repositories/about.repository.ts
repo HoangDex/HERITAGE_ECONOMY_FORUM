@@ -12,6 +12,7 @@ import type {
   VisionMission,
   PartnerCategory,
 } from "../types/about.types";
+import { pageRepository } from "@/features/pages/repositories/page.repository";
 
 /**
  * Dữ liệu tôn chỉ, tầm nhìn, sứ mệnh chuẩn Đề án Diễn đàn Kinh tế Di sản (Mục 6.1)
@@ -200,6 +201,26 @@ const fallbackPersons: Person[] = [
     phone: "(+84) 24 3828 9999",
     isApproved: true,
     order: 10,
+    updatedAt: "03/11/2026 09:00:00",
+  },
+  // 5b. CỐ VẤN BAN ĐIỀU HÀNH (1 NGƯỜI DUY NHẤT)
+  {
+    id: "person_exec_advisor",
+    fullName: "GS.TS. Nguyễn Văn Thịnh",
+    academicTitle: "GS.TS",
+    executiveRole: "ADVISOR",
+    positionTitle: "Cố vấn Chiến lược & Quản trị Ban Điều Hành",
+    organization: "Viện Nghiên cứu Kinh tế Di sản & Phát triển Bền vững",
+    expertiseField: "Chiến lược Phát triển & Quản trị Vận hành Di sản",
+    avatarUrl:
+      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=600&h=750&q=80",
+    altText: "Chân dung GS.TS Nguyễn Văn Thịnh - Cố vấn Ban Điều Hành",
+    bio: "Chuyên gia cố vấn cấp cao về cấu trúc vận hành, quản trị nguồn lực và phát triển các mô hình kinh tế di sản ứng dụng thực tiễn.",
+    papers: ["Chiến lược phát triển kinh tế di sản tự thân trong kỷ nguyên số (2025)"],
+    email: "advisor.exec@hef.vn",
+    phone: "(+84) 24 3828 9988",
+    isApproved: true,
+    order: 10.5,
     updatedAt: "03/11/2026 09:00:00",
   },
   // 6. PHÓ TRƯỞNG BAN ĐIỀU HÀNH
@@ -434,7 +455,7 @@ const fallbackPartners: PartnerOrganization[] = [
     id: "partner_steer_1",
     name: "Bộ Văn hóa, Thể thao và Du lịch",
     shortName: "BVHTTDL",
-    logoUrl: "/images/partners/bvhttdl.svg",
+    logoUrl: "/images/partners/bvhttdl.png",
     category: "STEERING",
     roleDescription: "Cơ quan chỉ đạo định hướng chiến lược quốc gia về phát triển kinh tế di sản",
     websiteUrl: "https://bvhttdl.gov.vn",
@@ -448,7 +469,7 @@ const fallbackPartners: PartnerOrganization[] = [
     id: "partner_host_1",
     name: "Hội Di sản Văn hóa Việt Nam",
     shortName: "VCHA",
-    logoUrl: "/images/partners/vcha.svg",
+    logoUrl: "/images/partners/vcha.png",
     category: "HOSTING",
     roleDescription: "Đơn vị chủ trì chuyên môn và thẩm định học thuật các chương trình Diễn đàn",
     websiteUrl: "https://hoidisan.vn",
@@ -461,7 +482,7 @@ const fallbackPartners: PartnerOrganization[] = [
     id: "partner_host_2",
     name: "Ủy ban Nhân dân Thành phố Hà Nội",
     shortName: "UBND TP Hà Nội",
-    logoUrl: "/images/partners/hanoi.svg",
+    logoUrl: "/images/partners/hanoi.png",
     category: "HOSTING",
     roleDescription:
       "Đơn vị đồng chủ trì và đăng cai tổ chức tại không gian Hoàng thành Thăng Long",
@@ -476,7 +497,7 @@ const fallbackPartners: PartnerOrganization[] = [
     id: "partner_org_1",
     name: "Viện Nghiên cứu Kinh tế Di sản & Phát triển Bền vững",
     shortName: "HEI",
-    logoUrl: "/images/partners/hei.svg",
+    logoUrl: "/images/partners/hei.png",
     category: "ORGANIZING",
     roleDescription: "Đơn vị thường trực tổ chức và quản trị nền tảng số HEF",
     websiteUrl: "https://hef.vn",
@@ -490,7 +511,7 @@ const fallbackPartners: PartnerOrganization[] = [
     id: "partner_comp_1",
     name: "Văn phòng UNESCO tại Hà Nội",
     shortName: "UNESCO Hanoi",
-    logoUrl: "/images/partners/unesco.svg",
+    logoUrl: "/images/partners/unesco.png",
     category: "COMPANION",
     roleDescription: "Tổ chức quốc tế đồng hành về chuyên môn và bảo tồn di sản bền vững",
     websiteUrl: "https://unesco.org",
@@ -503,7 +524,7 @@ const fallbackPartners: PartnerOrganization[] = [
     id: "partner_comp_2",
     name: "Đại học Quốc gia Hà Nội",
     shortName: "VNU",
-    logoUrl: "/images/partners/vnu.svg",
+    logoUrl: "/images/partners/vnu.png",
     category: "COMPANION",
     roleDescription: "Đối tác đồng hành học thuật, nghiên cứu và cung cấp chuyên gia phản biện",
     websiteUrl: "https://vnu.edu.vn",
@@ -517,7 +538,7 @@ const fallbackPartners: PartnerOrganization[] = [
     id: "partner_strat_1",
     name: "Tập đoàn Sovico",
     shortName: "Sovico Group",
-    logoUrl: "/images/partners/sovico.svg",
+    logoUrl: "/images/partners/sovico.png",
     category: "STRATEGIC",
     roleDescription: "Đối tác chiến lược bảo trợ tài chính và phát triển dự án di sản đô thị",
     websiteUrl: "https://sovicogroup.com",
@@ -530,7 +551,7 @@ const fallbackPartners: PartnerOrganization[] = [
     id: "partner_strat_2",
     name: "Tập đoàn Vingroup – Quỹ Thiện Tâm",
     shortName: "Vingroup",
-    logoUrl: "/images/partners/vingroup.svg",
+    logoUrl: "/images/partners/vingroup.png",
     category: "STRATEGIC",
     roleDescription: "Đối tác chiến lược tài trợ công tác số hóa di sản 3D quốc gia",
     websiteUrl: "https://vingroup.net",
@@ -544,7 +565,7 @@ const fallbackPartners: PartnerOrganization[] = [
     id: "partner_media_1",
     name: "Đài Truyền hình Việt Nam",
     shortName: "VTV",
-    logoUrl: "/images/partners/vtv.svg",
+    logoUrl: "/images/partners/vtv.png",
     category: "MEDIA",
     roleDescription: "Đối tác bảo trợ truyền hình và truyền thông đa phương tiện chính thức",
     websiteUrl: "https://vtv.vn",
@@ -557,7 +578,7 @@ const fallbackPartners: PartnerOrganization[] = [
     id: "partner_media_2",
     name: "Báo Nhân Dân",
     shortName: "Báo Nhân Dân",
-    logoUrl: "/images/partners/nhandan.svg",
+    logoUrl: "/images/partners/nhandan.png",
     category: "MEDIA",
     roleDescription: "Đối tác bảo trợ báo chí chính trị và chuyên trang Di sản & Phát triển",
     websiteUrl: "https://nhandan.vn",
@@ -570,13 +591,60 @@ const fallbackPartners: PartnerOrganization[] = [
 
 export class AboutRepository implements IAboutRepository {
   async getVisionMission(): Promise<VisionMission> {
-    return fallbackVisionMission;
+    try {
+      const page = await pageRepository.findBySlug("about");
+      if (page && page.sections && page.sections.length > 0) {
+        const vmSec = page.sections.find(
+          (s) => s.type === "ABOUT_VISION_MISSION" || s.type === "CUSTOM_HTML"
+        );
+        if (vmSec?.props) {
+          const props = vmSec.props as Record<string, unknown>;
+          if (props.visionMission) {
+            return props.visionMission as VisionMission;
+          }
+          if (props.vision && props.mission) {
+            return props as unknown as VisionMission;
+          }
+        }
+      }
+      return fallbackVisionMission;
+    } catch (error) {
+      console.warn("[AboutRepository] Fallback to in-memory vision/mission:", error);
+      return fallbackVisionMission;
+    }
   }
 
   async getAllPersons(): Promise<Person[]> {
     try {
-      // Khi đã kết nối DB, có thể query từ bảng Person nếu có.
-      // Hiện tại trả về danh sách mock đạt chuẩn với lọc isApproved = true và sắp xếp order ASC
+      const page = await pageRepository.findBySlug("about");
+      if (page && page.sections && page.sections.length > 0) {
+        const councilSec = page.sections.find((s) => s.type === "ABOUT_COUNCIL");
+        const execSec = page.sections.find((s) => s.type === "ABOUT_EXECUTIVE");
+
+        const persons: Person[] = [];
+
+        if (councilSec?.props) {
+          const cProps = councilSec.props as Record<string, unknown>;
+          if (cProps.president) persons.push(cProps.president as Person);
+          if (Array.isArray(cProps.vicePresidents)) persons.push(...(cProps.vicePresidents as Person[]));
+          if (Array.isArray(cProps.councilMembers)) persons.push(...(cProps.councilMembers as Person[]));
+          if (Array.isArray(cProps.scientificAdvisors))
+            persons.push(...(cProps.scientificAdvisors as Person[]));
+        }
+
+        if (execSec?.props) {
+          const eProps = execSec.props as Record<string, unknown>;
+          if (eProps.executiveHead) persons.push(eProps.executiveHead as Person);
+          if (eProps.executiveAdvisor) persons.push(eProps.executiveAdvisor as Person);
+          if (Array.isArray(eProps.executiveDeputies))
+            persons.push(...(eProps.executiveDeputies as Person[]));
+        }
+
+        if (persons.length > 0) {
+          return persons.filter((p) => p.isApproved).sort((a, b) => a.order - b.order);
+        }
+      }
+
       return fallbackPersons.filter((p) => p.isApproved).sort((a, b) => a.order - b.order);
     } catch (error) {
       console.warn("[AboutRepository] Fallback to in-memory persons:", error);
@@ -595,20 +663,59 @@ export class AboutRepository implements IAboutRepository {
   }
 
   async getExecutiveDepartments(): Promise<ExecutiveDepartment[]> {
-    const executiveMembers = await this.getExecutiveMembers();
-    return fallbackDepartments.map((dept) => ({
-      ...dept,
-      members: executiveMembers.filter((m) => m.departmentCode === dept.code),
-    }));
+    try {
+      const page = await pageRepository.findBySlug("about");
+      const execSec = page?.sections?.find((s) => s.type === "ABOUT_EXECUTIVE");
+      const executiveMembers = await this.getExecutiveMembers();
+
+      if (execSec?.props) {
+        const eProps = execSec.props as Record<string, unknown>;
+        if (Array.isArray(eProps.executiveDepartments) && eProps.executiveDepartments.length > 0) {
+          return (eProps.executiveDepartments as ExecutiveDepartment[]).map((dept) => ({
+            ...dept,
+            members: executiveMembers.filter((m) => m.departmentCode === dept.code),
+          }));
+        }
+      }
+
+      return fallbackDepartments.map((dept) => ({
+        ...dept,
+        members: executiveMembers.filter((m) => m.departmentCode === dept.code),
+      }));
+    } catch (error) {
+      console.warn("[AboutRepository] Fallback to departments:", error);
+      const executiveMembers = await this.getExecutiveMembers();
+      return fallbackDepartments.map((dept) => ({
+        ...dept,
+        members: executiveMembers.filter((m) => m.departmentCode === dept.code),
+      }));
+    }
   }
 
   async getPartners(category?: PartnerCategory): Promise<PartnerOrganization[]> {
     try {
-      let partners = fallbackPartners.filter((p) => p.isApproved);
-      if (category) {
-        partners = partners.filter((p) => p.category === category);
+      const page = await pageRepository.findBySlug("about");
+      let partners: PartnerOrganization[] = [];
+
+      if (page && page.sections && page.sections.length > 0) {
+        const partnersSec = page.sections.find((s) => s.type === "ABOUT_PARTNERS");
+        if (partnersSec?.props) {
+          const pProps = partnersSec.props as Record<string, unknown>;
+          if (Array.isArray(pProps.partners) && pProps.partners.length > 0) {
+            partners = pProps.partners as PartnerOrganization[];
+          }
+        }
       }
-      return partners.sort((a, b) => a.order - b.order);
+
+      if (partners.length === 0) {
+        partners = fallbackPartners;
+      }
+
+      let filtered = partners.filter((p) => p.isApproved);
+      if (category) {
+        filtered = filtered.filter((p) => p.category === category);
+      }
+      return filtered.sort((a, b) => a.order - b.order);
     } catch (error) {
       console.warn("[AboutRepository] Fallback to in-memory partners:", error);
       return fallbackPartners.filter((p) => p.isApproved).sort((a, b) => a.order - b.order);

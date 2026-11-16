@@ -4,7 +4,8 @@
  */
 
 export * from "./types/page.types";
-export * from "./schemas/page.schema";
-export * from "./repositories/page.repository";
+export * from "./schemas";
 export * from "./services/page.service";
 export * from "./actions/page.actions";
+export * from "./components/page-content-editor";
+export * from "./components/dashboard-live-editor";

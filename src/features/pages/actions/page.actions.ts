@@ -213,3 +213,30 @@ export async function toggleSectionVisibilityAction(
     };
   }
 }
+
+/**
+ * Server Action: Xóa Section khỏi trang
+ */
+export async function removeSectionAction(
+  pageId: string,
+  sectionId: string
+): Promise<ApiResponse<PageEntity>> {
+  try {
+    const updated = await pageService.removeSection(pageId, sectionId);
+    if (!updated) return { success: false, error: "Không tìm thấy trang hoặc section để xóa" };
+
+    revalidatePath("/admin/pages");
+    revalidatePath(`/admin/pages/${pageId}`);
+    revalidatePath(`/${updated.slug}`);
+    return {
+      success: true,
+      data: updated,
+      message: "Đã xóa section thành công",
+    };
+  } catch (error) {
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : "Lỗi khi xóa section",
+    };
+  }
+}

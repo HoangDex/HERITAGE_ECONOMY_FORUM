@@ -6,6 +6,22 @@
 import { z } from "zod";
 
 export const SECTION_TYPES_ENUM = [
+  // Home Sections
+  "HOME_HERO",
+  "HOME_INTRO_PILLARS",
+  "HOME_EVENT_HIGHLIGHT",
+  "HOME_AWARDS_SHOWCASE",
+  "HOME_FEATURED_PROJECTS",
+  "HOME_NEWS_FEED",
+  "HOME_PARTNERS_SLIDER",
+  "HOME_CONVERSION_CTA",
+  // About Sections
+  "ABOUT_BANNER",
+  "ABOUT_VISION_MISSION",
+  "ABOUT_COUNCIL",
+  "ABOUT_EXECUTIVE",
+  "ABOUT_PARTNERS",
+  // Legacy / Generic Sections
   "HERO",
   "PILLARS_5",
   "EVENT_HIGHLIGHT",
@@ -13,8 +29,6 @@ export const SECTION_TYPES_ENUM = [
   "PROJECT_GRID",
   "NEWS_FEED",
   "PARTNERS_SLIDER",
-  "ABOUT_COUNCIL",
-  "ABOUT_EXECUTIVE",
   "TIMELINE",
   "SPEAKERS_GRID",
   "CONTACT_FORM",
@@ -24,7 +38,7 @@ export const SECTION_TYPES_ENUM = [
 
 export const pageSectionSchema = z.object({
   id: z.string().min(1, "Mã định danh Section không được để trống"),
-  type: z.enum(SECTION_TYPES_ENUM, { message: "Loại Section không hợp lệ" }),
+  type: z.enum(SECTION_TYPES_ENUM, { message: "Loại Section không hợp lệ" }).or(z.string()),
   title: z.string().optional(),
   subtitle: z.string().optional(),
   order: z.number().int().default(0),
@@ -62,7 +76,7 @@ export const createPageSchema = z.object({
 export const updatePageSchema = createPageSchema.partial();
 
 export const addSectionSchema = z.object({
-  type: z.enum(SECTION_TYPES_ENUM, { message: "Vui lòng chọn loại Section hợp lệ" }),
+  type: z.enum(SECTION_TYPES_ENUM, { message: "Vui lòng chọn loại Section hợp lệ" }).or(z.string()),
   title: z.string().optional(),
   subtitle: z.string().optional(),
   order: z.number().int().optional(),

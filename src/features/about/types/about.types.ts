@@ -15,6 +15,7 @@ export type CouncilRole =
 
 export type ExecutiveRole =
   | "HEAD" // Trưởng ban Điều hành
+  | "ADVISOR" // Cố vấn Trưởng ban Điều hành (1 người duy nhất)
   | "DEPUTY_HEAD" // Phó Trưởng ban Điều hành
   | "MEMBER"; // Thành viên nhóm chuyên trách
 
@@ -116,6 +117,7 @@ export interface AboutPageData {
   councilMembers: Person[];
   scientificAdvisors: Person[];
   executiveHead: Person;
+  executiveAdvisor?: Person;
   executiveDeputies: Person[];
   executiveDepartments: ExecutiveDepartment[];
   partners: PartnerOrganization[];

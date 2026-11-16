@@ -98,6 +98,14 @@ export class PageService implements IPageService {
     return this.repository.updateSections(pageId, updatedSections);
   }
 
+  async updateSections(pageId: string, sections: PageSection[]): Promise<PageEntity | null> {
+    return this.repository.updateSections(pageId, sections);
+  }
+
+  async updateSectionsBySlug(slug: string, sections: PageSection[]): Promise<PageEntity | null> {
+    return this.repository.updateSectionsBySlug(slug, sections);
+  }
+
   async removeSection(pageId: string, sectionId: string): Promise<PageEntity | null> {
     const page = await this.repository.findById(pageId);
     if (!page) return null;

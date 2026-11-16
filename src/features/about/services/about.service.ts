@@ -66,6 +66,7 @@ export class AboutService implements IAboutService {
       councilMembers: councilGroup.councilMembers,
       scientificAdvisors: councilGroup.scientificAdvisors,
       executiveHead: executiveGroup.head || defaultHead,
+      executiveAdvisor: executiveGroup.advisor || undefined,
       executiveDeputies: executiveGroup.deputies,
       executiveDepartments: executiveGroup.departments,
       partners,
@@ -108,6 +109,7 @@ export class AboutService implements IAboutService {
 
   async getExecutiveBoardGrouped(): Promise<{
     head: Person | null;
+    advisor: Person | null;
     deputies: Person[];
     departments: ExecutiveDepartment[];
   }> {
@@ -117,11 +119,14 @@ export class AboutService implements IAboutService {
     ]);
 
     let head: Person | null = null;
+    let advisor: Person | null = null;
     const deputies: Person[] = [];
 
     for (const person of executiveMembers) {
       if (person.executiveRole === "HEAD") {
         head = person;
+      } else if (person.executiveRole === "ADVISOR") {
+        advisor = person;
       } else if (person.executiveRole === "DEPUTY_HEAD") {
         deputies.push(person);
       }
@@ -129,6 +134,7 @@ export class AboutService implements IAboutService {
 
     return {
       head,
+      advisor,
       deputies: deputies.sort((a, b) => a.order - b.order),
       departments,
     };

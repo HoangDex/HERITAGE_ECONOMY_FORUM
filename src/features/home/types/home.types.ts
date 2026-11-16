@@ -19,6 +19,7 @@ export interface HomeHero {
   imageUrl: string;
   imageAlt: string;
   badgeText: string;
+  videoUrl?: string;
 }
 
 export interface QuickIntro {
@@ -35,11 +36,30 @@ export interface Pillar {
   iconName: string;
 }
 
+export interface EventSpeaker {
+  id: string;
+  name: string;
+  degree?: string;
+  title: string;
+  organization: string;
+  avatarUrl: string;
+  bio?: string;
+  sessionTitle?: string;
+  topicSummary?: string;
+  slug?: string;
+}
+
 export interface EventSession {
   id: string;
+  order?: number;
   time: string;
+  date?: string;
   title: string;
+  subTitle?: string;
+  description?: string;
+  room?: string;
   chairperson?: string;
+  speakers?: EventSpeaker[];
 }
 
 export interface EventHighlight {
@@ -98,6 +118,7 @@ export interface NewsArticle {
 export interface HomePartner {
   id: string;
   name: string;
+  shortName?: string;
   category: "STEERING" | "HOSTING" | "ORGANIZING" | "COMPANION" | "STRATEGIC" | "MEDIA";
   categoryLabel: string;
   logoUrl: string;
