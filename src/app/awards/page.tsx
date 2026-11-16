@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function GiaiThuongPage() {
+export default async function AwardsPage() {
   const data = await awardsService.getAwardsPageData();
 
   return <AwardsPageView data={data} />;

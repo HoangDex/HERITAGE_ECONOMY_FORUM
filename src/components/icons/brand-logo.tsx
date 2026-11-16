@@ -1,6 +1,6 @@
 /**
  * COMPONENT LOGO NHẬN DIỆN THƯƠNG HIỆU DIỄN ĐÀN KINH TẾ DI SẢN (HEF)
- * Chuẩn màu Đỏ son #76232D & Vàng đồng #C29B57
+ * Chuẩn màu Đỏ son #0D4838 & Vàng đồng #C29B57
  */
 
 import React from "react";
@@ -14,12 +14,7 @@ interface BrandLogoProps {
   size?: "sm" | "md" | "lg";
 }
 
-export function BrandLogo({
-  className,
-  showSubtitle = true,
-  href = "/",
-  size = "md",
-}: BrandLogoProps) {
+export function BrandLogo({ className, showSubtitle = true, href, size = "md" }: BrandLogoProps) {
   const sizeClasses = {
     sm: "h-8",
     md: "h-10",
@@ -38,7 +33,7 @@ export function BrandLogo({
       <div
         className={cn(
           sizeClasses[size],
-          "aspect-square rounded-lg bg-[#76232D] text-[#C29B57] flex items-center justify-center p-2 shadow-xs border border-[#C29B57]/30 transition-transform group-hover:scale-105"
+          "aspect-square rounded-lg bg-[#0D4838] text-[#C29B57] flex items-center justify-center p-2 shadow-xs border border-[#C29B57]/30 transition-transform group-hover:scale-105"
         )}
       >
         <svg
@@ -67,7 +62,7 @@ export function BrandLogo({
         <span
           className={cn(
             textClasses[size],
-            "font-serif font-extrabold tracking-tight text-[#76232D] dark:text-[#C29B57] leading-tight"
+            "font-serif font-extrabold tracking-tight text-[#0D4838] dark:text-[#C29B57] leading-tight"
           )}
         >
           HERITAGE ECONOMY

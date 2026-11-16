@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function DuAnPage() {
+export default async function ProjectsPage() {
   const projects = await heritageService.getProjects();
 
   return (

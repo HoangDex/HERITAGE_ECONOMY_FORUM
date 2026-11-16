@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function TinTucPage() {
+export default async function NewsPage() {
   const data = await newsService.getNewsPageData();
 
   return <NewsPageView data={data} />;

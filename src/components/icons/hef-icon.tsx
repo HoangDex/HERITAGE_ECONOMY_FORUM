@@ -12,7 +12,7 @@ export type IconName = keyof typeof LucideIcons;
 export interface HefIconProps extends React.SVGProps<SVGSVGElement> {
   name: IconName;
   size?: "xs" | "sm" | "md" | "lg" | "xl" | number;
-  variant?: "crimson" | "gold" | "charcoal" | "muted" | "current";
+  variant?: "jade" | "crimson" | "gold" | "charcoal" | "muted" | "current";
   className?: string;
 }
 
@@ -25,7 +25,8 @@ const sizeMap = {
 };
 
 const variantColorMap = {
-  crimson: "text-[#76232D]",
+  jade: "text-[#0D4838]",
+  crimson: "text-[#0D4838]",
   gold: "text-[#C29B57]",
   charcoal: "text-[#292929] dark:text-[#F5EFE5]",
   muted: "text-muted-foreground",

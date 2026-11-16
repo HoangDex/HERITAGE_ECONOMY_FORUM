@@ -1,24 +1,19 @@
-import { SectionHeading } from "@/components/common/section-heading";
-import { PostList } from "@/features/forum";
-import { INITIAL_POSTS } from "@/lib/mock-data";
+import { Metadata } from "next";
+import { forumService, ForumPageView } from "@/features/forum";
 
-export const metadata = {
-  title: "Diễn đàn Thảo luận",
-  description: "Không gian đối thoại chuyên môn về chính sách và kinh tế di sản văn hóa.",
+export const metadata: Metadata = {
+  title: "Kỳ Diễn đàn Kinh tế Di sản 2026 | Heritage Economy Forum",
+  description:
+    "Chương trình chính thức Diễn đàn Kinh tế Di sản 2026: 04 phiên nghị sự, trục thời gian, danh sách diễn giả đầu ngành, thư viện kỷ yếu nghiên cứu và đối tác ban tổ chức.",
+  openGraph: {
+    title: "Kỳ Diễn đàn Kinh tế Di sản 2026 | Heritage Economy Forum",
+    description:
+      "Di sản kiến tạo giá trị – Phát triển hướng tương lai. 18-20/11/2026 tại Hoàng thành Thăng Long, Hà Nội.",
+  },
 };
 
-export default function ForumPage() {
-  return (
-    <div className="container mx-auto px-4 sm:px-8 py-10 space-y-8">
-      <div className="border-b pb-6">
-        <SectionHeading
-          badge="Diễn đàn"
-          title="Diễn đàn Thảo luận Kinh tế Di sản"
-          description="Tham gia trao đổi ý kiến, đề xuất giải pháp chính sách, công nghệ và huy động vốn cùng các chuyên gia hàng đầu."
-        />
-      </div>
+export default async function ForumPage() {
+  const edition = await forumService.getActiveEdition();
 
-      <PostList initialPosts={INITIAL_POSTS} />
-    </div>
-  );
+  return <ForumPageView edition={edition} />;
 }

@@ -10,12 +10,14 @@ import {
 
 interface ExecutiveDedicatedViewProps {
   head: Person;
+  advisor?: Person;
   deputies: Person[];
   departments: ExecutiveDepartment[];
 }
 
 export function ExecutiveDedicatedView({
   head,
+  advisor,
   deputies,
   departments,
 }: ExecutiveDedicatedViewProps) {
@@ -36,6 +38,7 @@ export function ExecutiveDedicatedView({
     <div className="py-8">
       <ExecutiveSection
         head={head}
+        advisor={advisor}
         deputies={deputies}
         departments={departments}
         onOpenPersonModal={handleOpen}

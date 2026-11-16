@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function LienHePage() {
+export default async function ContactPage() {
   const data = await contactService.getContactPageData();
 
   return <ContactPageView data={data} />;

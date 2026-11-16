@@ -11,7 +11,10 @@
   --font-serif: var(--font-serif);
   --font-heading: var(--font-sans);
 
-  /* Bảng màu nhận diện Diễn đàn Kinh tế Di sản (HEF Palette) */
+  /* Bảng màu nhận diện Diễn đàn Kinh tế Di sản (HEF Official Jade & Gold Palette) */
+  --color-hef-jade: var(--hef-jade);
+  --color-hef-jade-dark: var(--hef-jade-dark);
+  --color-hef-jade-light: var(--hef-jade-light);
   --color-hef-crimson: var(--hef-crimson);
   --color-hef-gold: var(--hef-gold);
   --color-hef-ivory: var(--hef-ivory);
@@ -37,41 +40,48 @@
 }
 
 :root {
-  /* Bảng màu chuẩn Đề án Heritage Economy Forum 2026 */
-  --hef-crimson: #76232d; /* Đỏ son chủ đạo */
-  --hef-gold: #c29b57; /* Vàng đồng thứ cấp & điểm nhấn */
-  --hef-ivory: #f5efe5; /* Trắng ngà bề mặt / nền ấm */
-  --hef-charcoal: #292929; /* Đen than văn bản & tương phản */
+  /* Bảng màu chuẩn Nhận Diện Di Sản Mới theo Backdrop Tuần Lễ Triết Học & Diễn Đàn Kinh Tế Di Sản */
+  --hef-jade: #0d4838; /* Xanh ngọc di sản chủ đạo */
+  --hef-jade-dark: #073327; /* Xanh ngọc đậm */
+  --hef-jade-light: #16654f; /* Xanh ngọc sáng */
+  --hef-crimson: #76232d; /* Đỏ son di sản */
+  --hef-gold: #c29b57; /* Vàng đồng hạc bay & điểm nhấn */
+  --hef-ivory: #f5efe5; /* Trắng ngà bề mặt */
+  --hef-charcoal: #292929; /* Đen than tương phản */
+
+  /* Typography Fonts Nhận Diện */
+  --font-sans: "Be Vietnam Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-serif: "Playfair Display", Georgia, "Times New Roman", serif;
 
   /* Semantic Design Tokens ánh xạ vào Shadcn & Tailwind */
-  --background: #f5efe5; /* Nền trắng ngà nhận diện */
-  --foreground: #292929; /* Chữ đen than */
+  --background: #f7f5ee; /* Nền Giấy Điệp / Lụa Ngà truyền thống */
+  --foreground: #132a24; /* Chữ chính than ánh ngọc */
 
   --card: #ffffff;
-  --card-foreground: #292929;
+  --card-foreground: #132a24;
 
   --popover: #ffffff;
-  --popover-foreground: #292929;
+  --popover-foreground: #132a24;
 
-  --primary: #76232d; /* Đỏ son #76232D */
+  --primary: #0d4838; /* Xanh Ngọc Lục Bảo Di Sản #0D4838 */
   --primary-foreground: #ffffff;
 
-  --secondary: #c29b57; /* Vàng đồng #C29B57 */
-  --secondary-foreground: #292929;
+  --secondary: #c29b57; /* Vàng Đồng Hoàng Kim #C29B57 */
+  --secondary-foreground: #132a24;
 
-  --muted: #eae3d6;
-  --muted-foreground: #5c554b;
+  --muted: #eae5d9;
+  --muted-foreground: #4a5e57;
 
   --accent: #c29b57;
   --accent-foreground: #ffffff;
 
   --destructive: #b91c1c;
-  --border: #dfd7c8;
-  --input: #dfd7c8;
-  --ring: #76232d;
-  --radius: 0.5rem;
+  --border: #dfd8c8;
+  --input: #dfd8c8;
+  --ring: #0d4838;
+  --radius: 0.625rem;
 
-  /* Typography chuẩn: Be Vietnam Pro / Inter cho nội dung; Playfair Display / Serif cho tiêu đề đặc biệt */
+  /* Typography chuẩn: Be Vietnam Pro cho nội dung; Playfair Display / Serif cho tiêu đề di sản */
   --font-sans:
     var(--font-sans), "Be Vietnam Pro", Inter, -apple-system, BlinkMacSystemFont, "Segoe UI",
     Roboto, "Helvetica Neue", Arial, sans-serif;
@@ -80,29 +90,36 @@
 }
 
 .dark {
-  --background: #1a1617;
-  --foreground: #f5efe5;
+  --background: #061e17;
+  --foreground: #f7f5ee;
 
-  --card: #241e1f;
-  --card-foreground: #f5efe5;
+  --card: #0a2920;
+  --card-foreground: #f7f5ee;
 
-  --popover: #241e1f;
-  --popover-foreground: #f5efe5;
+  --popover: #0a2920;
+  --popover-foreground: #f7f5ee;
 
-  --primary: #c29b57; /* Trong dark mode, vàng đồng làm nổi bật */
-  --primary-foreground: #1a1617;
+  --primary: #c29b57; /* Trong dark mode, vàng đồng làm điểm sáng nổi bật */
+  --primary-foreground: #061e17;
 
-  --secondary: #76232d;
+  --secondary: #0d4838;
   --secondary-foreground: #ffffff;
 
-  --muted: #2e2627;
-  --muted-foreground: #a69c8f;
+  --muted: #0f362b;
+  --muted-foreground: #8aa39b;
 
   --accent: #c29b57;
-  --accent-foreground: #1a1617;
+  --accent-foreground: #061e17;
 
   --destructive: #ef4444;
-  --border: #3d3335;
-  --input: #3d3335;
+  --border: #184538;
+  --input: #184538;
   --ring: #c29b57;
+}
+
+/* Hiệu ứng hoa văn chìm nền giấy lụa truyền thống */
+.bg-heritage-paper {
+  background-color: #f7f5ee;
+  background-image: radial-gradient(#0d4838 0.5px, transparent 0.5px);
+  background-size: 24px 24px;
 }

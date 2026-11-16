@@ -10,12 +10,12 @@ export const siteConfig = {
   },
   navItems: [
     { title: "Trang chủ", href: "/" },
-    { title: "Giới thiệu", href: "/gioi-thieu" },
-    { title: "Diễn đàn", href: "/dien-dan" },
-    { title: "Giải thưởng", href: "/giai-thuong" },
-    { title: "Dự án", href: "/du-an" },
-    { title: "Tin tức", href: "/tin-tuc" },
-    { title: "Liên hệ", href: "/lien-he" },
+    { title: "Giới thiệu", href: "/about" },
+    { title: "Diễn đàn", href: "/forum" },
+    { title: "Giải thưởng", href: "/awards" },
+    { title: "Tin tức", href: "/news" },
+    { title: "Dự án", href: "/projects" },
+    { title: "Liên hệ", href: "/contact" },
   ],
 };
 

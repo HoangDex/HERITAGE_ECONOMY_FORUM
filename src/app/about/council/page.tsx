@@ -16,10 +16,10 @@ export default async function CouncilPage() {
   return (
     <div className="w-full">
       {/* Banner tiêu đề */}
-      <div className="bg-radial-[at_top] from-[#76232D] via-[#52181F] to-[#292929] text-white py-12 px-4 sm:px-8 border-b-4 border-[#C29B57]">
+      <div className="bg-radial-[at_top] from-[#0D4838] via-[#073327] to-[#292929] text-white py-12 px-4 sm:px-8 border-b-4 border-[#C29B57]">
         <div className="container mx-auto max-w-6xl">
           <Link
-            href="/gioi-thieu"
+            href="/about"
             className="inline-flex items-center gap-1.5 text-xs text-[#C29B57] hover:underline mb-4 font-semibold"
           >
             <ArrowLeft className="w-3.5 h-3.5" />

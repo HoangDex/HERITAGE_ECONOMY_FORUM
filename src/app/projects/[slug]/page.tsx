@@ -17,7 +17,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   };
 }
 
-export default async function DuAnDetailPage({ params }: PageProps) {
+export default async function ProjectDetailPage({ params }: PageProps) {
   const { slug } = await params;
   const project = await heritageService.getProjectBySlug(slug);
   if (!project) notFound();
