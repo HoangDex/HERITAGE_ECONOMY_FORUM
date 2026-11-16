@@ -12,7 +12,7 @@ export function ContactInfoSection({ info, faqs }: ContactInfoSectionProps) {
       {/* Thông tin thường trực */}
       <div className="p-6 sm:p-8 bg-white rounded-3xl border border-[#dfd7c8] shadow-xs space-y-5">
         <div className="space-y-1">
-          <span className="text-xs font-semibold uppercase tracking-wider text-[#76232D] block">
+          <span className="text-xs font-semibold uppercase tracking-wider text-[#0D4838] block">
             Thông tin liên hệ
           </span>
           <h3 className="text-xl font-bold text-[#292929] leading-snug">{info.secretariatTitle}</h3>
@@ -31,7 +31,7 @@ export function ContactInfoSection({ info, faqs }: ContactInfoSectionProps) {
             <Phone className="w-4 h-4 text-[#C29B57] shrink-0 mt-0.5" />
             <div>
               <span className="text-xs text-[#5c554b] block">Đường dây nóng (Hotline):</span>
-              <span className="font-semibold text-[#76232D]">{info.hotline}</span>
+              <span className="font-semibold text-[#0D4838]">{info.hotline}</span>
             </div>
           </div>
 
@@ -55,7 +55,7 @@ export function ContactInfoSection({ info, faqs }: ContactInfoSectionProps) {
 
       {/* Câu hỏi thường gặp FAQ */}
       <div className="p-6 sm:p-8 bg-[#F5EFE5] rounded-3xl border border-[#dfd7c8] space-y-4">
-        <div className="flex items-center gap-2 text-[#76232D] font-bold text-sm uppercase tracking-wider">
+        <div className="flex items-center gap-2 text-[#0D4838] font-bold text-sm uppercase tracking-wider">
           <HelpCircle className="w-4 h-4" />
           <span>Giải Đáp Thường Gặp (FAQ)</span>
         </div>

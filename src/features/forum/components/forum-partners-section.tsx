@@ -1,145 +1,98 @@
 /**
- * COMPONENT: FORUM PARTNERS SECTION (ĐỐI TÁC ĐỒNG HÀNH KỲ DIỄN ĐÀN)
- * Hiển thị đầy đủ mạng lưới logo đối tác chính thức cho Kỳ Diễn đàn Kinh tế Di sản
+ * COMPONENT: FORUM PARTNERS SECTION (BAN TỔ CHỨC & ĐỐI TÁC DIỄN ĐÀN)
+ * Hiển thị 6 cơ quan Ban Tổ Chức (BTC) chính thức trong bố cục lưới đối xứng 2x3 chuẩn UX/UI
  */
 
 "use client";
 
 import React from "react";
-import Image from "next/image";
 import Link from "next/link";
-import { Handshake, ExternalLink, ArrowRight, ShieldCheck, Sparkles } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { FadeIn, StaggerContainer, StaggerItem, InteractiveCard } from "@/components/animations";
+import { Handshake, ArrowRight, Sparkles } from "lucide-react";
+import { buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+import { FadeIn, StaggerContainer, StaggerItem } from "@/components/animations";
+import { PartnerRoleGroup } from "@/components/common/partner-logo-card";
 
-interface ForumPartnerItem {
+interface BtcPartnerItem {
   id: string;
   name: string;
-  shortName: string;
-  category: "STEERING" | "HOSTING" | "ORGANIZING" | "COMPANION" | "STRATEGIC" | "MEDIA";
-  categoryLabel: string;
-  badgeColor: string;
+  shortName?: string;
+  roleLabel: string;
   logoUrl: string;
-  role: string;
-  websiteUrl: string;
+  websiteUrl?: string;
 }
 
-const FORUM_PARTNERS: ForumPartnerItem[] = [
-  // 1. Chỉ đạo & Chủ trì
+const BTC_PARTNERS: BtcPartnerItem[] = [
   {
-    id: "fp_1",
+    id: "btc_1",
     name: "Bộ Văn hóa, Thể thao và Du lịch",
     shortName: "BVHTTDL",
-    category: "STEERING",
-    categoryLabel: "Cơ quan Chỉ đạo",
-    badgeColor: "bg-[#76232D] text-white border-transparent",
-    logoUrl: "/images/partners/bvhttdl.svg",
-    role: "Chỉ đạo định hướng chiến lược quốc gia về kinh tế di sản",
+    roleLabel: "Cơ quan Chỉ đạo Quốc gia",
+    logoUrl: "/images/partners/bvhttdl.png",
     websiteUrl: "https://bvhttdl.gov.vn",
   },
   {
-    id: "fp_2",
+    id: "btc_2",
     name: "Hội Di sản Văn hóa Việt Nam",
     shortName: "VCHA",
-    category: "HOSTING",
-    categoryLabel: "Cơ quan Chủ trì",
-    badgeColor: "bg-[#52181F] text-white border-transparent",
-    logoUrl: "/images/partners/vcha.svg",
-    role: "Chủ trì chuyên môn và thẩm định học thuật các phiên nghị sự",
+    roleLabel: "Cơ quan Chủ trì Học thuật",
+    logoUrl: "/images/partners/vcha.png",
     websiteUrl: "https://hoidisan.vn",
   },
   {
-    id: "fp_3",
+    id: "btc_3",
     name: "Ủy ban Nhân dân Thành phố Hà Nội",
     shortName: "UBND TP Hà Nội",
-    category: "HOSTING",
-    categoryLabel: "Đồng Chủ trì Đăng cai",
-    badgeColor: "bg-[#76232D] text-white border-transparent",
-    logoUrl: "/images/partners/hanoi.svg",
-    role: "Đồng chủ trì & bảo trợ không gian Hoàng thành Thăng Long",
+    roleLabel: "Cơ quan Đồng chủ trì & Đăng cai",
+    logoUrl: "/images/partners/hanoi.png",
     websiteUrl: "https://hanoi.gov.vn",
   },
-  // 2. Thường trực Tổ chức
   {
-    id: "fp_4",
+    id: "btc_4",
     name: "Viện Nghiên cứu Kinh tế Di sản & Phát triển Bền vững",
     shortName: "HEI",
-    category: "ORGANIZING",
-    categoryLabel: "Đơn vị Thường trực Tổ chức",
-    badgeColor: "bg-[#C29B57] text-[#292929] border-transparent font-bold",
-    logoUrl: "/images/partners/hei.svg",
-    role: "Thường trực tổ chức, điều phối các phiên và quản trị nền tảng HEF",
+    roleLabel: "Đơn vị Thường trực Tổ chức",
+    logoUrl: "/images/partners/hei.png",
     websiteUrl: "https://hef.vn",
   },
-  // 3. Đồng hành Quốc tế & Học thuật
   {
-    id: "fp_5",
+    id: "btc_5",
     name: "Văn phòng UNESCO tại Hà Nội",
-    shortName: "UNESCO Hanoi",
-    category: "COMPANION",
-    categoryLabel: "Đối tác Đồng hành Quốc tế",
-    badgeColor: "bg-amber-900 text-white border-transparent",
-    logoUrl: "/images/partners/unesco.svg",
-    role: "Đồng hành tư vấn chuyên gia và các tiêu chuẩn bảo tồn thế giới",
+    shortName: "UNESCO Hà Nội",
+    roleLabel: "Đối tác Quốc tế Đồng hành",
+    logoUrl: "/images/partners/unesco.png",
     websiteUrl: "https://unesco.org",
   },
   {
-    id: "fp_6",
+    id: "btc_6",
     name: "Đại học Quốc gia Hà Nội",
     shortName: "VNU",
-    category: "COMPANION",
-    categoryLabel: "Đối tác Học thuật",
-    badgeColor: "bg-amber-900 text-white border-transparent",
-    logoUrl: "/images/partners/vnu.svg",
-    role: "Cung cấp chuyên gia phản biện học thuật và chủ tọa các phiên",
+    roleLabel: "Đối tác Học thuật & Phản biện",
+    logoUrl: "/images/partners/vnu.png",
     websiteUrl: "https://vnu.edu.vn",
   },
-  // 4. Chiến lược & Bảo trợ Tài chính
+];
+
+const FORUM_ROLE_GROUPS = [
   {
-    id: "fp_7",
-    name: "Tập đoàn Sovico",
-    shortName: "Sovico Group",
-    category: "STRATEGIC",
-    categoryLabel: "Đối tác Chiến lược",
-    badgeColor: "bg-emerald-800 text-white border-transparent",
-    logoUrl: "/images/partners/sovico.svg",
-    role: "Bảo trợ tài chính và phát triển dự án di sản đô thị bền vững",
-    websiteUrl: "https://sovicogroup.com",
+    role: "Cơ quan Chỉ đạo Quốc gia",
+    colSpan: "lg:col-span-5",
+    items: [BTC_PARTNERS[0]],
   },
   {
-    id: "fp_8",
-    name: "Tập đoàn Vingroup – Quỹ Thiện Tâm",
-    shortName: "Vingroup",
-    category: "STRATEGIC",
-    categoryLabel: "Đối tác Chiến lược",
-    badgeColor: "bg-emerald-800 text-white border-transparent",
-    logoUrl: "/images/partners/vingroup.svg",
-    role: "Tài trợ chương trình số hóa di sản 3D và bảo tồn thích ứng",
-    websiteUrl: "https://vingroup.net",
-  },
-  // 5. Bảo trợ Truyền thông
-  {
-    id: "fp_9",
-    name: "Đài Truyền hình Việt Nam",
-    shortName: "VTV",
-    category: "MEDIA",
-    categoryLabel: "Bảo trợ Truyền hình",
-    badgeColor: "bg-blue-800 text-white border-transparent",
-    logoUrl: "/images/partners/vtv.svg",
-    role: "Bảo trợ phát sóng truyền hình trực tiếp các phiên trọng thể",
-    websiteUrl: "https://vtv.vn",
+    role: "Cơ quan Chủ trì & Đăng cai",
+    colSpan: "lg:col-span-7",
+    items: [BTC_PARTNERS[1], BTC_PARTNERS[2]],
   },
   {
-    id: "fp_10",
-    name: "Báo Nhân Dân",
-    shortName: "Báo Nhân Dân",
-    category: "MEDIA",
-    categoryLabel: "Bảo trợ Báo chí Chính trị",
-    badgeColor: "bg-blue-800 text-white border-transparent",
-    logoUrl: "/images/partners/nhandan.svg",
-    role: "Bảo trợ thông tin báo chí và chuyên trang Di sản & Kinh tế",
-    websiteUrl: "https://nhandan.vn",
+    role: "Đơn vị Thường trực Tổ chức",
+    colSpan: "lg:col-span-5",
+    items: [BTC_PARTNERS[3]],
+  },
+  {
+    role: "Đối tác Học thuật & Đồng hành Quốc tế",
+    colSpan: "lg:col-span-7",
+    items: [BTC_PARTNERS[4], BTC_PARTNERS[5]],
   },
 ];
 
@@ -150,75 +103,26 @@ export function ForumPartnersSection() {
       className="py-16 sm:py-20 bg-[#F5EFE5]/50 border-t border-[#dfd7c8] scroll-mt-24"
     >
       <div className="container mx-auto px-4 sm:px-8 max-w-7xl space-y-12">
-        {/* Section Header */}
-        <FadeIn direction="up" className="max-w-3xl space-y-3">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider bg-[#76232D]/10 text-[#76232D]">
+        {/* Tiêu đề mục Ban Tổ Chức */}
+        <FadeIn direction="up" className="text-center max-w-3xl mx-auto space-y-3">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider bg-[#0D4838]/10 text-[#0D4838]">
             <Handshake className="w-3.5 h-3.5 text-[#C29B57]" />
-            <span>Mạng Lưới Đối Tác Đồng Hành</span>
+            <span>Ban Tổ Chức • Kỳ Diễn Đàn 2026</span>
           </div>
-          <h2 className="text-2xl sm:text-4xl font-serif font-bold text-[#76232D] tracking-tight">
-            Đơn Vị Chỉ Đạo, Chủ Trì & Đối Tác Diễn Đàn
+          <h2 className="text-2xl sm:text-4xl font-serif font-bold text-[#0D4838] tracking-tight">
+            Cơ Quan Chỉ Đạo, Chủ Trì & Thường Trực Tổ Chức
           </h2>
           <p className="text-sm sm:text-base text-[#5c554b] leading-relaxed">
-            Diễn đàn Kinh tế Di sản 2026 nhận được sự chỉ đạo định hướng và đồng hành chặt chẽ của
-            các cơ quan quản lý nhà nước, các tổ chức quốc tế uy tín, viện nghiên cứu học thuật cùng
-            các tập đoàn kinh tế tiên phong.
+            Diễn đàn Kinh tế Di sản 2026 được chỉ đạo và phối hợp thực hiện bởi các cơ quan quản lý
+            nhà nước, tổ chức chuyên môn văn hóa và viện nghiên cứu uy tín hàng đầu quốc gia.
           </p>
         </FadeIn>
 
-        {/* Logo Grid: 2 cols Mobile, 3 cols Tablet, 5 cols Desktop */}
-        <StaggerContainer className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 sm:gap-5">
-          {FORUM_PARTNERS.map((partner) => (
-            <StaggerItem key={partner.id}>
-              <InteractiveCard className="group h-full bg-white rounded-2xl border border-[#dfd7c8] hover:border-[#C29B57] p-4 shadow-xs hover:shadow-lg transition-all flex flex-col justify-between">
-                <div>
-                  <div className="flex items-center justify-between gap-1 mb-2.5">
-                    <Badge
-                      className={`${partner.badgeColor} text-[10px] font-semibold px-2 py-0.5 border shadow-2xs`}
-                    >
-                      {partner.categoryLabel}
-                    </Badge>
-                    <span className="text-[10px] text-[#5c554b] font-medium bg-[#F5EFE5] px-1.5 py-0.5 rounded-full">
-                      Kỳ 2026
-                    </span>
-                  </div>
-
-                  {/* Logo Container with unoptimized SVG */}
-                  <div className="relative w-full h-24 rounded-xl overflow-hidden bg-[#FDFBF7] p-2 mb-3 border border-[#dfd7c8]/60 flex items-center justify-center group-hover:border-[#C29B57]/50 transition-colors">
-                    <Image
-                      src={partner.logoUrl}
-                      alt={`Logo ${partner.name}`}
-                      fill
-                      unoptimized
-                      sizes="(max-width: 640px) 100vw, 250px"
-                      className="object-contain p-2 transition-transform duration-300 group-hover:scale-105"
-                    />
-                  </div>
-
-                  {/* Partner Name & Role */}
-                  <h4 className="text-xs sm:text-sm font-serif font-bold text-[#292929] group-hover:text-[#76232D] transition-colors line-clamp-2 leading-snug min-h-[36px] flex items-center">
-                    {partner.name}
-                  </h4>
-                  <p className="text-[11px] text-[#5c554b] mt-1.5 line-clamp-2 leading-relaxed">
-                    {partner.role}
-                  </p>
-                </div>
-
-                <div className="mt-3 pt-2.5 border-t border-[#dfd7c8]/60 flex items-center justify-between text-xs">
-                  <span className="text-[10px] font-medium text-[#76232D]">
-                    {partner.shortName}
-                  </span>
-                  <a
-                    href={partner.websiteUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-[#5c554b] hover:text-[#76232D] transition-colors p-1"
-                    title={`Mở website ${partner.name}`}
-                  >
-                    <ExternalLink className="w-3.5 h-3.5" />
-                  </a>
-                </div>
-              </InteractiveCard>
+        {/* Lưới các nhóm vai trò Ban Tổ Chức - Gom nhóm các logo chung vai trò lại với nhau */}
+        <StaggerContainer className="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6 max-w-6xl xl:max-w-7xl mx-auto">
+          {FORUM_ROLE_GROUPS.map((group) => (
+            <StaggerItem key={group.role} className={group.colSpan}>
+              <PartnerRoleGroup role={group.role} partners={group.items} />
             </StaggerItem>
           ))}
         </StaggerContainer>
@@ -226,7 +130,7 @@ export function ForumPartnersSection() {
         {/* CTA Banner: Đăng ký Đồng hành cùng Diễn đàn */}
         <FadeIn
           direction="up"
-          className="rounded-3xl bg-gradient-to-r from-[#76232D] via-[#52181F] to-[#292929] p-6 sm:p-10 text-white relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-6 shadow-xl border-2 border-[#C29B57]"
+          className="rounded-3xl bg-gradient-to-r from-[#0D4838] via-[#073327] to-[#292929] p-6 sm:p-10 text-white relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-6 shadow-xl border-2 border-[#C29B57]"
         >
           <div className="space-y-2 max-w-2xl text-center md:text-left">
             <div className="inline-flex items-center gap-1.5 text-xs text-[#C29B57] font-semibold uppercase tracking-wider">
@@ -243,23 +147,24 @@ export function ForumPartnersSection() {
           </div>
 
           <div className="shrink-0 flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
-            <Link href="/lien-he?loai=hop-tac" className="w-full sm:w-auto">
-              <Button
-                size="lg"
-                className="w-full sm:w-auto bg-[#C29B57] hover:bg-[#a98342] text-[#292929] font-bold border border-white/20 shadow-md cursor-pointer h-11 px-6"
-              >
-                <span>Đăng ký Đồng hành</span>
-                <ArrowRight className="w-4 h-4 ml-2" />
-              </Button>
+            <Link
+              href="/contact?loai=hop-tac#contact-form"
+              className={cn(
+                buttonVariants({ size: "lg" }),
+                "w-full sm:w-auto bg-[#C29B57] hover:bg-[#a98342] text-[#292929] font-bold border border-white/20 shadow-md cursor-pointer h-11 px-6 inline-flex items-center justify-center"
+              )}
+            >
+              <span>Đăng ký Đồng hành</span>
+              <ArrowRight className="w-4 h-4 ml-2" />
             </Link>
-            <Link href="/lien-he?loai=tai-tro" className="w-full sm:w-auto">
-              <Button
-                variant="outline"
-                size="lg"
-                className="w-full sm:w-auto bg-[#F5EFE5] hover:bg-white text-[#76232D] hover:text-[#52181F] border border-[#C29B57]/60 font-bold cursor-pointer h-11 px-6 shadow-md transition-all"
-              >
-                <span>Tài trợ Diễn đàn</span>
-              </Button>
+            <Link
+              href="/contact?loai=tai-tro#contact-form"
+              className={cn(
+                buttonVariants({ size: "lg", variant: "outline" }),
+                "w-full sm:w-auto bg-[#F5EFE5] hover:bg-white text-[#0D4838] hover:text-[#073327] border border-[#C29B57]/60 font-bold cursor-pointer h-11 px-6 shadow-md transition-all inline-flex items-center justify-center"
+              )}
+            >
+              <span>Tài trợ Diễn đàn</span>
             </Link>
           </div>
         </FadeIn>

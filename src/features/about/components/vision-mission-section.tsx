@@ -18,14 +18,14 @@ interface VisionMissionSectionProps {
 export function VisionMissionSection({ data }: VisionMissionSectionProps) {
   return (
     <section id="about" className="py-12 sm:py-16 scroll-mt-28">
-      <div className="container mx-auto max-w-6xl px-4 sm:px-8">
+      <div className="w-full max-w-[1840px] 2xl:max-w-[1920px] mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 2xl:px-24">
         {/* Phần Dẫn Nhập Tôn Chỉ Nền Tảng */}
         <div className="text-center max-w-3xl mx-auto mb-10">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#76232D]/10 text-[#76232D] dark:text-[#C29B57] text-xs font-semibold uppercase tracking-wider mb-3">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#0D4838]/10 text-[#0D4838] dark:text-[#C29B57] text-xs font-semibold uppercase tracking-wider mb-3">
             <Compass className="w-3.5 h-3.5" />
             <span>Mục 6.1 • Tôn Chỉ Diễn Đàn</span>
           </div>
-          <h2 className="text-2xl sm:text-4xl font-serif font-bold text-[#76232D] dark:text-[#F5EFE5] leading-tight">
+          <h2 className="text-2xl sm:text-4xl font-serif font-bold text-[#0D4838] dark:text-[#F5EFE5] leading-tight">
             Nền Tảng Kết Nối & Kiến Tạo Kinh Tế Di Sản
           </h2>
           <p className="mt-4 text-base text-foreground/80 leading-relaxed text-justify sm:text-center">
@@ -39,14 +39,14 @@ export function VisionMissionSection({ data }: VisionMissionSectionProps) {
           <Card className="relative overflow-hidden border-2 border-[#C29B57]/40 bg-gradient-to-br from-card via-card to-[#C29B57]/5 shadow-md hover:shadow-lg transition-shadow">
             <div className="absolute top-0 right-0 w-32 h-32 bg-[#C29B57]/10 rounded-bl-full pointer-events-none" />
             <CardHeader className="pb-3 flex flex-row items-center gap-3">
-              <div className="w-12 h-12 rounded-xl bg-[#76232D] text-[#C29B57] flex items-center justify-center shrink-0 shadow-xs">
+              <div className="w-12 h-12 rounded-xl bg-[#0D4838] text-[#C29B57] flex items-center justify-center shrink-0 shadow-xs">
                 <Eye className="w-6 h-6" />
               </div>
               <div>
                 <span className="text-xs font-bold uppercase tracking-widest text-[#C29B57]">
                   Định hướng dài hạn
                 </span>
-                <CardTitle className="text-xl sm:text-2xl font-serif font-bold text-[#76232D] dark:text-[#F5EFE5]">
+                <CardTitle className="text-xl sm:text-2xl font-serif font-bold text-[#0D4838] dark:text-[#F5EFE5]">
                   TẦM NHÌN
                 </CardTitle>
               </div>
@@ -64,23 +64,23 @@ export function VisionMissionSection({ data }: VisionMissionSectionProps) {
           </Card>
 
           {/* THẺ SỨ MỆNH */}
-          <Card className="relative overflow-hidden border-2 border-[#76232D]/30 bg-gradient-to-br from-card via-card to-[#76232D]/5 shadow-md hover:shadow-lg transition-shadow">
-            <div className="absolute top-0 right-0 w-32 h-32 bg-[#76232D]/10 rounded-bl-full pointer-events-none" />
+          <Card className="relative overflow-hidden border-2 border-[#0D4838]/30 bg-gradient-to-br from-card via-card to-[#0D4838]/5 shadow-md hover:shadow-lg transition-shadow">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-[#0D4838]/10 rounded-bl-full pointer-events-none" />
             <CardHeader className="pb-3 flex flex-row items-center gap-3">
-              <div className="w-12 h-12 rounded-xl bg-[#C29B57] text-[#76232D] flex items-center justify-center shrink-0 shadow-xs">
+              <div className="w-12 h-12 rounded-xl bg-[#C29B57] text-[#0D4838] flex items-center justify-center shrink-0 shadow-xs">
                 <Target className="w-6 h-6" />
               </div>
               <div>
-                <span className="text-xs font-bold uppercase tracking-widest text-[#76232D] dark:text-[#C29B57]">
+                <span className="text-xs font-bold uppercase tracking-widest text-[#0D4838] dark:text-[#C29B57]">
                   Cam kết hành động
                 </span>
-                <CardTitle className="text-xl sm:text-2xl font-serif font-bold text-[#76232D] dark:text-[#F5EFE5]">
+                <CardTitle className="text-xl sm:text-2xl font-serif font-bold text-[#0D4838] dark:text-[#F5EFE5]">
                   SỨ MỆNH
                 </CardTitle>
               </div>
             </CardHeader>
             <CardContent>
-              <p className="text-base sm:text-lg font-medium text-foreground/90 leading-relaxed italic border-l-4 border-[#76232D] pl-4 my-2">
+              <p className="text-base sm:text-lg font-medium text-foreground/90 leading-relaxed italic border-l-4 border-[#0D4838] pl-4 my-2">
                 &ldquo;{data.mission}&rdquo;
               </p>
               <p className="text-sm text-muted-foreground mt-4 leading-relaxed">
@@ -98,7 +98,7 @@ export function VisionMissionSection({ data }: VisionMissionSectionProps) {
               <span className="text-xs font-bold tracking-widest text-[#C29B57] uppercase">
                 Hệ giá trị cốt lõi
               </span>
-              <h3 className="text-lg sm:text-2xl font-serif font-bold text-[#76232D] dark:text-[#F5EFE5]">
+              <h3 className="text-lg sm:text-2xl font-serif font-bold text-[#0D4838] dark:text-[#F5EFE5]">
                 5 Giá Trị Định Hình Mọi Hoạt Động Của Diễn Đàn
               </h3>
             </div>
@@ -115,7 +115,7 @@ export function VisionMissionSection({ data }: VisionMissionSectionProps) {
                 className="group relative bg-card p-5 rounded-xl border border-border hover:border-[#C29B57] transition-all hover:-translate-y-1 hover:shadow-md flex flex-col justify-between"
               >
                 <div>
-                  <div className="w-10 h-10 rounded-lg bg-[#76232D]/10 text-[#76232D] dark:text-[#C29B57] flex items-center justify-center mb-3 group-hover:bg-[#76232D] group-hover:text-[#C29B57] transition-colors">
+                  <div className="w-10 h-10 rounded-lg bg-[#0D4838]/10 text-[#0D4838] dark:text-[#C29B57] flex items-center justify-center mb-3 group-hover:bg-[#0D4838] group-hover:text-[#C29B57] transition-colors">
                     {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                     <HefIcon name={val.iconName as any} size="sm" variant="current" />
                   </div>
@@ -125,7 +125,7 @@ export function VisionMissionSection({ data }: VisionMissionSectionProps) {
                   </h4>
                   <p className="text-xs text-muted-foreground leading-relaxed">{val.description}</p>
                 </div>
-                <div className="mt-4 pt-2 border-t border-border/50 flex items-center gap-1 text-[11px] text-[#76232D] dark:text-[#C29B57] font-semibold opacity-0 group-hover:opacity-100 transition-opacity">
+                <div className="mt-4 pt-2 border-t border-border/50 flex items-center gap-1 text-[11px] text-[#0D4838] dark:text-[#C29B57] font-semibold opacity-0 group-hover:opacity-100 transition-opacity">
                   <CheckCircle2 className="w-3.5 h-3.5" /> Chuẩn mực HEF
                 </div>
               </div>

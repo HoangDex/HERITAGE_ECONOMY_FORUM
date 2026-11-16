@@ -65,7 +65,7 @@ Tại Hội nghị Văn hóa Toàn quốc, yêu cầu phát triển các ngành 
     category: "nghien-cuu-chinh-sach",
     categoryName: "Nghiên cứu & Chính sách",
     coverImage:
-      "https://images.unsplash.com/photo-1548013146-72479768bada?auto=format&fit=crop&w=1200&h=675&q=80",
+      "https://images.unsplash.com/photo-1559592413-7cec4d0cae2b?auto=format&fit=crop&w=1200&h=675&q=80",
     author: {
       name: "Ban Thư ký Khoa học HEF",
       title: "Bộ phận Phân tích Chiến lược",
@@ -146,7 +146,7 @@ Tại Hội nghị Văn hóa Toàn quốc, yêu cầu phát triển các ngành 
     category: "dau-an-thanh-tuu",
     categoryName: "Dấu ấn & Thành tựu",
     coverImage:
-      "https://images.unsplash.com/photo-1579783902614-a3fb3927b675?auto=format&fit=crop&w=800&h=500&q=80",
+      "https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?auto=format&fit=crop&w=800&h=500&q=80",
     author: {
       name: "Ban Thư ký Giải thưởng",
       title: "Tổ xét duyệt hồ sơ",
@@ -180,7 +180,7 @@ Tại Hội nghị Văn hóa Toàn quốc, yêu cầu phát triển các ngành 
 export class NewsRepository implements INewsRepository {
   async getNewsPageData(): Promise<NewsPageData> {
     const featured = MOCK_NEWS_ARTICLES.find((a) => a.isFeatured) || MOCK_NEWS_ARTICLES[0];
-    const topSide = MOCK_NEWS_ARTICLES.filter((a) => a.id !== featured.id).slice(0, 3);
+    const topSide = MOCK_NEWS_ARTICLES.filter((a) => a.id !== featured.id).slice(0, 4);
     const latest = MOCK_NEWS_ARTICLES.filter((a) => a.id !== featured.id);
 
     return {
@@ -197,9 +197,18 @@ export class NewsRepository implements INewsRepository {
   }
 
   async getRelatedArticles(currentSlug: string, category: NewsCategorySlug): Promise<NewsItem[]> {
-    return MOCK_NEWS_ARTICLES.filter(
+    const sameCategory = MOCK_NEWS_ARTICLES.filter(
       (a) => a.slug !== currentSlug && a.category === category
-    ).slice(0, 3);
+    );
+    const otherArticles = MOCK_NEWS_ARTICLES.filter(
+      (a) => a.slug !== currentSlug && a.category !== category
+    );
+    // Luôn ưu tiên bài cùng chuyên mục, sau đó bù các bài khác để không bao giờ bị rỗng
+    return [...sameCategory, ...otherArticles].slice(0, 5);
+  }
+
+  async getAllArticles(): Promise<NewsItem[]> {
+    return MOCK_NEWS_ARTICLES;
   }
 }
 

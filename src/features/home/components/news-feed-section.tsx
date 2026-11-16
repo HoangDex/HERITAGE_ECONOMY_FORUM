@@ -25,17 +25,17 @@ export function NewsFeedSection({ featuredNews, latestNews }: NewsFeedSectionPro
 
   return (
     <section className="py-14 sm:py-20 bg-background border-b border-border">
-      <div className="container mx-auto max-w-6xl px-4 sm:px-8">
+      <div className="w-full max-w-[1840px] 2xl:max-w-[1920px] mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 2xl:px-24">
         <FadeIn
           direction="up"
           className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10"
         >
           <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#76232D]/10 text-[#76232D] dark:text-[#C29B57] text-xs font-bold uppercase tracking-wider mb-2">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#0D4838]/10 text-[#0D4838] dark:text-[#C29B57] text-xs font-bold uppercase tracking-wider mb-2">
               <Newspaper className="w-3.5 h-3.5" />
               <span>Góc Nhìn Học Thuật & Hoạt Động</span>
             </div>
-            <h2 className="text-2xl sm:text-4xl font-serif font-bold text-[#76232D] dark:text-[#F5EFE5] leading-tight">
+            <h2 className="text-2xl sm:text-4xl font-serif font-bold text-[#0D4838] dark:text-[#F5EFE5] leading-tight">
               Tin Tức & Phân Tích Chuyên Sâu
             </h2>
             <p className="mt-2 text-sm text-muted-foreground max-w-2xl">
@@ -44,11 +44,11 @@ export function NewsFeedSection({ featuredNews, latestNews }: NewsFeedSectionPro
             </p>
           </div>
 
-          <Link href="/tin-tuc">
+          <Link href="/news">
             <Button
               variant="outline"
               size="sm"
-              className="border-[#76232D] text-[#76232D] dark:text-[#C29B57] hover:bg-[#76232D]/10 cursor-pointer"
+              className="border-[#0D4838] text-[#0D4838] dark:text-[#C29B57] hover:bg-[#0D4838]/10 cursor-pointer"
             >
               <span>Xem tất cả tin tức & bài viết</span>
               <ArrowRight className="w-4 h-4 ml-1.5" />
@@ -72,7 +72,7 @@ export function NewsFeedSection({ featuredNews, latestNews }: NewsFeedSectionPro
                       className="object-cover transition-transform duration-700 group-hover:scale-105"
                     />
                     <div className="absolute top-3 left-3">
-                      <Badge className="bg-[#76232D] text-white text-xs font-bold px-3 py-1 border border-[#C29B57]/50">
+                      <Badge className="bg-[#0D4838] text-white text-xs font-bold px-3 py-1 border border-[#C29B57]/50">
                         {mainFeatured.category}
                       </Badge>
                     </div>
@@ -90,7 +90,7 @@ export function NewsFeedSection({ featuredNews, latestNews }: NewsFeedSectionPro
                       </span>
                     </div>
 
-                    <h3 className="text-xl sm:text-2xl font-serif font-bold text-foreground group-hover:text-[#76232D] dark:group-hover:text-[#C29B57] transition-colors leading-snug">
+                    <h3 className="text-xl sm:text-2xl font-serif font-bold text-foreground group-hover:text-[#0D4838] dark:group-hover:text-[#C29B57] transition-colors leading-snug">
                       {mainFeatured.title}
                     </h3>
 
@@ -102,8 +102,8 @@ export function NewsFeedSection({ featuredNews, latestNews }: NewsFeedSectionPro
 
                 <div className="px-6 pb-6 pt-0">
                   <Link
-                    href={`/tin-tuc/${mainFeatured.slug}`}
-                    className="inline-flex items-center gap-2 text-sm font-bold text-[#76232D] dark:text-[#C29B57] group-hover:underline cursor-pointer"
+                    href={`/news/${mainFeatured.slug}`}
+                    className="inline-flex items-center gap-2 text-sm font-bold text-[#0D4838] dark:text-[#C29B57] group-hover:underline cursor-pointer"
                   >
                     <span>Đọc toàn văn nghiên cứu</span>
                     <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
@@ -113,8 +113,8 @@ export function NewsFeedSection({ featuredNews, latestNews }: NewsFeedSectionPro
             </FadeIn>
           )}
 
-          {/* 3 BÀI MỚI (5 CỘT) */}
-          <div className="lg:col-span-5 space-y-4">
+          {/* 4 BÀI MỚI (5 CỘT) */}
+          <div className="lg:col-span-5 space-y-3 sm:space-y-3.5">
             <div className="flex items-center justify-between pb-2 border-b border-border">
               <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
                 Bài Viết Mới Nhất
@@ -124,10 +124,10 @@ export function NewsFeedSection({ featuredNews, latestNews }: NewsFeedSectionPro
               </span>
             </div>
 
-            <StaggerContainer className="space-y-4">
+            <StaggerContainer className="space-y-3 sm:space-y-3.5">
               {latestNews.map((article) => (
                 <StaggerItem key={article.id}>
-                  <Link href={`/tin-tuc/${article.slug}`} className="block cursor-pointer">
+                  <Link href={`/news/${article.slug}`} className="block cursor-pointer">
                     <InteractiveCard className="group bg-card rounded-xl border border-border hover:border-[#C29B57] p-3.5 sm:p-4 transition-all hover:shadow-md">
                       <div className="flex gap-4 items-start">
                         <div className="relative w-24 h-20 sm:w-28 sm:h-24 rounded-lg overflow-hidden bg-muted shrink-0 border border-border">
@@ -143,11 +143,11 @@ export function NewsFeedSection({ featuredNews, latestNews }: NewsFeedSectionPro
                         <div className="space-y-1 overflow-hidden">
                           <Badge
                             variant="secondary"
-                            className="text-[10px] font-semibold text-[#76232D] dark:text-[#C29B57] px-2 py-0"
+                            className="text-[10px] font-semibold text-[#0D4838] dark:text-[#C29B57] px-2 py-0"
                           >
                             {article.category}
                           </Badge>
-                          <h4 className="text-xs sm:text-sm font-serif font-bold text-foreground group-hover:text-[#76232D] dark:group-hover:text-[#C29B57] transition-colors line-clamp-2 leading-snug">
+                          <h4 className="text-xs sm:text-sm font-serif font-bold text-foreground group-hover:text-[#0D4838] dark:group-hover:text-[#C29B57] transition-colors line-clamp-2 leading-snug">
                             {article.title}
                           </h4>
                           <p className="text-[11px] text-muted-foreground line-clamp-1">

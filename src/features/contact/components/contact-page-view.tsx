@@ -17,11 +17,11 @@ export function ContactPageView({ data }: ContactPageViewProps) {
       <div className="container mx-auto px-4 sm:px-8 max-w-7xl space-y-10">
         {/* Banner */}
         <FadeIn direction="up" className="space-y-3 max-w-3xl">
-          <Badge className="bg-[#76232D] text-white">Cổng Tiếp Nhận Thông Tin</Badge>
+          <Badge className="bg-[#0D4838] text-white">Cổng Tiếp Nhận Thông Tin</Badge>
           <h1 className="text-3xl sm:text-5xl font-extrabold text-[#292929] tracking-tight">
             {data.title}
           </h1>
-          <p className="text-lg sm:text-xl font-semibold text-[#76232D]">{data.slogan}</p>
+          <p className="text-lg sm:text-xl font-semibold text-[#0D4838]">{data.slogan}</p>
           <p className="text-sm sm:text-base text-[#5c554b] leading-relaxed">{data.description}</p>
         </FadeIn>
 

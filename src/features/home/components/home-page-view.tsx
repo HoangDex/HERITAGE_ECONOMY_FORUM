@@ -34,7 +34,7 @@ export function HomePageView({ initialData }: HomePageViewProps) {
 
       {/* 4. GIẢI THƯỞNG / DỰ ÁN (2 CỘT CARD NỔI BẬT) */}
       <section className="py-14 sm:py-20 bg-muted/40 border-b border-border">
-        <div className="container mx-auto max-w-6xl px-4 sm:px-8">
+        <div className="w-full max-w-[1840px] 2xl:max-w-[1920px] mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 2xl:px-24">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
             {/* Cột Trái: Banner riêng Giải thưởng */}
             <div className="lg:col-span-6 flex">

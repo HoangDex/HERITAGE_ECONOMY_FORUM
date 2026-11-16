@@ -26,16 +26,16 @@ export function FeaturedProjectsSection({ projects }: FeaturedProjectsSectionPro
           <span className="text-xs font-bold uppercase tracking-wider text-[#C29B57] flex items-center gap-1.5">
             <Landmark className="w-3.5 h-3.5" /> Mô Hình Thực Tiễn
           </span>
-          <h3 className="text-xl sm:text-2xl font-serif font-bold text-[#76232D] dark:text-[#F5EFE5] mt-1">
+          <h3 className="text-xl sm:text-2xl font-serif font-bold text-[#0D4838] dark:text-[#F5EFE5] mt-1">
             Dự Án Kinh Tế Di Sản Tiêu Biểu
           </h3>
         </div>
 
-        <Link href="/du-an">
+        <Link href="/projects">
           <Button
             variant="ghost"
             size="sm"
-            className="text-xs text-[#76232D] dark:text-[#C29B57] hover:underline gap-1 cursor-pointer"
+            className="text-xs text-[#0D4838] dark:text-[#C29B57] hover:underline gap-1 cursor-pointer"
           >
             <span>Xem tất cả</span>
             <ArrowRight className="w-3.5 h-3.5" />
@@ -57,7 +57,7 @@ export function FeaturedProjectsSection({ projects }: FeaturedProjectsSectionPro
                   className="object-cover transition-transform duration-500 group-hover:scale-105"
                 />
                 <div className="absolute top-2 left-2">
-                  <Badge className="bg-[#76232D] text-white text-[10px] px-2 py-0.5 border border-[#C29B57]/40">
+                  <Badge className="bg-[#0D4838] text-white text-[10px] px-2 py-0.5 border border-[#C29B57]/40">
                     <MapPin className="w-2.5 h-2.5 mr-1" />
                     {project.location}
                   </Badge>
@@ -70,7 +70,7 @@ export function FeaturedProjectsSection({ projects }: FeaturedProjectsSectionPro
                   <span className="text-[11px] font-semibold text-[#C29B57] uppercase block">
                     {project.category}
                   </span>
-                  <h4 className="text-base font-serif font-bold text-foreground group-hover:text-[#76232D] dark:group-hover:text-[#C29B57] transition-colors line-clamp-1">
+                  <h4 className="text-base font-serif font-bold text-foreground group-hover:text-[#0D4838] dark:group-hover:text-[#C29B57] transition-colors line-clamp-1">
                     {project.name}
                   </h4>
                   <p className="text-xs text-muted-foreground line-clamp-2 leading-relaxed">
@@ -97,7 +97,7 @@ export function FeaturedProjectsSection({ projects }: FeaturedProjectsSectionPro
                 </div>
               </div>
 
-              <Link href={`/du-an/${project.slug}`} className="self-end sm:self-center shrink-0">
+              <Link href={`/projects/${project.slug}`} className="self-end sm:self-center shrink-0">
                 <Button
                   size="sm"
                   variant="outline"

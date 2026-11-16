@@ -29,11 +29,14 @@ export interface NewsItem {
   slug: string;
   title: string;
   sapo: string;
-  content: string;
+  content: string; // Nội dung bài báo HTML
+  contentJson?: Record<string, unknown> | Array<unknown>; // Cấu trúc khối CKEditor JSON
   category: NewsCategorySlug;
   categoryName: string;
   coverImage: string;
+  imageCaption?: string;
   author: NewsAuthor;
+  source?: string;
   publishedAt: string; // ISO 8601 GMT+7
   isFeatured?: boolean;
   readingMinutes: number;
@@ -51,10 +54,12 @@ export interface INewsRepository {
   getNewsPageData(): Promise<NewsPageData>;
   getArticleBySlug(slug: string): Promise<NewsItem | null>;
   getRelatedArticles(currentSlug: string, category: NewsCategorySlug): Promise<NewsItem[]>;
+  getAllArticles(): Promise<NewsItem[]>;
 }
 
 export interface INewsService {
   getNewsPageData(): Promise<NewsPageData>;
   getArticle(slug: string): Promise<NewsItem | null>;
   getRelatedArticles(currentSlug: string, category: NewsCategorySlug): Promise<NewsItem[]>;
+  getAllArticles(): Promise<NewsItem[]>;
 }

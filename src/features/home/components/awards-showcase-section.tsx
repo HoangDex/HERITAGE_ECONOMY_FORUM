@@ -21,7 +21,7 @@ export function AwardsShowcaseSection({ award }: AwardsShowcaseSectionProps) {
   return (
     <FadeIn
       direction="up"
-      className="rounded-2xl bg-gradient-to-br from-[#76232D] via-[#52181F] to-[#292929] text-white border-2 border-[#C29B57] shadow-xl overflow-hidden p-6 sm:p-8 flex flex-col justify-between"
+      className="rounded-2xl bg-gradient-to-br from-[#0D4838] via-[#073327] to-[#041D16] text-white border-2 border-[#C29B57] shadow-xl overflow-hidden p-6 sm:p-8 flex flex-col justify-between"
     >
       <div className="space-y-4">
         <div className="flex items-center justify-between">

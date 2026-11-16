@@ -41,4 +41,7 @@ export { ForumTimelineSection } from "./components/forum-timeline-section";
 export { ForumSpeakersSection } from "./components/forum-speakers-section";
 export { ForumResourcesSection } from "./components/forum-resources-section";
 export { ForumPartnersSection } from "./components/forum-partners-section";
+export { ForumOutcomesSection } from "./components/forum-outcomes-section";
+export { SpeakerDetailDialog } from "./components/speaker-detail-dialog";
+export { ForumFaqSection } from "./components/forum-faq-section";
 export { ForumPageView } from "./components/forum-page-view";

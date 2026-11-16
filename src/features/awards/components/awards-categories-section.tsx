@@ -36,7 +36,7 @@ export function AwardsCategoriesSection({ categories }: AwardsCategoriesSectionP
     <section id="hang-muc" className="py-14 scroll-mt-20">
       <div className="container mx-auto px-4 sm:px-8 max-w-7xl space-y-8">
         <FadeIn direction="up" className="space-y-3">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider bg-[#76232D]/10 text-[#76232D]">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider bg-[#0D4838]/10 text-[#0D4838]">
             Cơ Cấu Giải Thưởng
           </div>
           <h2 className="text-2xl sm:text-4xl font-extrabold text-[#292929] tracking-tight">
@@ -54,24 +54,24 @@ export function AwardsCategoriesSection({ categories }: AwardsCategoriesSectionP
             return (
               <StaggerItem key={cat.id}>
                 <InteractiveCard className="h-full">
-                  <Card className="border border-[#dfd7c8] bg-white shadow-xs hover:shadow-md transition-all hover:border-[#76232D] flex flex-col justify-between group h-full">
+                  <Card className="border border-[#dfd7c8] bg-white shadow-xs hover:shadow-md transition-all hover:border-[#0D4838] flex flex-col justify-between group h-full">
                     <CardHeader className="space-y-3 pb-3">
                       <div className="flex items-center justify-between">
-                        <div className="p-2.5 rounded-xl bg-[#76232D]/10 text-[#76232D] group-hover:bg-[#76232D] group-hover:text-white transition-colors">
+                        <div className="p-2.5 rounded-xl bg-[#0D4838]/10 text-[#0D4838] group-hover:bg-[#0D4838] group-hover:text-white transition-colors">
                           <Icon className="w-5 h-5" />
                         </div>
                         <Badge
                           variant="outline"
-                          className="border-[#C29B57] text-[#76232D] text-xs font-semibold"
+                          className="border-[#C29B57] text-[#0D4838] text-xs font-semibold"
                         >
                           Hạng mục 0{cat.order}
                         </Badge>
                       </div>
 
-                      <CardTitle className="text-base sm:text-lg font-bold text-[#292929] leading-snug group-hover:text-[#76232D] transition-colors">
+                      <CardTitle className="text-base sm:text-lg font-bold text-[#292929] leading-snug group-hover:text-[#0D4838] transition-colors">
                         {cat.title}
                       </CardTitle>
-                      <p className="text-xs font-medium text-[#76232D] leading-relaxed">
+                      <p className="text-xs font-medium text-[#0D4838] leading-relaxed">
                         {cat.subtitle}
                       </p>
                     </CardHeader>

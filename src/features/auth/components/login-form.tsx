@@ -61,7 +61,7 @@ export function LoginForm() {
           <BrandLogo size="lg" />
         </div>
         <div>
-          <CardTitle className="text-2xl font-serif font-bold tracking-tight text-[#76232D]">
+          <CardTitle className="text-2xl font-serif font-bold tracking-tight text-[#0D4838]">
             Cổng Đăng Nhập Hệ Thống
           </CardTitle>
           <CardDescription className="text-xs text-[#5c554b] mt-1 max-w-sm mx-auto">
@@ -86,7 +86,7 @@ export function LoginForm() {
 
         {/* Khối Đăng Nhập SSO Bắt Buộc Theo Đề Án */}
         <div className="space-y-3">
-          <div className="text-xs font-semibold uppercase tracking-wider text-[#76232D] flex items-center gap-2">
+          <div className="text-xs font-semibold uppercase tracking-wider text-[#0D4838] flex items-center gap-2">
             <HefIcon name="ShieldCheck" size="xs" variant="crimson" />
             <span>Xác thực Đơn Điểm SSO (Khuyến nghị)</span>
           </div>
@@ -100,11 +100,11 @@ export function LoginForm() {
             disabled={ssoPending !== null}
           >
             <div className="flex items-center gap-3">
-              <div className="w-7 h-7 rounded-md bg-[#76232D] text-[#C29B57] flex items-center justify-center font-bold text-xs">
+              <div className="w-7 h-7 rounded-md bg-[#0D4838] text-[#C29B57] flex items-center justify-center font-bold text-xs">
                 VN
               </div>
               <div className="text-left">
-                <div className="text-xs font-bold text-[#76232D]">
+                <div className="text-xs font-bold text-[#0D4838]">
                   VNeID / Dịch Vụ Công Quốc Gia
                 </div>
                 <div className="text-[10px] text-muted-foreground">
@@ -192,7 +192,7 @@ export function LoginForm() {
               type="email"
               placeholder="admin@disan.vn"
               required
-              className="border-[#C29B57]/30 focus-visible:ring-[#76232D]"
+              className="border-[#C29B57]/30 focus-visible:ring-[#0D4838]"
             />
           </div>
 
@@ -205,7 +205,7 @@ export function LoginForm() {
                 <HefIcon name="Lock" size="xs" />
                 Mật Khẩu
               </label>
-              <Link href="#" className="text-[11px] text-[#76232D] hover:underline">
+              <Link href="#" className="text-[11px] text-[#0D4838] hover:underline">
                 Quên mật khẩu?
               </Link>
             </div>
@@ -214,13 +214,13 @@ export function LoginForm() {
               name="password"
               type="password"
               required
-              className="border-[#C29B57]/30 focus-visible:ring-[#76232D]"
+              className="border-[#C29B57]/30 focus-visible:ring-[#0D4838]"
             />
           </div>
 
           <Button
             type="submit"
-            className="w-full h-11 bg-[#76232D] hover:bg-[#5e1c24] text-[#F5EFE5] font-semibold transition-all shadow-xs"
+            className="w-full h-11 bg-[#0D4838] hover:bg-[#073327] text-[#F5EFE5] font-semibold transition-all shadow-xs"
             disabled={isPending}
           >
             {isPending ? "Đang xác thực bảo mật..." : "Đăng Nhập Quản Trị CMS"}
@@ -232,8 +232,8 @@ export function LoginForm() {
         <p className="text-xs text-center text-muted-foreground">
           Cần hỗ trợ truy cập định danh hoặc đăng ký tham gia?{" "}
           <Link
-            href="/lien-he"
-            className="font-semibold text-[#76232D] underline underline-offset-4"
+            href="/contact"
+            className="font-semibold text-[#0D4838] underline underline-offset-4"
           >
             Liên hệ Ban Tổ Chức
           </Link>

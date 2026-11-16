@@ -16,11 +16,10 @@ interface ProjectsDirectoryViewProps {
 
 const PROJECT_GROUPS = [
   { id: "all", label: "Tất cả dự án" },
-  { id: "do-thi-di-san", label: "Đô thị Di sản" },
-  { id: "lang-nghe", label: "Làng nghề & Thủ công" },
-  { id: "di-san-unesco", label: "Di sản Kép UNESCO" },
-  { id: "khong-gian-di-san", label: "Không gian Di sản" },
+  { id: "di-san-nghe-thuat", label: "Di sản & Nghệ thuật" },
   { id: "kinh-te-cong-dong", label: "Kinh tế & Cộng đồng" },
+  { id: "di-san-so", label: "Di sản số" },
+  { id: "khong-gian-di-san", label: "Không gian Di sản" },
 ];
 
 export function ProjectsDirectoryView({ initialProjects }: ProjectsDirectoryViewProps) {
@@ -28,9 +27,34 @@ export function ProjectsDirectoryView({ initialProjects }: ProjectsDirectoryView
   const [searchQuery, setSearchQuery] = useState("");
 
   const filteredProjects = initialProjects.filter((item) => {
-    const matchesGroup =
-      selectedGroup === "all" ||
-      item.category.toLowerCase().includes(selectedGroup.replace(/-/g, " "));
+    let matchesGroup = selectedGroup === "all";
+    if (!matchesGroup) {
+      if (selectedGroup === "di-san-nghe-thuat") {
+        matchesGroup =
+          item.category.includes("Nghệ thuật") ||
+          item.category.includes("Thủ công") ||
+          item.category.includes("Gốm") ||
+          item.category.includes("Lụa");
+      } else if (selectedGroup === "kinh-te-cong-dong") {
+        matchesGroup =
+          item.category.includes("Cộng đồng") ||
+          item.category.includes("Kinh tế") ||
+          item.category.includes("Du lịch");
+      } else if (selectedGroup === "di-san-so") {
+        matchesGroup =
+          item.category.includes("Số") ||
+          item.category.includes("Digital") ||
+          item.category.includes("Công nghệ") ||
+          item.description.includes("số hóa") ||
+          item.description.includes("3D");
+      } else if (selectedGroup === "khong-gian-di-san") {
+        matchesGroup =
+          item.category.includes("Không gian") ||
+          item.category.includes("Đô thị") ||
+          item.category.includes("UNESCO");
+      }
+    }
+
     const matchesSearch =
       searchQuery === "" ||
       item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -51,8 +75,8 @@ export function ProjectsDirectoryView({ initialProjects }: ProjectsDirectoryView
                 onClick={() => setSelectedGroup(group.id)}
                 className={`px-3.5 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-colors cursor-pointer ${
                   selectedGroup === group.id
-                    ? "bg-[#76232D] text-white shadow-xs"
-                    : "bg-white text-[#5c554b] border border-[#dfd7c8] hover:border-[#76232D]"
+                    ? "bg-[#0D4838] text-white shadow-xs"
+                    : "bg-white text-[#5c554b] border border-[#dfd7c8] hover:border-[#0D4838]"
                 }`}
               >
                 {group.label}
@@ -76,9 +100,9 @@ export function ProjectsDirectoryView({ initialProjects }: ProjectsDirectoryView
           <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredProjects.map((proj) => (
               <StaggerItem key={proj.id}>
-                <Link href={`/du-an/${proj.slug}`} className="group block h-full cursor-pointer">
+                <Link href={`/projects/${proj.slug}`} className="group block h-full cursor-pointer">
                   <InteractiveCard className="h-full">
-                    <Card className="border border-[#dfd7c8] bg-white shadow-xs hover:shadow-lg transition-all h-full flex flex-col justify-between hover:border-[#76232D] overflow-hidden rounded-2xl">
+                    <Card className="border border-[#dfd7c8] bg-white shadow-xs hover:shadow-lg transition-all h-full flex flex-col justify-between hover:border-[#0D4838] overflow-hidden rounded-2xl">
                       {/* Project Image Banner */}
                       {proj.imageUrl ? (
                         <div className="relative w-full aspect-[16/10] bg-[#dfd7c8]/30 overflow-hidden">
@@ -93,7 +117,7 @@ export function ProjectsDirectoryView({ initialProjects }: ProjectsDirectoryView
 
                           {/* Badges on Image */}
                           <div className="absolute top-3 left-3 right-3 flex items-center justify-between gap-2">
-                            <Badge className="bg-[#76232D]/90 backdrop-blur-md text-[#F5EFE5] text-[11px] font-semibold border border-white/20 shadow-sm">
+                            <Badge className="bg-[#0D4838]/90 backdrop-blur-md text-[#F5EFE5] text-[11px] font-semibold border border-white/20 shadow-sm">
                               {proj.category}
                             </Badge>
                             <Badge
@@ -116,12 +140,12 @@ export function ProjectsDirectoryView({ initialProjects }: ProjectsDirectoryView
                       ) : (
                         <div className="p-5 pb-0">
                           <div className="flex items-center justify-between gap-2">
-                            <Badge className="bg-[#76232D] text-white text-[11px] font-medium">
+                            <Badge className="bg-[#0D4838] text-white text-[11px] font-medium">
                               {proj.category}
                             </Badge>
                             <Badge
                               variant="outline"
-                              className="text-[10px] border-[#C29B57] text-[#76232D] font-semibold"
+                              className="text-[10px] border-[#C29B57] text-[#0D4838] font-semibold"
                             >
                               {proj.status}
                             </Badge>
@@ -130,7 +154,7 @@ export function ProjectsDirectoryView({ initialProjects }: ProjectsDirectoryView
                       )}
 
                       <CardHeader className="p-5 pb-3 space-y-2">
-                        <CardTitle className="text-lg font-serif font-bold text-[#292929] group-hover:text-[#76232D] transition-colors leading-snug line-clamp-2">
+                        <CardTitle className="text-lg font-serif font-bold text-[#292929] group-hover:text-[#0D4838] transition-colors leading-snug line-clamp-2">
                           {proj.name}
                         </CardTitle>
 
@@ -146,7 +170,7 @@ export function ProjectsDirectoryView({ initialProjects }: ProjectsDirectoryView
                             <span className="block text-[10px] text-[#5c554b] uppercase tracking-wider font-medium">
                               Doanh thu
                             </span>
-                            <span className="text-xs font-bold text-[#76232D] truncate block mt-0.5">
+                            <span className="text-xs font-bold text-[#0D4838] truncate block mt-0.5">
                               {proj.economicMetrics.annualRevenue}
                             </span>
                           </div>
@@ -168,7 +192,7 @@ export function ProjectsDirectoryView({ initialProjects }: ProjectsDirectoryView
                           </div>
                         </div>
 
-                        <div className="pt-2 flex items-center justify-between text-xs font-semibold text-[#76232D]">
+                        <div className="pt-2 flex items-center justify-between text-xs font-semibold text-[#0D4838]">
                           <span className="flex items-center gap-1">
                             <Sparkles className="w-3 h-3 text-[#C29B57]" />
                             Xem hồ sơ & giải pháp

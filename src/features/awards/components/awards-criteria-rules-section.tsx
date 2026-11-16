@@ -17,7 +17,7 @@ export function AwardsCriteriaRulesSection({
       <div className="container mx-auto px-4 sm:px-8 max-w-7xl space-y-8">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
           <div className="space-y-3">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider bg-[#C29B57]/15 text-[#76232D]">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider bg-[#C29B57]/15 text-[#0D4838]">
               Bộ Tiêu Chí & Quy Chế
             </div>
             <h2 className="text-2xl sm:text-4xl font-extrabold text-[#292929] tracking-tight">
@@ -30,7 +30,7 @@ export function AwardsCriteriaRulesSection({
           </div>
 
           <div className="shrink-0">
-            <Button className="bg-[#76232D] hover:bg-[#76232D]/90 text-white gap-2 font-medium">
+            <Button className="bg-[#0D4838] hover:bg-[#0D4838]/90 text-white gap-2 font-medium">
               <Download className="w-4 h-4" />
               Tải Toàn Văn {rulesVersion}
             </Button>
@@ -45,7 +45,7 @@ export function AwardsCriteriaRulesSection({
             >
               <div className="flex items-center justify-between gap-2">
                 <h3 className="text-lg font-bold text-[#292929] leading-snug">{crit.title}</h3>
-                <Badge className="bg-[#76232D] text-white font-bold text-sm px-3 py-1">
+                <Badge className="bg-[#0D4838] text-white font-bold text-sm px-3 py-1">
                   {crit.weightPercent}%
                 </Badge>
               </div>
@@ -53,7 +53,7 @@ export function AwardsCriteriaRulesSection({
               <p className="text-sm text-[#5c554b] leading-relaxed">{crit.description}</p>
 
               <div className="pt-3 border-t border-[#dfd7c8]/60 space-y-2">
-                <span className="text-xs font-semibold uppercase tracking-wider text-[#76232D] block">
+                <span className="text-xs font-semibold uppercase tracking-wider text-[#0D4838] block">
                   Yêu cầu hồ sơ minh chứng:
                 </span>
                 <ul className="space-y-1.5">
@@ -71,7 +71,7 @@ export function AwardsCriteriaRulesSection({
 
         <div className="p-4 rounded-xl bg-[#F5EFE5] border border-[#dfd7c8] flex items-center justify-between flex-wrap gap-3 text-xs text-[#5c554b]">
           <div className="flex items-center gap-2">
-            <FileText className="w-4 h-4 text-[#76232D] shrink-0" />
+            <FileText className="w-4 h-4 text-[#0D4838] shrink-0" />
             <span>
               Văn bản áp dụng: <strong>{rulesVersion}</strong>. Mọi sửa đổi phải được Hội đồng công
               bố trước kỳ đề cử 30 ngày.

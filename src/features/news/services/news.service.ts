@@ -17,6 +17,10 @@ export class NewsService implements INewsService {
   async getRelatedArticles(currentSlug: string, category: NewsCategorySlug): Promise<NewsItem[]> {
     return newsRepository.getRelatedArticles(currentSlug, category);
   }
+
+  async getAllArticles(): Promise<NewsItem[]> {
+    return newsRepository.getAllArticles();
+  }
 }
 
 export const newsService = new NewsService();

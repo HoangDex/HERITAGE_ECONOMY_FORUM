@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { Send, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -26,6 +26,12 @@ export function ContactForm() {
     queryLoai && REQUEST_TYPE_OPTIONS.some((opt) => opt.id === queryLoai) ? queryLoai : "tham-du";
 
   const [requestType, setRequestType] = useState<ContactRequestType>(defaultRequestType);
+
+  useEffect(() => {
+    if (queryLoai && REQUEST_TYPE_OPTIONS.some((opt) => opt.id === queryLoai)) {
+      setRequestType(queryLoai);
+    }
+  }, [queryLoai]);
   const [fullName, setFullName] = useState("");
   const [organization, setOrganization] = useState("");
   const [title, setTitle] = useState("");
@@ -63,11 +69,11 @@ export function ContactForm() {
   if (result?.success) {
     return (
       <div className="p-8 sm:p-12 bg-white rounded-3xl border border-[#dfd7c8] shadow-xs text-center space-y-4">
-        <div className="w-16 h-16 rounded-full bg-[#76232D]/10 text-[#76232D] flex items-center justify-center mx-auto">
+        <div className="w-16 h-16 rounded-full bg-[#0D4838]/10 text-[#0D4838] flex items-center justify-center mx-auto">
           <CheckCircle2 className="w-8 h-8" />
         </div>
         <h3 className="text-2xl font-bold text-[#292929]">Gửi Yêu Cầu Thành Công!</h3>
-        <div className="inline-block p-3 bg-[#F5EFE5] rounded-xl border border-[#dfd7c8] text-sm font-mono text-[#76232D]">
+        <div className="inline-block p-3 bg-[#F5EFE5] rounded-xl border border-[#dfd7c8] text-sm font-mono text-[#0D4838]">
           Mã số tiếp nhận: <strong>{result.trackingCode}</strong>
         </div>
         <p className="text-sm text-[#5c554b] max-w-md mx-auto leading-relaxed">
@@ -77,7 +83,7 @@ export function ContactForm() {
         <div className="pt-3">
           <Button
             variant="outline"
-            className="border-[#76232D] text-[#76232D] hover:bg-[#76232D]/10 font-medium"
+            className="border-[#0D4838] text-[#0D4838] hover:bg-[#0D4838]/10 font-medium"
             onClick={() => {
               setResult(null);
               setMessage("");
@@ -91,10 +97,12 @@ export function ContactForm() {
   }
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="p-6 sm:p-8 bg-white rounded-3xl border border-[#dfd7c8] shadow-xs space-y-5"
-    >
+    <div id="form" className="scroll-mt-28">
+      <form
+        id="contact-form"
+        onSubmit={handleSubmit}
+        className="scroll-mt-28 p-6 sm:p-8 bg-white rounded-3xl border border-[#dfd7c8] shadow-xs space-y-5"
+      >
       <div className="space-y-1">
         <h3 className="text-xl font-bold text-[#292929]">Biểu Mẫu Tiếp Nhận Chính Thức</h3>
         <p className="text-xs text-[#5c554b]">
@@ -106,7 +114,7 @@ export function ContactForm() {
       <div className="space-y-1.5">
         <label className="text-xs font-semibold text-[#292929]">Nhóm Yêu Cầu *</label>
         <select
-          className="w-full text-xs h-10 px-3 rounded-lg border border-[#dfd7c8] bg-white text-[#292929] focus:outline-[#76232D]"
+          className="w-full text-xs h-10 px-3 rounded-lg border border-[#dfd7c8] bg-white text-[#292929] focus:outline-[#0D4838]"
           value={requestType}
           onChange={(e) => setRequestType(e.target.value as ContactRequestType)}
         >
@@ -185,7 +193,7 @@ export function ContactForm() {
           placeholder="Mô tả tóm tắt nội dung Quý vị muốn trao đổi cùng Ban Thư ký Diễn đàn..."
           value={message}
           onChange={(e) => setMessage(e.target.value)}
-          className="w-full text-xs p-3 rounded-lg border border-[#dfd7c8] bg-white text-[#292929] focus:outline-[#76232D]"
+          className="w-full text-xs p-3 rounded-lg border border-[#dfd7c8] bg-white text-[#292929] focus:outline-[#0D4838]"
         />
       </div>
 
@@ -195,7 +203,7 @@ export function ContactForm() {
           id="consent"
           checked={consent}
           onChange={(e) => setConsent(e.target.checked)}
-          className="mt-0.5 rounded text-[#76232D] focus:ring-[#76232D]"
+          className="mt-0.5 rounded text-[#0D4838] focus:ring-[#0D4838]"
         />
         <label htmlFor="consent" className="cursor-pointer leading-relaxed">
           Tôi xác nhận đồng ý để Diễn đàn lưu trữ và xử lý thông tin liên hệ cho mục đích điều phối
@@ -207,11 +215,12 @@ export function ContactForm() {
         type="submit"
         size="lg"
         disabled={isSubmitting}
-        className="w-full bg-[#76232D] hover:bg-[#76232D]/90 text-white gap-2 font-medium shadow-sm"
+        className="w-full bg-[#0D4838] hover:bg-[#0D4838]/90 text-white gap-2 font-medium shadow-sm"
       >
         <Send className="w-4 h-4" />
         {isSubmitting ? "Đang xử lý tiếp nhận..." : "Gửi Thông Tin Yêu Cầu"}
       </Button>
     </form>
+  </div>
   );
 }

@@ -13,7 +13,7 @@ export function AwardsProcessSection({ steps }: AwardsProcessSectionProps) {
     <section className="py-14">
       <div className="container mx-auto px-4 sm:px-8 max-w-7xl space-y-8">
         <FadeIn direction="up" className="space-y-3">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider bg-[#76232D]/10 text-[#76232D]">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider bg-[#0D4838]/10 text-[#0D4838]">
             Quy Trình Xét Chọn
           </div>
           <h2 className="text-2xl sm:text-4xl font-extrabold text-[#292929] tracking-tight">
@@ -31,7 +31,7 @@ export function AwardsProcessSection({ steps }: AwardsProcessSectionProps) {
               <InteractiveCard className="p-5 rounded-2xl bg-white border border-[#dfd7c8] shadow-2xs hover:shadow-sm transition-all flex flex-col justify-between space-y-3 relative group h-full">
                 <div className="space-y-2">
                   <div className="flex items-center justify-between">
-                    <div className="w-8 h-8 rounded-full bg-[#76232D] text-white flex items-center justify-center font-bold text-sm">
+                    <div className="w-8 h-8 rounded-full bg-[#0D4838] text-white flex items-center justify-center font-bold text-sm">
                       0{st.step}
                     </div>
                     {idx < steps.length - 1 && (
@@ -39,7 +39,7 @@ export function AwardsProcessSection({ steps }: AwardsProcessSectionProps) {
                     )}
                   </div>
 
-                  <div className="flex items-center gap-1.5 text-xs text-[#76232D] font-medium">
+                  <div className="flex items-center gap-1.5 text-xs text-[#0D4838] font-medium">
                     <Clock className="w-3.5 h-3.5" />
                     <span>{st.timeframe}</span>
                   </div>

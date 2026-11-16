@@ -12,8 +12,8 @@ interface NewsArticleCardProps {
 
 export function NewsArticleCard({ article }: NewsArticleCardProps) {
   return (
-    <Link href={`/tin-tuc/${article.slug}`} className="group block h-full">
-      <Card className="border border-[#dfd7c8] bg-white overflow-hidden shadow-xs hover:shadow-md transition-all h-full flex flex-col justify-between hover:border-[#76232D]">
+    <Link href={`/news/${article.slug}`} className="group block h-full">
+      <Card className="border border-[#dfd7c8] bg-white overflow-hidden shadow-xs hover:shadow-md transition-all h-full flex flex-col justify-between hover:border-[#0D4838]">
         <div>
           <div className="relative aspect-16/10 w-full bg-[#dfd7c8]/40 overflow-hidden">
             <Image
@@ -24,7 +24,7 @@ export function NewsArticleCard({ article }: NewsArticleCardProps) {
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             />
             <div className="absolute top-3 left-3">
-              <Badge className="bg-[#76232D] text-white text-[11px] font-medium shadow-xs">
+              <Badge className="bg-[#0D4838] text-white text-[11px] font-medium shadow-xs">
                 {article.categoryName}
               </Badge>
             </div>
@@ -43,7 +43,7 @@ export function NewsArticleCard({ article }: NewsArticleCardProps) {
               </span>
             </div>
 
-            <h3 className="text-base font-bold text-[#292929] group-hover:text-[#76232D] transition-colors line-clamp-2 leading-snug">
+            <h3 className="text-base font-bold text-[#292929] group-hover:text-[#0D4838] transition-colors line-clamp-2 leading-snug">
               {article.title}
             </h3>
 
@@ -51,7 +51,7 @@ export function NewsArticleCard({ article }: NewsArticleCardProps) {
           </CardContent>
         </div>
 
-        <div className="p-5 pt-0 border-t border-[#dfd7c8]/50 flex items-center justify-between text-xs font-semibold text-[#76232D] mt-2">
+        <div className="p-5 pt-0 border-t border-[#dfd7c8]/50 flex items-center justify-between text-xs font-semibold text-[#0D4838] mt-2">
           <span className="truncate max-w-[140px] text-[#5c554b] font-normal">
             {article.author.name}
           </span>

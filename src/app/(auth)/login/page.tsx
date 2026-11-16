@@ -17,9 +17,9 @@ export default function LoginPage() {
           height="100%"
           viewBox="0 0 800 800"
         >
-          <circle cx="400" cy="400" r="300" stroke="#76232D" strokeWidth="2" fill="none" />
+          <circle cx="400" cy="400" r="300" stroke="#0D4838" strokeWidth="2" fill="none" />
           <circle cx="400" cy="400" r="240" stroke="#C29B57" strokeWidth="1.5" fill="none" />
-          <circle cx="400" cy="400" r="180" stroke="#76232D" strokeWidth="1" fill="none" />
+          <circle cx="400" cy="400" r="180" stroke="#0D4838" strokeWidth="1" fill="none" />
           <circle cx="400" cy="400" r="100" stroke="#C29B57" strokeWidth="2" fill="none" />
           {Array.from({ length: 12 }).map((_, i) => (
             <line

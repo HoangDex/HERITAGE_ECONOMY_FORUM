@@ -36,11 +36,11 @@ export function HeritageDetail({ project }: HeritageDetailProps) {
   return (
     <div className="space-y-8 max-w-5xl mx-auto">
       {/* Navigation */}
-      <Link href="/du-an">
+      <Link href="/projects">
         <Button
           variant="ghost"
           size="sm"
-          className="gap-2 pl-0 hover:bg-transparent text-[#76232D] hover:text-[#52181F] font-semibold cursor-pointer"
+          className="gap-2 pl-0 hover:bg-transparent text-[#0D4838] hover:text-[#073327] font-semibold cursor-pointer"
         >
           <ArrowLeft className="w-4 h-4" /> Quay lại danh mục dự án kinh tế
         </Button>
@@ -62,7 +62,7 @@ export function HeritageDetail({ project }: HeritageDetailProps) {
           {/* Badges and Location on Top of Hero */}
           <div className="absolute top-4 sm:top-6 left-4 sm:left-6 right-4 sm:right-6 flex flex-wrap items-center justify-between gap-3">
             <div className="flex items-center gap-2">
-              <Badge className="bg-[#76232D] text-white font-semibold text-xs border border-white/20 shadow-md">
+              <Badge className="bg-[#0D4838] text-white font-semibold text-xs border border-white/20 shadow-md">
                 {project.category}
               </Badge>
               <Badge
@@ -95,7 +95,7 @@ export function HeritageDetail({ project }: HeritageDetailProps) {
           <div className="space-y-3">
             <div className="flex flex-wrap items-center justify-between gap-3">
               <div className="flex items-center gap-2">
-                <Badge variant="outline" className="border-[#C29B57] text-[#76232D]">
+                <Badge variant="outline" className="border-[#C29B57] text-[#0D4838]">
                   {project.category}
                 </Badge>
                 <Badge
@@ -109,7 +109,7 @@ export function HeritageDetail({ project }: HeritageDetailProps) {
                 </Badge>
               </div>
               <span className="text-xs text-[#5c554b] flex items-center gap-1">
-                <MapPin className="w-4 h-4 text-[#76232D]" /> {project.location}
+                <MapPin className="w-4 h-4 text-[#0D4838]" /> {project.location}
               </span>
             </div>
             <h1 className="text-3xl sm:text-4xl font-serif font-bold tracking-tight text-[#292929]">
@@ -134,7 +134,7 @@ export function HeritageDetail({ project }: HeritageDetailProps) {
               <TrendingUp className="w-4 h-4 text-emerald-600" />
               Doanh thu ước tính
             </div>
-            <div className="text-xl sm:text-2xl font-bold text-[#76232D]">
+            <div className="text-xl sm:text-2xl font-bold text-[#0D4838]">
               {project.economicMetrics.annualRevenue}
             </div>
           </div>
@@ -163,7 +163,7 @@ export function HeritageDetail({ project }: HeritageDetailProps) {
 
       {/* Highlights Section */}
       <div className="bg-white border border-[#dfd7c8] rounded-3xl p-6 sm:p-8 space-y-4 shadow-xs">
-        <h2 className="text-xl font-serif font-bold text-[#76232D] flex items-center gap-2">
+        <h2 className="text-xl font-serif font-bold text-[#0D4838] flex items-center gap-2">
           <Building className="w-5 h-5 text-[#C29B57]" /> Điểm Cốt Lõi Của Mô Hình & Tác Động Cộng
           Đồng
         </h2>
@@ -184,12 +184,12 @@ export function HeritageDetail({ project }: HeritageDetailProps) {
       {photos.length > 0 && (
         <div className="bg-white border border-[#dfd7c8] rounded-3xl p-6 sm:p-8 space-y-4 shadow-xs">
           <div className="flex items-center justify-between gap-2">
-            <h2 className="text-xl font-serif font-bold text-[#76232D] flex items-center gap-2">
+            <h2 className="text-xl font-serif font-bold text-[#0D4838] flex items-center gap-2">
               <Camera className="w-5 h-5 text-[#C29B57]" /> Hình Ảnh Thực Tế & Không Gian Di Sản
             </h2>
             <Badge
               variant="outline"
-              className="border-[#C29B57] text-[#76232D] text-xs font-semibold"
+              className="border-[#C29B57] text-[#0D4838] text-xs font-semibold"
             >
               {photos.length} tư liệu ảnh
             </Badge>
@@ -220,7 +220,7 @@ export function HeritageDetail({ project }: HeritageDetailProps) {
       )}
 
       {/* Action CTA */}
-      <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-6 sm:p-8 rounded-3xl bg-gradient-to-r from-[#76232D] to-[#52181F] text-white border-2 border-[#C29B57] shadow-lg">
+      <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-6 sm:p-8 rounded-3xl bg-gradient-to-r from-[#0D4838] to-[#073327] text-white border-2 border-[#C29B57] shadow-lg">
         <div className="space-y-1 text-center sm:text-left">
           <h3 className="font-serif font-bold text-lg sm:text-xl text-[#F5EFE5]">
             Quan tâm và muốn kết nối với mô hình này?
@@ -231,7 +231,7 @@ export function HeritageDetail({ project }: HeritageDetailProps) {
           </p>
         </div>
         <div className="flex items-center gap-3 shrink-0">
-          <Link href="/lien-he?loai=hop-tac">
+          <Link href="/contact?loai=hop-tac#contact-form">
             <Button className="bg-[#C29B57] hover:bg-[#a98342] text-[#292929] font-bold cursor-pointer h-11 px-6 shadow-md">
               Đăng ký Kết nối
             </Button>

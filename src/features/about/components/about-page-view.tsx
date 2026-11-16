@@ -20,23 +20,12 @@ interface AboutPageViewProps {
 }
 
 export function AboutPageView({ initialData }: AboutPageViewProps) {
-  const {
-    activeTab,
-    scrollToSection,
-    selectedPerson,
-    isModalOpen,
-    openPersonModal,
-    closePersonModal,
-  } = useAbout();
+  const { selectedPerson, isModalOpen, openPersonModal, closePersonModal } = useAbout();
 
   return (
     <div className="min-h-screen bg-background text-foreground flex flex-col">
-      {/* 1. BANNER & STICKY ANCHOR TABS */}
-      <AboutBanner
-        activeTab={activeTab}
-        onSelectTab={scrollToSection}
-        lastUpdated={initialData.lastUpdated}
-      />
+      {/* 1. BANNER GIỚI THIỆU */}
+      <AboutBanner lastUpdated={initialData.lastUpdated} />
 
       <main className="flex-1">
         {/* 2. MỤC 6.1: TẦM NHÌN – SỨ MỆNH – GIÁ TRỊ CỐT LÕI */}
@@ -55,6 +44,7 @@ export function AboutPageView({ initialData }: AboutPageViewProps) {
         {/* 4. MỤC 6.3: BAN ĐIỀU HÀNH & CƠ CẤU CHUYÊN TRÁCH */}
         <ExecutiveSection
           head={initialData.executiveHead}
+          advisor={initialData.executiveAdvisor}
           deputies={initialData.executiveDeputies}
           departments={initialData.executiveDepartments}
           onOpenPersonModal={openPersonModal}

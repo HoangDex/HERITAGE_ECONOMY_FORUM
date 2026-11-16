@@ -30,7 +30,7 @@ export function NewsPageView({ data }: NewsPageViewProps) {
       <div className="container mx-auto px-4 sm:px-8 max-w-7xl space-y-8">
         {/* Header Section */}
         <FadeIn direction="up" className="space-y-3">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider bg-[#76232D]/10 text-[#76232D]">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider bg-[#0D4838]/10 text-[#0D4838]">
             Trung Tâm Tri Thức & Truyền Thông
           </div>
           <h1 className="text-3xl sm:text-5xl font-extrabold text-[#292929] tracking-tight">
@@ -54,8 +54,8 @@ export function NewsPageView({ data }: NewsPageViewProps) {
                 onClick={() => setSelectedCategory("all")}
                 className={`px-3.5 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-colors cursor-pointer ${
                   selectedCategory === "all"
-                    ? "bg-[#76232D] text-white shadow-xs"
-                    : "bg-white text-[#5c554b] border border-[#dfd7c8] hover:border-[#76232D]"
+                    ? "bg-[#0D4838] text-white shadow-xs"
+                    : "bg-white text-[#5c554b] border border-[#dfd7c8] hover:border-[#0D4838]"
                 }`}
               >
                 Tất cả chuyên mục
@@ -66,8 +66,8 @@ export function NewsPageView({ data }: NewsPageViewProps) {
                   onClick={() => setSelectedCategory(cat.slug)}
                   className={`px-3.5 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-colors cursor-pointer ${
                     selectedCategory === cat.slug
-                      ? "bg-[#76232D] text-white shadow-xs"
-                      : "bg-white text-[#5c554b] border border-[#dfd7c8] hover:border-[#76232D]"
+                      ? "bg-[#0D4838] text-white shadow-xs"
+                      : "bg-white text-[#5c554b] border border-[#dfd7c8] hover:border-[#0D4838]"
                   }`}
                 >
                   {cat.name}

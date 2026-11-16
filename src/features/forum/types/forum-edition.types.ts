@@ -1,6 +1,6 @@
 /**
  * LAYER 1: TYPES & DOMAIN ENTITIES CHO KỲ DIỄN ĐÀN (FORUM EDITIONS)
- * Theo Đề án Mục 07. DIỄN ĐÀN – FORUM
+ * Tuân thủ tuyệt đối Đề án Mục 07. DIỄN ĐÀN – FORUM
  */
 
 export type ForumEditionStatus = "upcoming" | "ongoing" | "concluded";
@@ -9,7 +9,7 @@ export interface Speaker {
   id: string;
   name: string;
   degree?: string; // Học hàm / học vị: GS.TS, PGS.TS, TS
-  title: string; // Chức vụ
+  title: string; // Chức danh / chức vụ
   organization: string; // Đơn vị công tác
   avatarUrl: string; // Tỉ lệ 4:5
   bio: string;
@@ -50,6 +50,14 @@ export interface ForumResource {
   category: "ky-yeu" | "chuong-trinh" | "tham-luan" | "bao-cao";
 }
 
+export interface ForumGalleryItem {
+  id: string;
+  type: "photo" | "video";
+  title: string;
+  url: string;
+  thumbnailUrl: string;
+}
+
 export interface ForumEdition {
   id: string;
   slug: string; // "2026", "2025"
@@ -57,15 +65,20 @@ export interface ForumEdition {
   title: string;
   theme: string;
   datesText: string;
+  startDateIso: string; // Asia/Ho_Chi_Minh (GMT+7)
+  endDateIso: string; // Asia/Ho_Chi_Minh (GMT+7)
+  isDateConfirmed: boolean; // false nếu là kế hoạch dự kiến chờ xác nhận chính thức
   venueName: string;
   venueAddress: string;
   scaleDescription: string;
   organizer: string;
   status: ForumEditionStatus;
+  outcomesSummary?: string; // Dành riêng cho kỳ đã kết thúc (kết quả, tuyên bố chung)
   sessions: ForumSession[];
   timeline: ForumTimelineSlot[];
   speakers: Speaker[];
   resources: ForumResource[];
+  gallery?: ForumGalleryItem[];
 }
 
 export interface IForumRepository {

@@ -17,10 +17,10 @@ interface HeritageCardProps {
 }
 
 export function HeritageCard({ project }: HeritageCardProps) {
-  const detailHref = `/du-an/${project.slug || project.id}`;
+  const detailHref = `/projects/${project.slug || project.id}`;
 
   return (
-    <Card className="flex flex-col h-full hover:border-[#76232D] transition-all shadow-xs hover:shadow-md group overflow-hidden rounded-2xl bg-white border border-[#dfd7c8]">
+    <Card className="flex flex-col h-full hover:border-[#0D4838] transition-all shadow-xs hover:shadow-md group overflow-hidden rounded-2xl bg-white border border-[#dfd7c8]">
       {project.imageUrl && (
         <div className="relative w-full aspect-[16/10] bg-[#dfd7c8]/30 overflow-hidden">
           <Image
@@ -32,7 +32,7 @@ export function HeritageCard({ project }: HeritageCardProps) {
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
           <div className="absolute top-3 left-3 right-3 flex items-center justify-between gap-2">
-            <Badge className="bg-[#76232D]/90 backdrop-blur-md text-[#F5EFE5] text-[11px] font-semibold border border-white/20 shadow-sm">
+            <Badge className="bg-[#0D4838]/90 backdrop-blur-md text-[#F5EFE5] text-[11px] font-semibold border border-white/20 shadow-sm">
               {project.category}
             </Badge>
             <Badge
@@ -66,7 +66,7 @@ export function HeritageCard({ project }: HeritageCardProps) {
             </Badge>
           </div>
         )}
-        <CardTitle className="text-lg font-serif font-bold text-[#292929] group-hover:text-[#76232D] transition-colors leading-snug">
+        <CardTitle className="text-lg font-serif font-bold text-[#292929] group-hover:text-[#0D4838] transition-colors leading-snug">
           <Link href={detailHref} className="hover:text-primary transition-colors">
             {project.name}
           </Link>
@@ -86,7 +86,7 @@ export function HeritageCard({ project }: HeritageCardProps) {
               <TrendingUp className="w-3 h-3 text-emerald-600" />
               Doanh thu
             </div>
-            <div className="font-bold text-xs text-[#76232D]">
+            <div className="font-bold text-xs text-[#0D4838]">
               {project.economicMetrics.annualRevenue}
             </div>
           </div>
@@ -116,7 +116,7 @@ export function HeritageCard({ project }: HeritageCardProps) {
         </span>
         <Link
           href={detailHref}
-          className="inline-flex items-center gap-1 text-xs font-semibold text-[#76232D] hover:text-[#C29B57] transition-colors"
+          className="inline-flex items-center gap-1 text-xs font-semibold text-[#0D4838] hover:text-[#C29B57] transition-colors"
         >
           Chi tiết <ArrowRight className="w-3.5 h-3.5" />
         </Link>

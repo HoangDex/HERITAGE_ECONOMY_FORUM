@@ -39,26 +39,7 @@ export async function createPostAction(input: CreatePostInput): Promise<ApiRespo
 
     return {
       success: true,
-      data: {
-        id: dbPost.id,
-        title: dbPost.title,
-        slug: dbPost.slug,
-        content: dbPost.content,
-        category: dbPost.category,
-        tags: (dbPost.tags as string[]) || [],
-        author: {
-          id: dbPost.author.id,
-          name: dbPost.author.name,
-          organization: dbPost.author.organization || undefined,
-          role: dbPost.author.role,
-        },
-        upvotes: dbPost.upvotesCount,
-        commentsCount: dbPost.commentsCount,
-        views: dbPost.viewsCount,
-        isPinned: dbPost.isPinned,
-        createdAt: dbPost.createdAt.toISOString(),
-        updatedAt: dbPost.updatedAt.toISOString(),
-      },
+      data: dbPost,
       message: "Tạo bài thảo luận thành công",
     };
   } catch {

@@ -64,7 +64,7 @@ export function PersonDetailDialog({ person, isOpen, onClose }: PersonDetailDial
                 priority
               />
               <div className="absolute top-2 left-2">
-                <Badge className="bg-[#76232D] text-white border border-[#C29B57]/40">
+                <Badge className="bg-[#0D4838] text-white border border-[#C29B57]/40">
                   {person.academicTitle}
                 </Badge>
               </div>
@@ -91,7 +91,7 @@ export function PersonDetailDialog({ person, isOpen, onClose }: PersonDetailDial
               </div>
               <h2
                 id="person-dialog-title"
-                className="text-2xl sm:text-3xl font-bold font-serif text-[#76232D] dark:text-[#F5EFE5] leading-tight"
+                className="text-2xl sm:text-3xl font-bold font-serif text-[#0D4838] dark:text-[#F5EFE5] leading-tight"
               >
                 {person.fullName}
               </h2>
@@ -114,7 +114,7 @@ export function PersonDetailDialog({ person, isOpen, onClose }: PersonDetailDial
                 <Briefcase className="w-4 h-4 text-[#C29B57] shrink-0 mt-0.5" />
                 <div>
                   <span className="text-xs text-muted-foreground block">Lĩnh vực chuyên môn:</span>
-                  <span className="font-medium text-[#76232D] dark:text-[#C29B57]">
+                  <span className="font-medium text-[#0D4838] dark:text-[#C29B57]">
                     {person.expertiseField}
                   </span>
                 </div>
@@ -153,7 +153,7 @@ export function PersonDetailDialog({ person, isOpen, onClose }: PersonDetailDial
             {/* Tham luận & Công trình nghiên cứu liên quan */}
             {person.papers && person.papers.length > 0 && (
               <div>
-                <h3 className="text-xs font-bold uppercase tracking-wider text-[#76232D] dark:text-[#C29B57] flex items-center gap-1.5 mb-2">
+                <h3 className="text-xs font-bold uppercase tracking-wider text-[#0D4838] dark:text-[#C29B57] flex items-center gap-1.5 mb-2">
                   <BookOpen className="w-4 h-4" /> Tham luận & Đề tài liên quan (
                   {person.papers.length})
                 </h3>

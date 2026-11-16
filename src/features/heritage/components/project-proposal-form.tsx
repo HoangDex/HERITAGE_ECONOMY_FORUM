@@ -39,15 +39,15 @@ export function ProjectProposalForm() {
     <div className="py-10 sm:py-14">
       <div className="container mx-auto px-4 sm:px-8 max-w-4xl space-y-8">
         <Link
-          href="/du-an"
-          className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#76232D] hover:underline"
+          href="/projects"
+          className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#0D4838] hover:underline"
         >
           <ArrowLeft className="w-4 h-4" />
           Quay lại Danh mục Dự án
         </Link>
 
         <div className="space-y-3">
-          <Badge className="bg-[#76232D] text-white">Cổng Tiếp Nhận Dự Án</Badge>
+          <Badge className="bg-[#0D4838] text-white">Cổng Tiếp Nhận Dự Án</Badge>
           <h1 className="text-2xl sm:text-4xl font-extrabold text-[#292929] tracking-tight">
             Gửi Đề Xuất Mô Hình & Dự Án Kinh Tế Di Sản
           </h1>
@@ -60,11 +60,11 @@ export function ProjectProposalForm() {
 
         {isSubmitted ? (
           <div className="p-8 sm:p-12 bg-white rounded-3xl border border-[#dfd7c8] shadow-sm text-center space-y-4">
-            <div className="w-16 h-16 rounded-full bg-[#76232D]/10 text-[#76232D] flex items-center justify-center mx-auto">
+            <div className="w-16 h-16 rounded-full bg-[#0D4838]/10 text-[#0D4838] flex items-center justify-center mx-auto">
               <CheckCircle2 className="w-8 h-8" />
             </div>
             <h2 className="text-2xl font-bold text-[#292929]">Tiếp Nhận Đề Xuất Thành Công!</h2>
-            <div className="inline-block p-3 bg-[#F5EFE5] rounded-xl border border-[#dfd7c8] text-sm font-mono text-[#76232D]">
+            <div className="inline-block p-3 bg-[#F5EFE5] rounded-xl border border-[#dfd7c8] text-sm font-mono text-[#0D4838]">
               Mã theo dõi hồ sơ: <strong>{requestId}</strong>
             </div>
             <p className="text-sm text-[#5c554b] max-w-md mx-auto leading-relaxed">
@@ -72,8 +72,8 @@ export function ProjectProposalForm() {
               03 ngày làm việc qua email: <strong>{formData.email}</strong>.
             </p>
             <div className="pt-4">
-              <Link href="/du-an">
-                <Button className="bg-[#76232D] text-white hover:bg-[#76232D]/90">
+              <Link href="/projects">
+                <Button className="bg-[#0D4838] text-white hover:bg-[#0D4838]/90">
                   Về Trang Danh Mục Dự Án
                 </Button>
               </Link>
@@ -85,7 +85,7 @@ export function ProjectProposalForm() {
             className="p-6 sm:p-10 bg-white rounded-3xl border border-[#dfd7c8] shadow-sm space-y-6"
           >
             <div className="space-y-4 pb-6 border-b border-[#dfd7c8]">
-              <h3 className="text-base font-bold text-[#292929] uppercase tracking-wider text-[#76232D]">
+              <h3 className="text-base font-bold text-[#292929] uppercase tracking-wider text-[#0D4838]">
                 1. Thông tin Chủ thể / Đơn vị thực hiện
               </h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -136,7 +136,7 @@ export function ProjectProposalForm() {
             </div>
 
             <div className="space-y-4 pb-6 border-b border-[#dfd7c8]">
-              <h3 className="text-base font-bold text-[#292929] uppercase tracking-wider text-[#76232D]">
+              <h3 className="text-base font-bold text-[#292929] uppercase tracking-wider text-[#0D4838]">
                 2. Nội dung Mô hình / Dự án Di sản
               </h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -201,7 +201,7 @@ export function ProjectProposalForm() {
             </div>
 
             <div className="flex items-center gap-2 text-xs text-[#5c554b]">
-              <ShieldCheck className="w-4 h-4 text-[#76232D] shrink-0" />
+              <ShieldCheck className="w-4 h-4 text-[#0D4838] shrink-0" />
               <span>
                 Tôi cam kết thông tin và dữ liệu minh chứng gửi kèm là chính xác và cho phép Diễn
                 đàn xác minh thực tế.
@@ -212,7 +212,7 @@ export function ProjectProposalForm() {
               <Button
                 type="submit"
                 size="lg"
-                className="bg-[#76232D] hover:bg-[#76232D]/90 text-white w-full sm:w-auto gap-2 font-medium"
+                className="bg-[#0D4838] hover:bg-[#0D4838]/90 text-white w-full sm:w-auto gap-2 font-medium"
               >
                 <Send className="w-4 h-4" />
                 Gửi Hồ Sơ Đề Xuất Dự Án

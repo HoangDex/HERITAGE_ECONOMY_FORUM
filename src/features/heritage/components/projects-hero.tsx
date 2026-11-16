@@ -8,16 +8,16 @@ import { FadeIn } from "@/components/animations";
 
 export function ProjectsHero() {
   return (
-    <section className="relative overflow-hidden bg-gradient-to-b from-[#76232D]/12 via-[#F5EFE5] to-[#F5EFE5] border-b border-[#dfd7c8] py-14 sm:py-18">
+    <section className="relative overflow-hidden bg-gradient-to-b from-[#0D4838]/12 via-[#F5EFE5] to-[#F5EFE5] border-b border-[#dfd7c8] py-14 sm:py-18">
       <div className="container mx-auto px-4 sm:px-8 max-w-7xl">
         <FadeIn direction="up" className="max-w-4xl space-y-6">
           <div className="flex flex-wrap items-center gap-2">
-            <Badge className="bg-[#76232D] text-white hover:bg-[#76232D]/90 font-medium px-3 py-1">
+            <Badge className="bg-[#0D4838] text-white hover:bg-[#0D4838]/90 font-medium px-3 py-1">
               Cơ Sở Dữ Liệu Thực Tiễn
             </Badge>
             <Badge
               variant="outline"
-              className="border-[#C29B57] text-[#76232D] font-medium bg-white/80"
+              className="border-[#C29B57] text-[#0D4838] font-medium bg-white/80"
             >
               Mô Hình Điển Hình
             </Badge>
@@ -33,10 +33,10 @@ export function ProjectsHero() {
           </p>
 
           <div className="flex flex-wrap items-center gap-4 pt-2">
-            <Link href="/du-an/de-xuat">
+            <Link href="/contact?loai=du-an#contact-form">
               <Button
                 size="lg"
-                className="bg-[#76232D] hover:bg-[#76232D]/90 text-white gap-2 shadow-md font-medium cursor-pointer"
+                className="bg-[#0D4838] hover:bg-[#0D4838]/90 text-white gap-2 shadow-md font-medium cursor-pointer"
               >
                 <PlusCircle className="w-5 h-5" />
                 Gửi Đề Xuất Dự Án Mới
@@ -47,7 +47,7 @@ export function ProjectsHero() {
               <Button
                 size="lg"
                 variant="outline"
-                className="border-[#76232D] text-[#76232D] hover:bg-[#76232D]/10 gap-2 font-medium cursor-pointer"
+                className="border-[#0D4838] text-[#0D4838] hover:bg-[#0D4838]/10 gap-2 font-medium cursor-pointer"
               >
                 <Compass className="w-4 h-4" />
                 Khám Phá Các Nhóm Dự Án

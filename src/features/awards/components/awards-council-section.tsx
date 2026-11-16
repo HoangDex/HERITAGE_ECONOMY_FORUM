@@ -14,17 +14,17 @@ interface AwardsCouncilSectionProps {
 
 export function AwardsCouncilSection({ judges }: AwardsCouncilSectionProps) {
   return (
-    <section className="py-16 bg-gradient-to-b from-[#F5EFE5]/40 via-white to-[#F5EFE5]/40 border-t border-[#dfd7c8]">
+    <section className="py-16 bg-gradient-to-b from-[#F7F5EE]/40 via-white to-[#F7F5EE]/40 border-t border-[#dfd7c8]">
       <div className="container mx-auto px-4 sm:px-8 max-w-7xl space-y-12">
         <FadeIn direction="up" className="space-y-3">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider bg-[#76232D]/10 text-[#76232D]">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider bg-[#0D4838]/10 text-[#0D4838]">
             <ShieldCheck className="w-3.5 h-3.5 text-[#C29B57]" />
             <span>Ban Giám Khảo Độc Lập</span>
           </div>
-          <h2 className="text-2xl sm:text-4xl font-serif font-bold text-[#76232D] tracking-tight">
+          <h2 className="text-2xl sm:text-4xl font-serif font-bold text-[#0D4838] tracking-tight">
             Hội Đồng Thẩm Định Giải Thưởng
           </h2>
-          <p className="text-[#5c554b] max-w-3xl text-sm sm:text-base leading-relaxed">
+          <p className="text-[#4A5E57] max-w-3xl text-sm sm:text-base leading-relaxed">
             Hội đồng giám khảo độc lập quy tụ các nhà khoa học, chuyên gia bảo tồn hàng đầu và đại
             diện tổ chức quốc tế uy tín, bảo đảm tính khách quan, khoa học và minh bạch cao nhất.
           </p>
@@ -45,11 +45,11 @@ export function AwardsCouncilSection({ judges }: AwardsCouncilSectionProps) {
                         className="object-cover object-top group-hover:scale-105 transition-transform duration-500"
                         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-70" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-[#041D16]/70 via-transparent to-transparent" />
 
                       {/* Role Badge */}
                       <div className="absolute top-3 right-3 z-10">
-                        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#76232D]/90 text-[#F5EFE5] text-[11px] font-semibold tracking-wide border border-[#C29B57]/60 shadow-md backdrop-blur-md">
+                        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#0D4838]/90 text-[#F7F5EE] text-[11px] font-semibold tracking-wide border border-[#C29B57]/60 shadow-md backdrop-blur-md">
                           <Sparkles className="w-3 h-3 text-[#C29B57] shrink-0" />
                           <span>{jd.role}</span>
                         </span>
@@ -57,15 +57,15 @@ export function AwardsCouncilSection({ judges }: AwardsCouncilSectionProps) {
                     </div>
 
                     <div className="p-5 space-y-1.5">
-                      <h3 className="text-lg font-serif font-bold text-[#76232D] group-hover:text-[#52181F] transition-colors leading-snug">
+                      <h3 className="text-lg font-serif font-bold text-[#0D4838] group-hover:text-[#073327] transition-colors leading-snug">
                         {jd.name}
                       </h3>
-                      <p className="text-xs font-semibold text-[#292929]">{jd.title}</p>
+                      <p className="text-xs font-semibold text-[#132A24]">{jd.title}</p>
                     </div>
                   </div>
 
                   <div className="p-5 pt-0">
-                    <div className="pt-3 border-t border-[#dfd7c8]/60 flex items-start gap-2 text-xs text-[#5c554b]">
+                    <div className="pt-3 border-t border-[#dfd7c8]/60 flex items-start gap-2 text-xs text-[#4A5E57]">
                       <Building2 className="w-3.5 h-3.5 text-[#C29B57] shrink-0 mt-0.5" />
                       <span className="leading-snug">{jd.organization}</span>
                     </div>
@@ -79,13 +79,13 @@ export function AwardsCouncilSection({ judges }: AwardsCouncilSectionProps) {
         {/* CTA Nộp đề cử */}
         <FadeIn
           direction="up"
-          className="rounded-3xl bg-gradient-to-br from-[#76232D] via-[#52181F] to-[#292929] p-8 sm:p-12 text-white relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-8 shadow-xl border-2 border-[#C29B57]"
+          className="rounded-3xl bg-gradient-to-br from-[#0D4838] via-[#073327] to-[#041D16] p-8 sm:p-12 text-white relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-8 shadow-xl border-2 border-[#C29B57]"
         >
           <div className="space-y-3 max-w-2xl text-center md:text-left">
-            <Badge className="bg-[#C29B57] text-[#292929] font-bold px-3 py-1 uppercase tracking-wider">
+            <Badge className="bg-[#C29B57] text-[#041D16] font-bold px-3 py-1 uppercase tracking-wider">
               Cổng Đề Cử 2026 Đang Mở
             </Badge>
-            <h3 className="text-2xl sm:text-4xl font-serif font-bold tracking-tight text-[#F5EFE5]">
+            <h3 className="text-2xl sm:text-4xl font-serif font-bold tracking-tight text-[#F7F5EE]">
               Đề Cử Sáng Kiến & Doanh Nghiệp Của Bạn
             </h3>
             <p className="text-white/85 text-sm sm:text-base leading-relaxed">
@@ -95,20 +95,20 @@ export function AwardsCouncilSection({ judges }: AwardsCouncilSectionProps) {
           </div>
 
           <div className="shrink-0 flex flex-col sm:flex-row gap-3">
-            <Link href="/lien-he?loai=giai-thuong">
+            <Link href="/contact?loai=giai-thuong#contact-form">
               <Button
                 size="lg"
-                className="bg-[#C29B57] hover:bg-[#a98342] text-[#292929] font-bold shadow-lg h-12 px-8 cursor-pointer"
+                className="bg-[#C29B57] hover:bg-[#a98342] text-[#041D16] font-bold shadow-lg h-12 px-8 cursor-pointer"
               >
                 <span>Nộp Hồ Sơ Đề Cử</span>
                 <ArrowRight className="w-4 h-4 ml-2" />
               </Button>
             </Link>
-            <Link href="/giai-thuong#quy-che">
+            <Link href="/awards#quy-che">
               <Button
                 variant="outline"
                 size="lg"
-                className="border-white/40 text-[#F5EFE5] hover:bg-white/10 hover:text-white h-12 px-6 cursor-pointer"
+                className="border-white/40 text-[#F7F5EE] hover:bg-white/10 hover:text-white h-12 px-6 cursor-pointer"
               >
                 <span>Xem Quy Chế Bình Chọn</span>
               </Button>
