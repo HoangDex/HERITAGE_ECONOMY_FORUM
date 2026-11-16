@@ -144,27 +144,37 @@ checkRule(3, "Bảo vệ ranh giới Repository (Cấm export Repository ở ind
   };
 });
 
-// 4. Kiểm tra Prisma 7 không khai báo url trong schema.prisma
-checkRule(4, "Chuẩn Prisma 7 (Datasource URL trong prisma.config.ts)", () => {
+// 4. Kiểm tra Prisma 7 không khai báo url trong schema
+checkRule(4, "Chuẩn Prisma 7 (Datasource URL trong prisma.config.ts & Multi-file Schemas)", () => {
   const schemaPath = path.join(process.cwd(), "src/prisma/schema.prisma");
+  const schemaDir = path.join(process.cwd(), "src/prisma/schema");
   const configPath = path.join(process.cwd(), "prisma.config.ts");
 
-  if (!fs.existsSync(schemaPath))
-    return { passed: false, details: "Không tìm thấy src/prisma/schema.prisma" };
+  if (!fs.existsSync(schemaPath) && !fs.existsSync(schemaDir))
+    return { passed: false, details: "Không tìm thấy src/prisma/schema.prisma hoặc thư mục src/prisma/schema" };
   if (!fs.existsSync(configPath))
     return { passed: false, details: "Không tìm thấy prisma.config.ts" };
 
-  const schemaContent = fs.readFileSync(schemaPath, "utf-8");
-  if (/url\s*=\s*env\(/.test(schemaContent)) {
-    return {
-      passed: false,
-      details: "Phát hiện thuộc tính 'url' trong schema.prisma (vi phạm chuẩn Prisma 7)",
-    };
+  const filesToCheck: string[] = [];
+  if (fs.existsSync(schemaPath)) filesToCheck.push(schemaPath);
+  if (fs.existsSync(schemaDir)) {
+    const files = fs.readdirSync(schemaDir).filter((f) => f.endsWith(".prisma")).map((f) => path.join(schemaDir, f));
+    filesToCheck.push(...files);
+  }
+
+  for (const file of filesToCheck) {
+    const schemaContent = fs.readFileSync(file, "utf-8");
+    if (/url\s*=\s*env\(/.test(schemaContent)) {
+      return {
+        passed: false,
+        details: `Phát hiện thuộc tính 'url' trong ${path.relative(process.cwd(), file)} (vi phạm chuẩn Prisma 7)`,
+      };
+    }
   }
 
   return {
     passed: true,
-    details: "src/prisma/schema.prisma tuân thủ chuẩn Prisma 7, url cấu hình tại prisma.config.ts.",
+    details: "Schema Prisma (multi-file) tuân thủ chuẩn Prisma 7, url cấu hình tại prisma.config.ts.",
   };
 });
 

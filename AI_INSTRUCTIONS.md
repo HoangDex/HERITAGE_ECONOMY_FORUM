@@ -3,7 +3,7 @@
 # Dành cho mọi AI Assistant (Claude, Cursor, Copilot, Antigravity, Gemini, ChatGPT, v.v.)
 
 Tài liệu này là **Single Source of Truth (SSOT)** về quy chuẩn lập trình, kiến trúc mã nguồn và phong cách viết code trong dự án **Heritage Economy Forum (HEF)**.
-Mọi AI khi thực hiện tác vụ sinh code, chỉnh sửa, refactor hoặc tư vấn BẮT BUỘC phải đọc và tuân thủ các quy tắc dưới đây, đồng thời tham chiếu chi tiết tại [docs/HEF_CMS_CODING_RULES.md](file:///d:/Project_intern/HERITAGE_ECONOMY_FORUM/docs/HEF_CMS_CODING_RULES.md).
+Mọi AI khi thực hiện tác vụ sinh code, chỉnh sửa, refactor hoặc tư vấn BẮT BUỘC phải đọc và tuân thủ các quy tắc dưới đây, đồng thời tham chiếu chi tiết tại [docs/HEF_CMS_CODING_RULES.md](file:///d:/Project_intern/HERITAGE_ECONOMY_FORUM/docs/HEF_CMS_CODING_RULES.md) và hệ thống thiết kế giao diện tại [DESIGN.md](file:///d:/Project_intern/HERITAGE_ECONOMY_FORUM/DESIGN.md).
 
 ---
 

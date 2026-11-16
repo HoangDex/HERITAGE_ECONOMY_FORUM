@@ -107,7 +107,7 @@ export const INITIAL_HERITAGE_PROJECTS: HeritageProject[] = [
       "https://images.unsplash.com/photo-1528127269322-539801943592?auto=format&fit=crop&w=1200&h=750&q=85",
     gallery: [
       "https://images.unsplash.com/photo-1528127269322-539801943592?auto=format&fit=crop&w=800&h=500&q=80",
-      "https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?auto=format&fit=crop&w=800&h=500&q=80",
+      "https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?auto=format&fit=crop&w=800&h=500&q=80",
     ],
     economicMetrics: {
       annualRevenue: "120 tỷ VNĐ",
@@ -156,9 +156,9 @@ export const INITIAL_HERITAGE_PROJECTS: HeritageProject[] = [
     category: "Làng nghề & Thủ công",
     status: "Đang vận hành",
     imageUrl:
-      "https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?auto=format&fit=crop&w=1200&h=750&q=85",
+      "https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?auto=format&fit=crop&w=1200&h=750&q=85",
     gallery: [
-      "https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?auto=format&fit=crop&w=800&h=500&q=80",
+      "https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?auto=format&fit=crop&w=800&h=500&q=80",
       "https://images.unsplash.com/photo-1528127269322-539801943592?auto=format&fit=crop&w=800&h=500&q=80",
     ],
     economicMetrics: {

@@ -10,6 +10,7 @@ Dự án cung cấp bộ tài liệu kỹ thuật chi tiết theo chuẩn công 
 
 - 📐 [**Chuẩn Mực Kỹ Thuật Phần Mềm & Next.js (SOLID, Clean Code, React 19)**](./docs/NEXTJS_AND_SOFTWARE_ENGINEERING_STANDARDS.md)
 - 🏛️ [**Kiến Trúc Hệ Thống (Clean Architecture 7-Layer & Feature Apps)**](./docs/ARCHITECTURE.md)
+- 🎨 [**Quy Chuẩn Thiết Kế & Hệ Thống UI/UX (Design System Guidelines)**](./DESIGN.md)
 - 🗄️ [**Cơ Sở Dữ Liệu: Prisma 7 & MySQL Pool Adapter**](./docs/PRISMA7_DATABASE.md)
 - ⏱️ [**Quy Chuẩn Code & Định Dạng Request/Response/Datetime VN**](./docs/CODING_STANDARDS.md)
 - 🤖 [**Bộ Hướng Dẫn AI Dùng Chung Cho Mọi Trợ Lý (Universal AI Coding Rules)**](./AI_INSTRUCTIONS.md)
