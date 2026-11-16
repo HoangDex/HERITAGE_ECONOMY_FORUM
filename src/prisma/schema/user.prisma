@@ -1,0 +1,17 @@
+enum Role {
+  ADMIN
+  EDITOR
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique @db.VarChar(191)
+  name         String   @db.VarChar(150)
+  passwordHash String?  @db.VarChar(255)
+  role         Role     @default(ADMIN)
+  avatarUrl    String?  @db.VarChar(255)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@map("users")
+}

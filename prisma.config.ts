@@ -10,7 +10,7 @@ if (typeof process.loadEnvFile === "function") {
 }
 
 export default defineConfig({
-  schema: "src/prisma/schema.prisma",
+  schema: "src/prisma",
   datasource: {
     url: process.env.DATABASE_URL || "mysql://root:root@localhost:3306/heritage_economy_forum_db",
   },

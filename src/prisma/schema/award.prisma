@@ -1,0 +1,52 @@
+model Award {
+  id                 String          @id @default(cuid())
+  pageSlug           String?         @db.VarChar(150) // Query qua slug trang CMS (/awards)
+  pageName           String?         @db.VarChar(150) // Query qua tên trang CMS ("Giải thưởng")
+  page               Page?           @relation(fields: [pageSlug], references: [slug], onDelete: SetNull)
+  year               Int             @unique
+  name               String          @db.VarChar(255)
+  theme              String          @db.VarChar(255)
+  nominationDeadline DateTime
+  rulesUrl           String?         @db.VarChar(255)
+  isOpen             Boolean         @default(true)
+  categories         AwardCategory[]
+  createdAt          DateTime        @default(now())
+  updatedAt          DateTime        @updatedAt
+
+  @@index([pageSlug])
+  @@map("awards")
+}
+
+model AwardCategory {
+  id          String            @id @default(cuid())
+  awardId     String
+  award       Award             @relation(fields: [awardId], references: [id], onDelete: Cascade)
+  name        String            @db.VarChar(255)
+  slug        String            @unique @db.VarChar(100)
+  description String            @db.Text
+  criteria    Json?
+  nominations AwardNomination[]
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+
+  @@index([awardId])
+  @@map("award_categories")
+}
+
+model AwardNomination {
+  id            String        @id @default(cuid())
+  categoryId    String
+  category      AwardCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  applicantName String        @db.VarChar(150)
+  applicantOrg  String        @db.VarChar(255)
+  email         String        @db.VarChar(191)
+  phone         String        @db.VarChar(50)
+  projectName   String        @db.VarChar(255)
+  dossierUrl    String?       @db.VarChar(255)
+  status        String        @default("SUBMITTED") @db.VarChar(50)
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  @@index([categoryId])
+  @@map("award_nominations")
+}

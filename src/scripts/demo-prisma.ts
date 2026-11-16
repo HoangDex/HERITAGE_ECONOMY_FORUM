@@ -25,19 +25,19 @@ async function runPrismaDemo() {
     return;
   }
 
-  // 2. Thử nghiệm UserService
-  console.log("\n2️⃣  Thử nghiệm UserService (Tạo & truy vấn User):");
-  const testEmail = `expert_${Date.now()}@disan.vn`;
+  // 2. Thử nghiệm UserService (Admin duy nhất)
+  console.log("\n2️⃣  Thử nghiệm UserService (Admin duy nhất):");
+  const testEmail = `admin_${Date.now()}@hef.vn`;
   const newUser = await userService.create({
     email: testEmail,
-    name: "Chuyên gia Mẫu",
-    role: "EXPERT",
-    organization: "Trung tâm Bảo tồn Di sản Cố đô",
+    name: "Admin Quản Trị Hệ Thống",
+    role: "ADMIN",
+    organization: "Ban Tổ Chức Diễn Đàn HEF",
   });
-  console.log("   - Đã tạo user:", { id: newUser.id, email: newUser.email, role: newUser.role });
+  console.log("   - Đã tạo admin:", { id: newUser.id, email: newUser.email, role: newUser.role });
 
-  // 3. Thử nghiệm PostService
-  console.log("\n3️⃣  Thử nghiệm PostService (Tạo bài viết & upvote):");
+  // 3. Thử nghiệm PostService (In-memory mock)
+  console.log("\n3️⃣  Thử nghiệm PostService (In-memory mock):");
   const testSlug = `thao-luan-mau-${Date.now()}`;
   const newPost = await postService.create({
     title: "Mô hình số hóa 3D lăng tẩm và khai thác vé tham quan ảo",
@@ -51,7 +51,7 @@ async function runPrismaDemo() {
 
   // Upvote thử nghiệm
   const updatedPost = await postService.upvote(newPost.id, newUser.id);
-  console.log("   - Đã upvote bài viết, số lượt thích mới:", updatedPost.upvotesCount);
+  console.log("   - Đã upvote bài viết, số lượt thích mới:", updatedPost?.upvotes || 0);
 
   // 4. Thử nghiệm HeritageService
   console.log("\n4️⃣  Thử nghiệm HeritageService (Thống kê chỉ số kinh tế):");

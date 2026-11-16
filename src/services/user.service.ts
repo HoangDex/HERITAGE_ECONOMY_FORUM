@@ -21,11 +21,6 @@ export class UserService {
   async findById(id: string) {
     return prisma.user.findUnique({
       where: { id },
-      include: {
-        _count: {
-          select: { posts: true, comments: true },
-        },
-      },
     });
   }
 
@@ -35,7 +30,7 @@ export class UserService {
         email: data.email,
         name: data.name,
         passwordHash: data.passwordHash,
-        role: data.role || "USER",
+        role: data.role || "ADMIN",
         organization: data.organization,
         avatarUrl: data.avatarUrl,
         bio: data.bio,

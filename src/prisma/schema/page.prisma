@@ -1,0 +1,27 @@
+model Page {
+  id          String    @id @default(cuid())
+  slug        String    @unique @db.VarChar(150)
+  name        String    @db.VarChar(150)
+  title       String    @db.VarChar(255)
+  description String?   @db.Text
+  seoProps    Json? // Metadata SEO mở rộng: { metaTitle, metaDescription, ogImage, keywords }
+  sections    Json // Toàn bộ dữ liệu của page được lưu vào JSON (props, components, v.v.)
+  isPublished Boolean   @default(false)
+  order       Int       @default(0)
+  publishedAt DateTime?
+
+  // LIÊN KẾT ĐẾN CÁC BẢNG KHÁC THÔNG QUA SLUG + TÊN PAGE
+  news        News[] // Tin tức thuộc page (liên kết qua pageSlug)
+  projects    HeritageProject[] // Dự án thuộc page (liên kết qua pageSlug)
+  editions    ForumEdition[] // Kỳ diễn đàn thuộc page (liên kết qua pageSlug)
+  awards      Award[] // Kỳ giải thưởng thuộc page (liên kết qua pageSlug)
+  partners    PageOrganization[] // Đối tác thuộc page (liên kết qua pageSlug)
+  submissions ContactSubmission[] // CTA nộp form thuộc page (liên kết qua pageSlug)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([slug])
+  @@index([isPublished])
+  @@map("pages")
+}

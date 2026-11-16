@@ -1,4 +1,5 @@
-import { prisma } from "@/lib/prisma";
+import { INITIAL_POSTS } from "@/lib/mock-data";
+import type { Post } from "@/features/forum/types/post";
 
 export interface CreatePostData {
   title: string;
@@ -16,108 +17,77 @@ export interface PostQueryFilters {
   page?: number;
 }
 
+/**
+ * Service in-memory cho các mock posts thảo luận cũ
+ * Hệ thống đã chuyển đổi sang mô hình 1 Admin duy nhất và không có client user.
+ */
 export class PostService {
+  private posts: Post[] = [...INITIAL_POSTS];
+
   async getPosts(filters?: PostQueryFilters) {
     const page = filters?.page || 1;
     const limit = filters?.limit || 20;
     const skip = (page - 1) * limit;
 
-    const where: Record<string, unknown> = {};
+    let filtered = [...this.posts];
 
     if (filters?.category && filters.category !== "all") {
-      where.category = filters.category;
+      filtered = filtered.filter((p) => p.category.toLowerCase() === filters.category?.toLowerCase());
     }
 
     if (filters?.search) {
-      where.OR = [
-        { title: { contains: filters.search } },
-        { content: { contains: filters.search } },
-      ];
+      const q = filters.search.toLowerCase();
+      filtered = filtered.filter(
+        (p) => p.title.toLowerCase().includes(q) || p.content.toLowerCase().includes(q)
+      );
     }
 
-    const [items, total] = await Promise.all([
-      prisma.post.findMany({
-        where,
-        include: {
-          author: {
-            select: {
-              id: true,
-              name: true,
-              organization: true,
-              avatarUrl: true,
-              role: true,
-            },
-          },
-        },
-        orderBy: [{ isPinned: "desc" }, { createdAt: "desc" }],
-        skip,
-        take: limit,
-      }),
-      prisma.post.count({ where }),
-    ]);
+    const items = filtered.slice(skip, skip + limit);
 
     return {
       items,
-      total,
+      total: filtered.length,
       page,
       limit,
-      totalPages: Math.ceil(total / limit),
+      totalPages: Math.ceil(filtered.length / limit),
     };
   }
 
   async getPostBySlug(slug: string) {
-    return prisma.post.findUnique({
-      where: { slug },
-      include: {
-        author: true,
-        comments: {
-          include: { author: true },
-          orderBy: { createdAt: "asc" },
-        },
-      },
-    });
+    return this.posts.find((p) => p.slug === slug) || null;
   }
 
-  async create(data: CreatePostData) {
-    return prisma.post.create({
-      data: {
-        title: data.title,
-        slug: data.slug,
-        content: data.content,
-        category: data.category,
-        tags: data.tags || [],
-        authorId: data.authorId,
+  async create(data: CreatePostData): Promise<Post> {
+    const now = new Date().toISOString();
+    const newPost: Post = {
+      id: `post_${Date.now()}`,
+      title: data.title,
+      slug: data.slug,
+      content: data.content,
+      category: data.category,
+      tags: data.tags || [],
+      author: {
+        id: data.authorId,
+        name: "Admin Quản Trị",
+        role: "ADMIN",
+        organization: "Ban Quản trị HEF",
       },
-      include: { author: true },
-    });
+      upvotes: 0,
+      commentsCount: 0,
+      views: 1,
+      createdAt: now,
+      updatedAt: now,
+    };
+    this.posts.unshift(newPost);
+    return newPost;
   }
 
-  async upvote(postId: string, userId: string) {
-    return prisma.$transaction(async (tx) => {
-      const existing = await tx.postUpvote.findUnique({
-        where: {
-          postId_userId: { postId, userId },
-        },
-      });
-
-      if (existing) {
-        await tx.postUpvote.delete({
-          where: { id: existing.id },
-        });
-        return tx.post.update({
-          where: { id: postId },
-          data: { upvotesCount: { decrement: 1 } },
-        });
-      }
-
-      await tx.postUpvote.create({
-        data: { postId, userId },
-      });
-      return tx.post.update({
-        where: { id: postId },
-        data: { upvotesCount: { increment: 1 } },
-      });
-    });
+  async upvote(postId: string, _userId: string) {
+    const post = this.posts.find((p) => p.id === postId);
+    if (post) {
+      post.upvotes += 1;
+    }
+    return post;
   }
 }
 

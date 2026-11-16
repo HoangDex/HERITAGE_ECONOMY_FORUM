@@ -1,83 +1,25 @@
-import { prisma } from "../lib/prisma";
-import { INITIAL_POSTS, INITIAL_HERITAGE_PROJECTS } from "../lib/mock-data";
+import { prisma } from "./prisma.service";
+import { INITIAL_HERITAGE_PROJECTS } from "../lib/mock-data";
 
 async function main() {
   console.log("🌱 Bắt đầu gieo mầm dữ liệu mẫu (Seeding Database)...");
 
-  // 1. Tạo Users mẫu
-  const user1 = await prisma.user.upsert({
-    where: { email: "chuyengia.hue@disan.vn" },
+  // 1. Tạo 1 Admin duy nhất quản lý website CMS HEF
+  const admin = await prisma.user.upsert({
+    where: { email: "admin@hef.vn" },
     update: {},
     create: {
-      email: "chuyengia.hue@disan.vn",
-      name: "TS. Lê Quang Đạt",
-      role: "EXPERT",
-      organization: "Hội Kiến trúc sư Di sản",
-      bio: "Chuyên gia bảo tồn kiến trúc nhà rường và di tích cố đô Huế với hơn 20 năm kinh nghiệm.",
+      email: "admin@hef.vn",
+      name: "Ban Quản Trị Hệ Thống HEF",
+      role: "ADMIN",
+      organization: "Hội Di sản Văn hóa Việt Nam & HEI",
+      bio: "Quản trị viên chuyên trách hệ thống CMS Diễn đàn Kinh tế Di sản Việt Nam.",
     },
   });
 
-  const user2 = await prisma.user.upsert({
-    where: { email: "congnghe@disan.vn" },
-    update: {},
-    create: {
-      email: "congnghe@disan.vn",
-      name: "Trần Minh Thảo",
-      role: "EXPERT",
-      organization: "Trung tâm Đổi mới Sáng tạo Văn hóa",
-      bio: "Nghiên cứu Digital Twin, AR/VR và số hóa di sản phi vật thể.",
-    },
-  });
+  console.log(`✅ Đã tạo tài khoản Admin duy nhất: ${admin.email} (${admin.name}).`);
 
-  const user3 = await prisma.user.upsert({
-    where: { email: "chinhsach@disan.vn" },
-    update: {},
-    create: {
-      email: "chinhsach@disan.vn",
-      name: "Bà Nguyễn Thu Trang",
-      role: "POLICYMAKER",
-      organization: "Viện Nghiên cứu Quản lý Kinh tế Trung ương",
-      bio: "Tư vấn chính sách ưu đãi thuế, tín dụng xanh cho doanh nghiệp di sản.",
-    },
-  });
-
-  console.log(`✅ Đã tạo ${[user1, user2, user3].length} người dùng mẫu.`);
-
-  // 2. Tạo Posts mẫu
-  for (const post of INITIAL_POSTS) {
-    let authorId = user1.id;
-    if (post.author.name.includes("Thảo")) authorId = user2.id;
-    if (post.author.name.includes("Trang")) authorId = user3.id;
-
-    await prisma.post.upsert({
-      where: { slug: post.slug },
-      update: {},
-      create: {
-        title: post.title,
-        slug: post.slug,
-        content: post.content,
-        category: post.category,
-        tags: post.tags,
-        upvotesCount: post.upvotes,
-        commentsCount: post.commentsCount,
-        viewsCount: post.views,
-        isPinned: post.isPinned || false,
-        authorId,
-        comments: {
-          create: [
-            {
-              content:
-                "Đề xuất rất khả thi, chúng tôi đang chuẩn bị áp dụng thử nghiệm tại địa phương.",
-              authorId: user3.id,
-            },
-          ],
-        },
-      },
-    });
-  }
-  console.log(`✅ Đã tạo ${INITIAL_POSTS.length} bài thảo luận diễn đàn mẫu.`);
-
-  // 3. Tạo Heritage Projects mẫu
+  // 2. Tạo Heritage Projects mẫu
   for (const proj of INITIAL_HERITAGE_PROJECTS) {
     const slug = proj.name
       .toLowerCase()
