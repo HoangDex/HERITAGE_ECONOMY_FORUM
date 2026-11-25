@@ -9,6 +9,13 @@ import { z } from "zod";
 // 1. SECTION: HERO TRANG CHỦ
 // ==========================================
 
+export const homeHeroMetricSchema = z.object({
+  value: z.number(),
+  suffix: z.string().optional(),
+  prefix: z.string().optional(),
+  label: z.string(),
+});
+
 export const homeHeroPropsSchema = z.object({
   title: z.string().min(1, "Tiêu đề tiếng Anh không được rỗng"),
   vietnameseTitle: z.string().min(1, "Tiêu đề tiếng Việt không được rỗng"),
@@ -26,6 +33,10 @@ export const homeHeroPropsSchema = z.object({
   imageAlt: z.string().default("Diễn đàn Kinh tế Di sản Việt Nam"),
   badgeText: z.string().default("NỀN TẢNG ĐỐI THOẠI & KẾT NỐI QUỐC GIA"),
   videoUrl: z.string().optional(),
+  videoTitle: z.string().optional(),
+  locationBadge: z.string().optional(),
+  editionBadge: z.string().optional(),
+  metrics: z.array(homeHeroMetricSchema).optional(),
 });
 
 export const homeHeroSectionSchema = z.object({
@@ -104,6 +115,7 @@ export const eventSessionSchema = z.object({
   description: z.string().optional(),
   room: z.string().optional(),
   chairperson: z.string().optional(),
+  imageUrl: z.string().optional(),
   speakers: z.array(eventSpeakerSchema).optional(),
 });
 

@@ -22,6 +22,24 @@ import type { ApiResponse } from "@/types";
 import type { PageEntity } from "../types/page.types";
 
 /**
+ * Hàm hỗ trợ revalidate đồng bộ cả Admin CMS và Website công khai (bao gồm Route `/` cho trang chủ)
+ */
+function revalidatePageAndPublic(slug: string, pageId?: string) {
+  try {
+    revalidatePath("/admin/pages");
+    if (pageId) {
+      revalidatePath(`/admin/pages/${pageId}`);
+    }
+    revalidatePath(`/${slug}`);
+    if (slug === "home" || slug === "trang-chu") {
+      revalidatePath("/");
+    }
+  } catch (err) {
+    console.warn("[revalidatePageAndPublic] warning:", err);
+  }
+}
+
+/**
  * Server Action: Tạo mới một trang web
  */
 export async function createPageAction(input: CreatePageInput): Promise<ApiResponse<PageEntity>> {
@@ -35,8 +53,7 @@ export async function createPageAction(input: CreatePageInput): Promise<ApiRespo
 
   try {
     const page = await pageService.createPage(validation.data);
-    revalidatePath("/admin/pages");
-    revalidatePath(`/${page.slug}`);
+    revalidatePageAndPublic(page.slug, page.id);
     return {
       success: true,
       data: page,
@@ -69,8 +86,7 @@ export async function updatePageAction(
     const updated = await pageService.updatePage(id, validation.data);
     if (!updated) return { success: false, error: "Không tìm thấy trang" };
 
-    revalidatePath("/admin/pages");
-    revalidatePath(`/${updated.slug}`);
+    revalidatePageAndPublic(updated.slug, id);
     return {
       success: true,
       data: updated,
@@ -103,8 +119,7 @@ export async function addSectionAction(
     const updated = await pageService.addSection(pageId, validation.data);
     if (!updated) return { success: false, error: "Không tìm thấy trang để thêm section" };
 
-    revalidatePath("/admin/pages");
-    revalidatePath(`/${updated.slug}`);
+    revalidatePageAndPublic(updated.slug, pageId);
     return {
       success: true,
       data: updated,
@@ -138,8 +153,7 @@ export async function updateSectionAction(
     const updated = await pageService.updateSection(pageId, sectionId, validation.data);
     if (!updated) return { success: false, error: "Không tìm thấy trang hoặc section" };
 
-    revalidatePath("/admin/pages");
-    revalidatePath(`/${updated.slug}`);
+    revalidatePageAndPublic(updated.slug, pageId);
     return {
       success: true,
       data: updated,
@@ -172,8 +186,7 @@ export async function reorderSectionsAction(
     const updated = await pageService.reorderSections(pageId, validation.data.sectionIds);
     if (!updated) return { success: false, error: "Không tìm thấy trang" };
 
-    revalidatePath("/admin/pages");
-    revalidatePath(`/${updated.slug}`);
+    revalidatePageAndPublic(updated.slug, pageId);
     return {
       success: true,
       data: updated,
@@ -199,8 +212,7 @@ export async function toggleSectionVisibilityAction(
     const updated = await pageService.toggleSection(pageId, sectionId, isVisible);
     if (!updated) return { success: false, error: "Không tìm thấy trang hoặc section" };
 
-    revalidatePath("/admin/pages");
-    revalidatePath(`/${updated.slug}`);
+    revalidatePageAndPublic(updated.slug, pageId);
     return {
       success: true,
       data: updated,
@@ -225,9 +237,7 @@ export async function removeSectionAction(
     const updated = await pageService.removeSection(pageId, sectionId);
     if (!updated) return { success: false, error: "Không tìm thấy trang hoặc section để xóa" };
 
-    revalidatePath("/admin/pages");
-    revalidatePath(`/admin/pages/${pageId}`);
-    revalidatePath(`/${updated.slug}`);
+    revalidatePageAndPublic(updated.slug, pageId);
     return {
       success: true,
       data: updated,
@@ -240,3 +250,28 @@ export async function removeSectionAction(
     };
   }
 }
+
+/**
+ * Server Action: Xóa trang CMS
+ */
+export async function deletePageAction(id: string): Promise<ApiResponse<null>> {
+  try {
+    const page = await pageService.getPageById(id);
+    const slug = page?.slug || id;
+    const deleted = await pageService.deletePage(id);
+    if (!deleted) return { success: false, error: "Không tìm thấy trang để xóa" };
+
+    revalidatePageAndPublic(slug, id);
+    return {
+      success: true,
+      data: null,
+      message: "Đã xóa trang thành công",
+    };
+  } catch (error) {
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : "Lỗi khi xóa trang",
+    };
+  }
+}
+

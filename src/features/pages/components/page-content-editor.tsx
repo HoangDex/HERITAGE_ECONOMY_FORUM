@@ -1,18 +1,20 @@
 "use client";
 
-import React, { useState, useTransition } from "react";
+import React, { useState, useEffect } from "react";
 import { CheckCircle, AlertCircle } from "lucide-react";
-import {
-  updatePageAction,
-  addSectionAction,
-  updateSectionAction,
-  removeSectionAction,
-  reorderSectionsAction,
-  toggleSectionVisibilityAction,
-} from "../actions/page.actions";
 import type { PageEntity, PageSection, SectionType } from "../types/page.types";
+import {
+  usePageDetailQuery,
+  useReorderSectionsMutation,
+  useToggleSectionVisibilityMutation,
+  useUpdateSectionMutation,
+  useRemoveSectionMutation,
+  useAddSectionMutation,
+  useUpdatePageMutation,
+} from "../hooks/use-page-sections-query";
 import { EditorHeader } from "./editor-header";
 import { EditorTabsNav, type EditorTabType } from "./editor-tabs-nav";
+import { SectionDashboardView } from "./section-dashboard-view";
 import { SectionsTab } from "./sections-tab";
 import { SettingsTab } from "./settings-tab";
 import { LayoutMockupTab } from "./layout-mockup-tab";
@@ -24,9 +26,27 @@ interface PageContentEditorProps {
 }
 
 export function PageContentEditor({ initialPage }: PageContentEditorProps) {
-  const [page, setPage] = useState<PageEntity>(initialPage);
-  const [activeTab, setActiveTab] = useState<EditorTabType>("sections");
-  const [isPending, startTransition] = useTransition();
+  // TanStack Query Cache State & Mutations
+  const { data: page = initialPage } = usePageDetailQuery(initialPage);
+  const reorderMutation = useReorderSectionsMutation(page.id);
+  const toggleVisibilityMutation = useToggleSectionVisibilityMutation(page.id);
+  const updateSectionMutation = useUpdateSectionMutation(page.id);
+  const removeSectionMutation = useRemoveSectionMutation(page.id);
+  const addSectionMutation = useAddSectionMutation(page.id);
+  const updatePageMutation = useUpdatePageMutation(page.id);
+
+  const isPending =
+    reorderMutation.isPending ||
+    toggleVisibilityMutation.isPending ||
+    updateSectionMutation.isPending ||
+    removeSectionMutation.isPending ||
+    addSectionMutation.isPending ||
+    updatePageMutation.isPending;
+
+  const [activeTab, setActiveTab] = useState<EditorTabType>("dashboard");
+  const [selectedSectionId, setSelectedSectionId] = useState<string>(
+    page.sections[0]?.id || ""
+  );
   const [feedback, setFeedback] = useState<{ type: "success" | "error"; message: string } | null>(
     null
   );
@@ -54,13 +74,36 @@ export function PageContentEditor({ initialPage }: PageContentEditorProps) {
   const [metaDescription, setMetaDescription] = useState(page.seoProps?.metaDescription || "");
   const [ogImage, setOgImage] = useState(page.seoProps?.ogImage || "");
 
+  const isFirstMount = React.useRef(true);
+  useEffect(() => {
+    if (isFirstMount.current) {
+      isFirstMount.current = false;
+      return;
+    }
+    setPageTitle(page.title);
+    setPageDescription(page.description || "");
+    setIsPublished(page.isPublished);
+    setMetaTitle(page.seoProps?.metaTitle || "");
+    setMetaDescription(page.seoProps?.metaDescription || "");
+    setOgImage(page.seoProps?.ogImage || "");
+  }, [page.id, page.updatedAt]);
+
+  const feedbackTimerRef = React.useRef<NodeJS.Timeout | null>(null);
+
   const showNotification = (type: "success" | "error", message: string) => {
+    if (feedbackTimerRef.current) clearTimeout(feedbackTimerRef.current);
     setFeedback({ type, message });
-    setTimeout(() => setFeedback(null), 4000);
+    feedbackTimerRef.current = setTimeout(() => setFeedback(null), 4000);
   };
 
+  useEffect(() => {
+    return () => {
+      if (feedbackTimerRef.current) clearTimeout(feedbackTimerRef.current);
+    };
+  }, []);
+
   // 1. Move Section Up/Down
-  const handleMove = (currentIndex: number, direction: "up" | "down") => {
+  const handleMove = async (currentIndex: number, direction: "up" | "down") => {
     const targetIndex = direction === "up" ? currentIndex - 1 : currentIndex + 1;
     if (targetIndex < 0 || targetIndex >= page.sections.length) return;
 
@@ -68,40 +111,29 @@ export function PageContentEditor({ initialPage }: PageContentEditorProps) {
     const [moved] = reordered.splice(currentIndex, 1);
     reordered.splice(targetIndex, 0, moved);
 
-    const updatedWithOrder = reordered.map((sec, idx) => ({ ...sec, order: idx + 1 }));
-    setPage((prev) => ({ ...prev, sections: updatedWithOrder }));
-
-    const sectionIds = updatedWithOrder.map((s) => s.id);
-    startTransition(async () => {
-      const res = await reorderSectionsAction(page.id, sectionIds);
-      if (res.success && res.data) {
-        setPage(res.data);
-        showNotification("success", "Đã cập nhật thứ tự các khối section");
-      } else {
-        showNotification("error", res.error || "Lỗi cập nhật thứ tự");
-      }
-    });
+    const sectionIds = reordered.map((s) => s.id);
+    try {
+      await reorderMutation.mutateAsync(sectionIds);
+      showNotification("success", "Đã cập nhật thứ tự các khối section");
+    } catch (err: unknown) {
+      showNotification("error", err instanceof Error ? err.message : "Lỗi cập nhật thứ tự");
+    }
   };
 
   // 2. Toggle Section Visibility
-  const handleToggleVisibility = (section: PageSection) => {
-    const updatedSections = page.sections.map((s) =>
-      s.id === section.id ? { ...s, isVisible: !s.isVisible } : s
-    );
-    setPage((prev) => ({ ...prev, sections: updatedSections }));
-
-    startTransition(async () => {
-      const res = await toggleSectionVisibilityAction(page.id, section.id, !section.isVisible);
-      if (res.success && res.data) {
-        setPage(res.data);
-        showNotification(
-          "success",
-          `Đã ${!section.isVisible ? "bật" : "tắt"} hiển thị khối "${section.title || section.type}"`
-        );
-      } else {
-        showNotification("error", res.error || "Lỗi thay đổi trạng thái");
-      }
-    });
+  const handleToggleVisibility = async (section: PageSection) => {
+    try {
+      await toggleVisibilityMutation.mutateAsync({
+        sectionId: section.id,
+        isVisible: !section.isVisible,
+      });
+      showNotification(
+        "success",
+        `Đã ${!section.isVisible ? "bật" : "tắt"} hiển thị khối "${section.title || section.type}"`
+      );
+    } catch (err: unknown) {
+      showNotification("error", err instanceof Error ? err.message : "Lỗi thay đổi trạng thái");
+    }
   };
 
   // 3. Open Edit Section Modal
@@ -114,7 +146,7 @@ export function PageContentEditor({ initialPage }: PageContentEditorProps) {
   };
 
   // 4. Save Edited Section
-  const handleSaveSection = () => {
+  const handleSaveSection = async () => {
     if (!editingSection) return;
 
     let parsedProps = {};
@@ -127,47 +159,43 @@ export function PageContentEditor({ initialPage }: PageContentEditorProps) {
       return;
     }
 
-    startTransition(async () => {
-      const res = await updateSectionAction(page.id, editingSection.id, {
-        title: editTitle,
-        subtitle: editSubtitle,
-        props: parsedProps,
+    try {
+      await updateSectionMutation.mutateAsync({
+        sectionId: editingSection.id,
+        dto: {
+          title: editTitle,
+          subtitle: editSubtitle,
+          props: parsedProps,
+        },
       });
-
-      if (res.success && res.data) {
-        setPage(res.data);
-        setEditingSection(null);
-        showNotification("success", "Đã lưu nội dung section thành công");
-      } else {
-        showNotification("error", res.error || "Lỗi lưu section");
-      }
-    });
+      setEditingSection(null);
+      showNotification("success", "Đã lưu nội dung section thành công");
+    } catch (err: unknown) {
+      showNotification("error", err instanceof Error ? err.message : "Lỗi lưu section");
+    }
   };
 
   // 5. Delete Section
-  const handleDeleteSection = (section: PageSection) => {
+  const handleDeleteSection = async (section: PageSection) => {
     if (!confirm(`Bạn có chắc chắn muốn xóa khối "${section.title || section.type}"?`)) return;
 
-    startTransition(async () => {
-      const res = await removeSectionAction(page.id, section.id);
-      if (res.success && res.data) {
-        setPage(res.data);
-        showNotification("success", `Đã xóa khối "${section.title || section.type}"`);
-      } else {
-        showNotification("error", res.error || "Lỗi khi xóa section");
-      }
-    });
+    try {
+      await removeSectionMutation.mutateAsync(section.id);
+      showNotification("success", `Đã xóa khối "${section.title || section.type}"`);
+    } catch (err: unknown) {
+      showNotification("error", err instanceof Error ? err.message : "Lỗi khi xóa section");
+    }
   };
 
   // 6. Add New Section
-  const handleAddSection = () => {
+  const handleAddSection = async () => {
     if (!newTitle.trim()) {
       showNotification("error", "Vui lòng nhập tiêu đề cho khối section mới");
       return;
     }
 
-    startTransition(async () => {
-      const res = await addSectionAction(page.id, {
+    try {
+      await addSectionMutation.mutateAsync({
         type: newType,
         title: newTitle,
         subtitle: newSubtitle,
@@ -175,23 +203,19 @@ export function PageContentEditor({ initialPage }: PageContentEditorProps) {
         isVisible: true,
         props: {},
       });
-
-      if (res.success && res.data) {
-        setPage(res.data);
-        setIsAddModalOpen(false);
-        setNewTitle("");
-        setNewSubtitle("");
-        showNotification("success", "Đã thêm khối section mới thành công");
-      } else {
-        showNotification("error", res.error || "Lỗi thêm section");
-      }
-    });
+      setIsAddModalOpen(false);
+      setNewTitle("");
+      setNewSubtitle("");
+      showNotification("success", "Đã thêm khối section mới thành công");
+    } catch (err: unknown) {
+      showNotification("error", err instanceof Error ? err.message : "Lỗi thêm section");
+    }
   };
 
   // 7. Save Page Settings & SEO
-  const handleSavePageSettings = () => {
-    startTransition(async () => {
-      const res = await updatePageAction(page.id, {
+  const handleSavePageSettings = async () => {
+    try {
+      await updatePageMutation.mutateAsync({
         title: pageTitle,
         description: pageDescription,
         isPublished,
@@ -201,20 +225,16 @@ export function PageContentEditor({ initialPage }: PageContentEditorProps) {
           ogImage,
         },
       });
-
-      if (res.success && res.data) {
-        setPage(res.data);
-        showNotification("success", "Đã cập nhật thông tin trang & SEO thành công");
-      } else {
-        showNotification("error", res.error || "Lỗi lưu thông tin trang");
-      }
-    });
+      showNotification("success", "Đã cập nhật thông tin trang & SEO thành công");
+    } catch (err: unknown) {
+      showNotification("error", err instanceof Error ? err.message : "Lỗi lưu thông tin trang");
+    }
   };
 
   const publicUrl = `/${page.slug === "trang-chu" ? "" : page.slug}`;
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       {/* Toast Notification */}
       {feedback && (
         <div
@@ -249,15 +269,36 @@ export function PageContentEditor({ initialPage }: PageContentEditorProps) {
         isPublished={page.isPublished}
         title={page.title}
         publicUrl={publicUrl}
-        onOpenAddModal={() => setIsAddModalOpen(true)}
       />
 
-      {/* Tabs Navigation */}
-      <EditorTabsNav
-        activeTab={activeTab}
-        onTabChange={setActiveTab}
-        sectionCount={page.sections.length}
-      />
+      {/* Tabs Navigation (Chỉ hiện khi ở ngoài tab dashboard vì tab dashboard đã tích hợp thanh nav dài duy nhất) */}
+      {activeTab !== "dashboard" && (
+        <EditorTabsNav
+          activeTab={activeTab}
+          onTabChange={setActiveTab}
+          sectionCount={page.sections.length}
+        />
+      )}
+
+      {/* Tab 0: Bảng Điều Khiển Khối Section (Tích hợp Thanh Nav Dài Duy Nhất & Live Preview) */}
+      {activeTab === "dashboard" && (
+        <SectionDashboardView
+          pageId={page.id}
+          pageSlug={page.slug}
+          sections={page.sections}
+          selectedSectionId={selectedSectionId || page.sections[0]?.id || ""}
+          onSelectSection={(secId) => setSelectedSectionId(secId)}
+          onSectionUpdated={() => {
+            showNotification("success", "Đã lưu cập nhật khối section thành công");
+          }}
+          onMoveSection={handleMove}
+          onToggleVisibility={handleToggleVisibility}
+          onDeleteSection={handleDeleteSection}
+          isPending={isPending}
+          activeTab={activeTab}
+          onTabChange={setActiveTab}
+        />
+      )}
 
       {/* Tab 1: Sections Dynamic List */}
       {activeTab === "sections" && (
@@ -268,6 +309,10 @@ export function PageContentEditor({ initialPage }: PageContentEditorProps) {
           onToggleVisibility={handleToggleVisibility}
           onEdit={openEditModal}
           onDelete={handleDeleteSection}
+          onSelectDashboard={(secId) => {
+            setSelectedSectionId(secId);
+            setActiveTab("dashboard");
+          }}
         />
       )}
 

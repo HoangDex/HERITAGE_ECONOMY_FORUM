@@ -1,22 +1,13 @@
 import React from "react";
-import { notFound } from "next/navigation";
-import { pageService, DashboardLiveEditor } from "@/features/pages";
+import { pageService, AdminOverviewDashboard } from "@/features/pages";
 
 export const metadata = {
-  title: "Quản Lý Trang Chủ & Bảng Điều Khiển | HEF Admin CMS",
-  description: "Chỉnh sửa nội dung Hero, Giới thiệu, Chuyên mục và Banner hỗ trợ",
+  title: "Bảng Điều Khiển Tổng Quan CMS | HEF Admin CMS",
+  description:
+    "Trung tâm điều hành và quản trị cấu trúc 7 trang chuyên đề Diễn đàn Kinh tế Di sản",
 };
 
 export default async function AdminDashboardPage() {
-  const page =
-    (await pageService.getPageBySlug("home")) || (await pageService.getPageBySlug("trang-chu"));
-  const fallbackPage = (await pageService.getAllPages())[0];
-
-  const targetPage = page || fallbackPage;
-
-  if (!targetPage) {
-    notFound();
-  }
-
-  return <DashboardLiveEditor initialPage={targetPage} />;
+  const pages = await pageService.getAllPages();
+  return <AdminOverviewDashboard pages={pages} />;
 }

@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Eye, EyeOff, ArrowUp, ArrowDown, Edit3, Trash2 } from "lucide-react";
+import { Eye, EyeOff, ArrowUp, ArrowDown, Edit3, Trash2, Sliders } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import type { PageSection } from "../types/page.types";
@@ -16,6 +16,7 @@ interface SectionItemCardProps {
   onToggleVisibility: () => void;
   onEdit: () => void;
   onDelete: () => void;
+  onOpenDashboard?: () => void;
 }
 
 export function SectionItemCard({
@@ -28,6 +29,7 @@ export function SectionItemCard({
   onToggleVisibility,
   onEdit,
   onDelete,
+  onOpenDashboard,
 }: SectionItemCardProps) {
   const propsCount = Object.keys(section.props || {}).length;
 
@@ -121,15 +123,27 @@ export function SectionItemCard({
           {section.isVisible ? <Eye className="w-3.5 h-3.5" /> : <EyeOff className="w-3.5 h-3.5" />}
         </button>
 
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={onEdit}
-          className="text-xs font-semibold border-[#C29B57]/50 text-[#0D4838] hover:bg-[#F5EFE5] cursor-pointer h-8"
-        >
-          <Edit3 className="w-3.5 h-3.5 mr-1 text-[#C29B57]" />
-          Chỉnh Sửa
-        </Button>
+        {onOpenDashboard ? (
+          <Button
+            size="sm"
+            onClick={onOpenDashboard}
+            className="text-xs font-bold bg-[#0D4838] hover:bg-[#073327] text-white cursor-pointer h-8 shadow-2xs px-3"
+            title="Soạn thảo nội dung cho khối này"
+          >
+            <Sliders className="w-3.5 h-3.5 mr-1 text-[#C29B57]" />
+            Chỉnh Sửa Nội Dung
+          </Button>
+        ) : (
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={onEdit}
+            className="text-xs font-semibold border-[#C29B57]/50 text-[#0D4838] hover:bg-[#F5EFE5] cursor-pointer h-8"
+          >
+            <Edit3 className="w-3.5 h-3.5 mr-1 text-[#C29B57]" />
+            Chỉnh Sửa
+          </Button>
+        )}
 
         <button
           type="button"

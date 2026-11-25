@@ -82,11 +82,13 @@ export class PageRepository implements IPageRepository {
     try {
       const page = await prisma.page.findUnique({ where: { id } });
       if (page) return this.mapToEntity(page);
+      const pageBySlug = await prisma.page.findUnique({ where: { slug: id } });
+      if (pageBySlug) return this.mapToEntity(pageBySlug);
     } catch {
       // Fallback
     }
 
-    const mock = this.inMemoryPages.find((p) => p.id === id);
+    const mock = this.inMemoryPages.find((p) => p.id === id || p.slug === id);
     return mock || null;
   }
 
@@ -176,6 +178,7 @@ export class PageRepository implements IPageRepository {
 
   async updateSections(pageId: string, sections: PageSection[]): Promise<PageEntity | null> {
     try {
+      // 1. Thử cập nhật theo ID trong CSDL
       const updated = await prisma.page.update({
         where: { id: pageId },
         data: {
@@ -184,10 +187,22 @@ export class PageRepository implements IPageRepository {
       });
       return this.mapToEntity(updated);
     } catch {
-      const page = this.inMemoryPages.find((p) => p.id === pageId || p.slug === pageId);
-      if (!page) return null;
-      page.sections = sections;
-      return page;
+      try {
+        // 2. Thử cập nhật theo Slug trong CSDL nếu pageId là slug
+        const updatedBySlug = await prisma.page.update({
+          where: { slug: pageId },
+          data: {
+            sections: sections as object,
+          },
+        });
+        return this.mapToEntity(updatedBySlug);
+      } catch {
+        // 3. Fallback in-memory
+        const page = this.inMemoryPages.find((p) => p.id === pageId || p.slug === pageId);
+        if (!page) return null;
+        page.sections = sections;
+        return page;
+      }
     }
   }
 

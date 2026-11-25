@@ -1,8 +1,9 @@
 "use client";
 
 import React, { useState } from "react";
-import { Search } from "lucide-react";
+import { Search, Sliders } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import { SectionItemCard } from "./section-item-card";
 import type { PageSection } from "../types/page.types";
 
@@ -13,6 +14,7 @@ interface SectionsTabProps {
   onToggleVisibility: (section: PageSection) => void;
   onEdit: (section: PageSection) => void;
   onDelete: (section: PageSection) => void;
+  onSelectDashboard?: (sectionId: string) => void;
 }
 
 export function SectionsTab({
@@ -22,6 +24,7 @@ export function SectionsTab({
   onToggleVisibility,
   onEdit,
   onDelete,
+  onSelectDashboard,
 }: SectionsTabProps) {
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -49,9 +52,22 @@ export function SectionsTab({
             className="pl-9 h-9 text-xs bg-[#FDFBF7] border-[#dfd7c8]"
           />
         </div>
-        <div className="flex items-center gap-2 text-xs text-[#5c554b]">
-          <span className="font-semibold text-[#0D4838]">{visibleCount}</span> khối hiển thị /{" "}
-          <span>{sections.length} tổng khối</span>
+        <div className="flex items-center gap-3">
+          <div className="text-xs text-[#5c554b]">
+            <span className="font-semibold text-[#0D4838]">{visibleCount}</span> khối hiển thị /{" "}
+            <span>{sections.length} tổng khối</span>
+          </div>
+          {onSelectDashboard && sections.length > 0 && (
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={() => onSelectDashboard(sections[0].id)}
+              className="h-8 text-xs font-semibold bg-[#F5EFE5] border-[#dfd7c8] text-[#76232D] hover:bg-[#76232D] hover:text-white transition-all cursor-pointer shadow-2xs"
+            >
+              <Sliders className="w-3.5 h-3.5 mr-1 text-[#C29B57]" />
+              Soạn Thảo Chi Tiết
+            </Button>
+          )}
         </div>
       </div>
 
@@ -74,6 +90,7 @@ export function SectionsTab({
               onToggleVisibility={() => onToggleVisibility(section)}
               onEdit={() => onEdit(section)}
               onDelete={() => onDelete(section)}
+              onOpenDashboard={onSelectDashboard ? () => onSelectDashboard(section.id) : undefined}
             />
           ))
         )}

@@ -30,20 +30,10 @@ export function AdminSidebar() {
   const isDashboardActive = pathname === "/admin/dashboard" || pathname === "/admin";
 
   return (
-    <aside className="w-68 bg-[#073327] text-[#F7F5EE] flex flex-col shrink-0 h-full z-20 shadow-xl border-r border-[#041D16] select-none">
+    <aside className="w-72 bg-[#073327] text-[#F7F5EE] flex flex-col shrink-0 h-full z-20 shadow-xl border-r border-[#041D16] select-none">
       {/* Brand & Crest Header */}
       <div className="p-4 border-b border-white/10 flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <BrandLogo size="sm" href="/admin/dashboard" />
-          <div className="min-w-0">
-            <div className="font-serif font-bold text-xs leading-tight text-white truncate">
-              Diễn Đàn Kinh Tế Di Sản
-            </div>
-            <div className="text-[9px] font-bold tracking-widest text-[#C29B57] uppercase mt-0.5">
-              KHU VỰC QUẢN TRỊ
-            </div>
-          </div>
-        </div>
+        <BrandLogo variant="sidebar" size="sm" href="/admin/dashboard" />
         <button
           type="button"
           className="text-white/40 hover:text-white p-1 rounded transition-colors text-xs"
@@ -57,12 +47,12 @@ export function AdminSidebar() {
       <nav className="flex-1 px-3 py-4 space-y-6 overflow-y-auto custom-scrollbar">
         {/* NHÓM 1: TỔNG QUAN */}
         <div className="space-y-1">
-          <div className="text-[10px] font-bold uppercase tracking-wider text-[#C29B57]/90 px-2.5 pb-1">
+          <div className="text-[11px] font-bold uppercase tracking-wider text-[#C29B57] px-2.5 pb-1">
             TỔNG QUAN
           </div>
           <Link
             href="/admin/dashboard"
-            className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-semibold transition-all ${
+            className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-semibold transition-all ${
               isDashboardActive
                 ? "bg-[#C29B57] text-[#041D16] shadow-sm font-bold"
                 : "text-[#E6D7C3] hover:bg-white/10 hover:text-white"
@@ -70,7 +60,7 @@ export function AdminSidebar() {
           >
             <HefIcon
               name="LayoutDashboard"
-              size="xs"
+              size="sm"
               className={isDashboardActive ? "text-[#041D16]" : "text-[#C29B57]"}
             />
             <span>Bảng điều khiển</span>
@@ -79,11 +69,11 @@ export function AdminSidebar() {
 
         {/* NHÓM 2: NỘI DUNG WEBSITE (CÁC PAGES) */}
         <div className="space-y-1">
-          <div className="text-[10px] font-bold uppercase tracking-wider text-[#C29B57]/90 px-2.5 pb-1">
+          <div className="text-[11px] font-bold uppercase tracking-wider text-[#C29B57] px-2.5 pb-1">
             NỘI DUNG WEBSITE
           </div>
 
-          <div className="space-y-0.5">
+          <div className="space-y-1">
             {WEBSITE_PAGES.map((page) => {
               const pageHref = `/admin/pages/${page.id}`;
               const isPageActive =
@@ -93,16 +83,16 @@ export function AdminSidebar() {
                 <Link
                   key={page.id}
                   href={pageHref}
-                  className={`flex items-center justify-between px-3 py-2 rounded-lg text-xs transition-all ${
+                  className={`flex items-center justify-between px-3 py-2.5 rounded-lg text-sm transition-all ${
                     isPageActive
                       ? "bg-[#C29B57] text-[#041D16] font-bold shadow-sm"
-                      : "text-[#E6D7C3] hover:bg-white/10 hover:text-white"
+                      : "text-[#E6D7C3] hover:bg-white/10 hover:text-white font-medium"
                   }`}
                 >
                   <div className="flex items-center gap-3 min-w-0">
                     <HefIcon
                       name={page.iconName}
-                      size="xs"
+                      size="sm"
                       className={`shrink-0 ${
                         isPageActive ? "text-[#041D16]" : "text-[#C29B57]/90"
                       }`}
@@ -117,36 +107,44 @@ export function AdminSidebar() {
 
         {/* NHÓM 3: HỆ THỐNG / QUẢN LÝ DỮ LIỆU */}
         <div className="space-y-1">
-          <div className="text-[10px] font-bold uppercase tracking-wider text-[#C29B57]/90 px-2.5 pb-1">
+          <div className="text-[11px] font-bold uppercase tracking-wider text-[#C29B57] px-2.5 pb-1">
             HỆ THỐNG
           </div>
 
-          <div className="space-y-0.5">
+          <div className="space-y-1">
             <Link
-              href="/admin/pages"
-              className={`flex items-center gap-3 px-3 py-2 rounded-lg text-xs transition-all ${
-                pathname === "/admin/pages"
+              href="/admin/data"
+              className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all ${
+                pathname === "/admin/data" || pathname.startsWith("/admin/data/")
                   ? "bg-[#C29B57] text-[#041D16] font-bold shadow-sm"
-                  : "text-[#E6D7C3] hover:bg-white/10 hover:text-white"
+                  : "text-[#E6D7C3] hover:bg-white/10 hover:text-white font-medium"
               }`}
             >
-              <HefIcon name="Database" size="xs" className="text-[#C29B57]/90 shrink-0" />
+              <HefIcon
+                name="Database"
+                size="sm"
+                className={`shrink-0 ${
+                  pathname === "/admin/data" || pathname.startsWith("/admin/data/")
+                    ? "text-[#041D16]"
+                    : "text-[#C29B57]/90"
+                }`}
+              />
               <span>Danh mục dữ liệu</span>
             </Link>
 
             <Link
               href="/admin/dashboard"
-              className="flex items-center gap-3 px-3 py-2 rounded-lg text-xs text-[#E6D7C3] hover:bg-white/10 hover:text-white transition-all"
+              className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-[#E6D7C3] hover:bg-white/10 hover:text-white transition-all font-medium"
             >
-              <HefIcon name="Users" size="xs" className="text-[#C29B57]/90 shrink-0" />
+              <HefIcon name="Users" size="sm" className="text-[#C29B57]/90 shrink-0" />
               <span>Tài khoản & Phân quyền</span>
             </Link>
 
             <Link
               href="/admin/dashboard"
-              className="flex items-center gap-3 px-3 py-2 rounded-lg text-xs text-[#E6D7C3] hover:bg-white/10 hover:text-white transition-all"
+              className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-[#E6D7C3] hover:bg-white/10 hover:text-white transition-all font-medium"
             >
-              <HefIcon name="Activity" size="xs" className="text-[#C29B57]/90 shrink-0" />
+              <HefIcon name="Activity" size="sm" className="text-[#C29B57]/90 shrink-0" />
               <span>Nhật ký hoạt động</span>
             </Link>
           </div>
@@ -154,14 +152,14 @@ export function AdminSidebar() {
       </nav>
 
       {/* User Info & Footer Profile */}
-      <div className="p-3 border-t border-white/10 bg-black/20 flex items-center justify-between shrink-0">
+      <div className="p-3.5 border-t border-white/10 bg-black/20 flex items-center justify-between shrink-0">
         <div className="flex items-center gap-2.5 min-w-0">
           <div className="w-8 h-8 rounded-full bg-[#C29B57] text-[#041D16] flex items-center justify-center font-bold text-xs shadow-xs shrink-0">
             AD
           </div>
           <div className="min-w-0">
-            <div className="text-xs font-bold text-white truncate">Quản Trị Viên (Admin)</div>
-            <div className="text-[9px] font-mono tracking-wider text-[#C29B57] uppercase">
+            <div className="text-sm font-bold text-white truncate">Quản Trị Viên (Admin)</div>
+            <div className="text-[10px] font-mono tracking-wider text-[#C29B57] uppercase">
               ADMINISTRATOR
             </div>
           </div>
@@ -172,7 +170,7 @@ export function AdminSidebar() {
           className="text-white/60 hover:text-white p-1.5 rounded-lg hover:bg-white/10 transition-colors"
           title="Đăng xuất"
         >
-          <HefIcon name="LogOut" size="xs" />
+          <HefIcon name="LogOut" size="sm" />
         </Link>
       </div>
     </aside>
