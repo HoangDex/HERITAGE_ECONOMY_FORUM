@@ -3,6 +3,13 @@
  * Định vị điểm vào chính, kỳ diễn đàn đang diễn ra và ba tuyến chuyển đổi: tham dự, đề cử, hợp tác
  */
 
+export interface HomeHeroMetric {
+  value: number;
+  suffix?: string;
+  prefix?: string;
+  label: string;
+}
+
 export interface HomeHero {
   title: string;
   vietnameseTitle: string;
@@ -20,9 +27,15 @@ export interface HomeHero {
   imageAlt: string;
   badgeText: string;
   videoUrl?: string;
+  videoTitle?: string;
+  locationBadge?: string;
+  editionBadge?: string;
+  metrics?: HomeHeroMetric[];
 }
 
 export interface QuickIntro {
+  title?: string;
+  badge?: string;
   content: string;
   subContent: string;
 }
@@ -59,6 +72,7 @@ export interface EventSession {
   description?: string;
   room?: string;
   chairperson?: string;
+  imageUrl?: string;
   speakers?: EventSpeaker[];
 }
 
@@ -66,6 +80,8 @@ export interface EventHighlight {
   id: string;
   edition: string; // "Kỳ Diễn đàn 2026"
   statusBadge: string; // "ĐANG MỞ ĐĂNG KÝ"
+  heading?: string;
+  subHeading?: string;
   title: string;
   theme: string;
   dates: string; // "15 – 17 tháng 11 năm 2026"
@@ -126,6 +142,19 @@ export interface HomePartner {
   order: number;
 }
 
+export interface HomeConversionCtaCard {
+  title: string;
+  description: string;
+  ctaText: string;
+  ctaLink: string;
+}
+
+export interface HomeConversionCta {
+  title?: string;
+  subtitle?: string;
+  cards?: HomeConversionCtaCard[];
+}
+
 export interface HomePageData {
   hero: HomeHero;
   quickIntro: QuickIntro;
@@ -136,6 +165,7 @@ export interface HomePageData {
   featuredNews: NewsArticle[];
   latestNews: NewsArticle[];
   partners: HomePartner[];
+  conversionCta?: HomeConversionCta;
   lastUpdated: string;
 }
 

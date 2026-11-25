@@ -45,7 +45,7 @@ export function IntroPillarsSection({ intro, pillars }: IntroPillarsSectionProps
             </div>
 
             <div className="pt-2">
-              <Link href="/about">
+              <Link href="/gioi-thieu">
                 <Button
                   variant="outline"
                   className="border-[#0D4838] text-[#0D4838] dark:text-[#C29B57] hover:bg-[#0D4838]/10 gap-2 cursor-pointer"

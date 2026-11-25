@@ -1,6 +1,9 @@
 import { Metadata } from "next";
 import { homeService, HomePageView } from "@/features/home";
 
+// Tối ưu hóa hiệu năng render: Kích hoạt Incremental Static Regeneration (ISR) mỗi 60s
+export const revalidate = 60;
+
 export const metadata: Metadata = {
   title: "Diễn đàn Kinh tế Di sản | Heritage Economy Forum",
   description:

@@ -43,12 +43,6 @@ export function EventHighlightSection({ event }: EventHighlightSectionProps) {
   // State quản lý xem thông tin chi tiết diễn giả (Modal)
   const [selectedSpeaker, setSelectedSpeaker] = useState<EventSpeaker | null>(null);
 
-  // State lọc theo phiên: "all" hoặc id phiên (sess_1, sess_2, ...)
-  const [activeTab, setActiveTab] = useState<string>("all");
-
-  const displayedSessions =
-    activeTab === "all" ? event.sessions : event.sessions.filter((s) => s.id === activeTab);
-
   return (
     <section className="py-16 sm:py-24 bg-[#F7F5EE]/50 border-b border-[#DFD8C8]">
       <div className="w-full max-w-[1840px] 2xl:max-w-[1920px] mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 2xl:px-24 space-y-10">
@@ -65,11 +59,11 @@ export function EventHighlightSection({ event }: EventHighlightSectionProps) {
               <span>{event.edition}</span>
             </div>
             <h2 className="text-2xl sm:text-4xl lg:text-5xl font-serif font-bold text-[#0D4838] leading-tight">
-              Kỳ Diễn Đàn Đang Diễn Ra
+              {event.heading || "Kỳ Diễn Đàn Đang Diễn Ra"}
             </h2>
             <p className="mt-2 text-sm sm:text-base text-[#4A5E57] max-w-3xl leading-relaxed">
-              Không gian học thuật và đối thoại đa chiều lớn nhất trong năm về chính sách, nguồn vốn
-              và giải pháp chuyển hóa di sản thành tài sản phát triển kinh tế bền vững.
+              {event.subHeading ||
+                "Không gian học thuật và đối thoại đa chiều lớn nhất trong năm về chính sách, nguồn vốn và giải pháp chuyển hóa di sản thành tài sản phát triển kinh tế bền vững."}
             </p>
           </div>
 
@@ -80,281 +74,258 @@ export function EventHighlightSection({ event }: EventHighlightSectionProps) {
         </FadeIn>
 
         {/* ======================================================== */}
-        {/* 2. KHỐI TỔNG QUAN KỲ DIỄN ĐÀN (HERO OVERVIEW CARD)      */}
+        {/* 2. THẺ CHÍNH KỲ DIỄN ĐÀN NỔI BẬT & CÁC PHIÊN NGHỊ SỰ     */}
+        {/* Gom chung toàn bộ thông tin & các phiên vào 1 card duy   */}
+        {/* nhất, không tách nhỏ thành nhiều khối viền lắt nhắt       */}
         {/* ======================================================== */}
         <FadeIn
           direction="up"
           delay={0.1}
-          className="rounded-3xl bg-white border border-[#DFD8C8] shadow-md p-6 sm:p-8 lg:p-10 space-y-6"
+          className="rounded-3xl bg-white border border-[#DFD8C8] shadow-md overflow-hidden"
         >
-          {/* Tên & Mô tả chủ đề tổng quan */}
-          <div className="space-y-3">
-            <div className="inline-block px-3 py-1 rounded-md bg-[#C29B57]/15 text-[#8C6D32] text-xs font-bold uppercase tracking-wider">
-              Chủ đề nghị sự toàn thể
-            </div>
-            <h3 className="text-2xl sm:text-3xl lg:text-4xl font-serif font-bold text-[#0D4838] leading-snug">
-              {event.title}
-            </h3>
-            <p className="text-sm sm:text-base text-[#2E433C] leading-relaxed max-w-5xl">
-              {event.description}
-            </p>
-          </div>
+          {/* PHẦN 1: TỔNG QUAN CHỦ ĐỀ TOÀN THỂ & 4 THÔNG SỐ CỐT LÕI */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 items-stretch">
+            {/* CỘT TRÁI: ẢNH BANNER SỰ KIỆN */}
+            <div className="lg:col-span-5 relative min-h-[320px] sm:min-h-[380px] lg:min-h-full bg-[#073327] overflow-hidden group">
+              <Image
+                src={
+                  event.bannerUrl ||
+                  "https://images.unsplash.com/photo-1583417319070-4a69db38a482?auto=format&fit=crop&w=1200&h=800&q=85"
+                }
+                alt={event.title}
+                fill
+                sizes="(max-width: 1024px) 100vw, 550px"
+                className="object-cover transition-transform duration-700 group-hover:scale-105"
+                priority
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent lg:bg-gradient-to-r lg:from-transparent lg:to-black/30" />
 
-          {/* 4 Chỉ số & Thông tin cốt lõi (Thời gian, Địa điểm, Quy mô, Hạn đăng ký) */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 p-5 rounded-2xl bg-[#F7F5EE]/80 border border-[#DFD8C8] text-xs sm:text-sm">
-            <div className="flex items-start gap-3">
-              <Calendar className="w-5 h-5 text-[#C29B57] shrink-0 mt-0.5" />
-              <div>
-                <span className="text-[11px] text-[#5C6E67] font-semibold uppercase tracking-wider block">
-                  Thời gian diễn ra:
+              <div className="absolute bottom-5 left-5 right-5 text-white">
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#0D4838]/90 text-[#C29B57] text-[11px] font-bold uppercase tracking-widest mb-2 border border-[#C29B57]/40 shadow-xs">
+                  <Sparkles className="w-3.5 h-3.5" />
+                  <span>{event.edition || "Kỳ Diễn Đàn 2026"}</span>
                 </span>
-                <span className="font-bold text-[#0D4838] text-sm sm:text-base mt-0.5 block">
-                  {event.dates}
-                </span>
+                <p className="text-xs sm:text-sm font-serif font-bold text-white/95 leading-snug drop-shadow-sm">
+                  {event.theme || "Kinh tế di sản trong kỷ nguyên số"}
+                </p>
               </div>
             </div>
 
-            <div className="flex items-start gap-3">
-              <MapPin className="w-5 h-5 text-[#0D4838] shrink-0 mt-0.5" />
-              <div>
-                <span className="text-[11px] text-[#5C6E67] font-semibold uppercase tracking-wider block">
-                  Địa điểm tổ chức:
-                </span>
-                <span className="font-bold text-[#0D4838] text-sm sm:text-base mt-0.5 block line-clamp-2">
-                  {event.location}
-                </span>
+            {/* CỘT PHẢI: NỘI DUNG CHỦ ĐỀ & 4 THÔNG SỐ CỐT LÕI */}
+            <div className="lg:col-span-7 p-6 sm:p-8 lg:p-10 flex flex-col justify-between space-y-6">
+              {/* Tên & Mô tả chủ đề */}
+              <div className="space-y-3">
+                <div className="inline-block px-3 py-1 rounded-md bg-[#F5EEDB] text-[#8C6D32] text-xs font-bold uppercase tracking-wider">
+                  Chủ đề nghị sự toàn thể
+                </div>
+                <h3 className="text-xl sm:text-2xl lg:text-3xl font-serif font-bold text-[#0D4838] leading-tight sm:leading-snug">
+                  {event.title}
+                </h3>
+                <p className="text-xs sm:text-sm text-[#2E433C] leading-relaxed">
+                  {event.description}
+                </p>
               </div>
-            </div>
 
-            <div className="flex items-start gap-3">
-              <Users className="w-5 h-5 text-[#C29B57] shrink-0 mt-0.5" />
-              <div>
-                <span className="text-[11px] text-[#5C6E67] font-semibold uppercase tracking-wider block">
-                  Quy mô đại biểu:
-                </span>
-                <span className="font-bold text-[#0D4838] text-sm sm:text-base mt-0.5 block">
-                  <AnimatedCounter to={event.attendeesExpected} suffix="+ Đại biểu" />
-                </span>
+              {/* 4 Chỉ số & Thông tin cốt lõi (2x2 grid) */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 p-4 sm:p-5 rounded-2xl bg-[#F7F5EE]/80 border border-[#DFD8C8] text-xs sm:text-sm">
+                <div className="flex items-start gap-3 min-w-0">
+                  <Calendar className="w-5 h-5 text-[#C29B57] shrink-0 mt-0.5" />
+                  <div className="min-w-0 flex-1">
+                    <span className="text-[11px] text-[#5C6E67] font-semibold uppercase tracking-wider block">
+                      Thời gian diễn ra:
+                    </span>
+                    <span className="font-bold text-[#0D4838] text-xs sm:text-sm mt-0.5 block break-words">
+                      {event.dates}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-3 min-w-0">
+                  <MapPin className="w-5 h-5 text-[#0D4838] shrink-0 mt-0.5" />
+                  <div className="min-w-0 flex-1">
+                    <span className="text-[11px] text-[#5C6E67] font-semibold uppercase tracking-wider block">
+                      Địa điểm tổ chức:
+                    </span>
+                    <span
+                      className="font-bold text-[#0D4838] text-xs sm:text-sm mt-0.5 block break-words line-clamp-2"
+                      title={event.location}
+                    >
+                      {event.location}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-3 min-w-0">
+                  <Users className="w-5 h-5 text-[#C29B57] shrink-0 mt-0.5" />
+                  <div className="min-w-0 flex-1">
+                    <span className="text-[11px] text-[#5C6E67] font-semibold uppercase tracking-wider block">
+                      Quy mô đại biểu:
+                    </span>
+                    <span className="font-bold text-[#0D4838] text-xs sm:text-sm mt-0.5 block break-words">
+                      <AnimatedCounter to={event.attendeesExpected} suffix="+ Đại biểu" />
+                    </span>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-3 min-w-0">
+                  <Clock className="w-5 h-5 text-[#0D4838] shrink-0 mt-0.5" />
+                  <div className="min-w-0 flex-1">
+                    <span className="text-[11px] text-[#5C6E67] font-semibold uppercase tracking-wider block">
+                      Hạn chót đăng ký:
+                    </span>
+                    <span className="font-bold text-[#0D4838] text-xs sm:text-sm mt-0.5 block break-words">
+                      Trước ngày {event.registrationDeadline}
+                    </span>
+                  </div>
+                </div>
               </div>
-            </div>
-
-            <div className="flex items-start gap-3">
-              <Clock className="w-5 h-5 text-emerald-700 shrink-0 mt-0.5" />
-              <div>
-                <span className="text-[11px] text-[#5C6E67] font-semibold uppercase tracking-wider block">
-                  Hạn chót đăng ký:
-                </span>
-                <span className="font-bold text-emerald-700 text-sm sm:text-base mt-0.5 block">
-                  Trước ngày {event.registrationDeadline}
-                </span>
-              </div>
-            </div>
-          </div>
-        </FadeIn>
-
-        {/* ======================================================== */}
-        {/* 3. BỘ CHỌN PHIÊN (TABS CHUYÊN ĐỀ)                        */}
-        {/* ======================================================== */}
-        <div className="space-y-6">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-            <div>
-              <h4 className="text-xl sm:text-2xl font-serif font-bold text-[#0D4838] flex items-center gap-2">
-                <HefIcon name="Layers" size="sm" variant="gold" />
-                <span>Chương Trình Các Phiên Nghị Sự & Diễn Giả</span>
-              </h4>
-              <p className="text-xs sm:text-sm text-[#4A5E57] mt-1">
-                Bấm vào ảnh hoặc hồ sơ của từng diễn giả để xem thông tin chi tiết, tiểu sử và chủ
-                đề tham luận.
-              </p>
-            </div>
-
-            {/* Bộ Tabs Lọc Phiên */}
-            <div className="flex items-center gap-2 overflow-x-auto pb-1 no-scrollbar">
-              <button
-                type="button"
-                onClick={() => setActiveTab("all")}
-                className={`px-4 py-2 rounded-xl text-xs font-bold transition-all shrink-0 cursor-pointer ${
-                  activeTab === "all"
-                    ? "bg-[#0D4838] text-white shadow-xs"
-                    : "bg-white text-[#4A5E57] hover:text-[#0D4838] border border-[#DFD8C8]"
-                }`}
-              >
-                Tất cả các phiên ({event.sessions.length})
-              </button>
-              {event.sessions.map((sess) => (
-                <button
-                  key={sess.id}
-                  type="button"
-                  onClick={() => setActiveTab(sess.id)}
-                  className={`px-4 py-2 rounded-xl text-xs font-bold transition-all shrink-0 cursor-pointer ${
-                    activeTab === sess.id
-                      ? "bg-[#0D4838] text-white shadow-xs"
-                      : "bg-white text-[#4A5E57] hover:text-[#0D4838] border border-[#DFD8C8]"
-                  }`}
-                >
-                  Phiên {sess.order || ""}: {sess.date?.split(" ")[0]}
-                </button>
-              ))}
             </div>
           </div>
 
-          {/* ======================================================== */}
-          {/* 4. DANH SÁCH CHI TIẾT CÁC PHIÊN & DIỄN GIẢ              */}
-          {/* ======================================================== */}
-          <StaggerContainer className="grid grid-cols-1 gap-6">
-            {displayedSessions.map((session) => (
-              <StaggerItem key={session.id}>
-                <div className="rounded-3xl bg-white border-2 border-[#DFD8C8] hover:border-[#C29B57]/70 transition-all shadow-sm hover:shadow-md p-6 sm:p-8 lg:p-10 space-y-6">
-                  {/* Hàng Header Phiên: Số thứ tự + Ngày giờ + Phòng họp */}
-                  <div className="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-[#DFD8C8]/70">
-                    <div className="flex items-center gap-2.5">
-                      <Badge className="bg-[#C29B57] text-[#132A24] font-bold px-3 py-1 text-xs">
-                        Phiên {session.order || 1}
+          {/* PHẦN 2: CHƯƠNG TRÌNH CÁC PHIÊN NGHỊ SỰ (GOM CHUNG LIỀN MẠCH, KHÔNG TÁCH NHIỀU BORDER HỘP) */}
+          <div className="border-t border-[#DFD8C8] bg-white p-6 sm:p-8 lg:p-10 space-y-6">
+            {/* Tiêu đề phần lịch trình các phiên */}
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-[#DFD8C8]/70">
+              <div>
+                <h4 className="text-xl sm:text-2xl font-serif font-bold text-[#0D4838] flex items-center gap-2">
+                  <HefIcon name="Layers" size="sm" variant="gold" />
+                  <span>Chương Trình Các Phiên Nghị Sự</span>
+                </h4>
+                <p className="text-xs sm:text-sm text-[#4A5E57] mt-1">
+                  Lịch trình đối thoại khoa học, thảo luận chính sách và danh sách diễn giả tham luận chính thức.
+                </p>
+              </div>
+
+              <Badge variant="outline" className="border-[#0D4838]/30 text-[#0D4838] bg-[#F7F5EE] text-xs font-semibold px-3 py-1.5 self-start sm:self-auto shadow-2xs">
+                04 Phiên Chuyên Đề Chính Thức
+              </Badge>
+            </div>
+
+            {/* Danh sách các phiên: Liệt kê dạng timeline/agenda phân cách bằng border-b mảnh (divide-y) */}
+            <div className="divide-y divide-[#DFD8C8]/70">
+              {event.sessions.map((session, idx) => (
+                <div key={session.id} className="py-6 first:pt-2 last:pb-2 space-y-3.5">
+                  {/* Hàng 1: Badge phiên, Thời gian & Phòng họp */}
+                  <div className="flex flex-wrap items-center justify-between gap-3">
+                    <div className="flex flex-wrap items-center gap-2.5">
+                      <Badge className="bg-[#0D4838] text-white font-bold text-xs px-2.5 py-0.5">
+                        Phiên {session.order || idx + 1}
                       </Badge>
-                      <span className="text-xs sm:text-sm font-bold text-[#0D4838] flex items-center gap-1.5">
+                      <div className="flex items-center gap-1.5 text-xs sm:text-sm font-bold text-[#0D4838]">
                         <Clock className="w-4 h-4 text-[#C29B57]" />
-                        {session.date} • {session.time}
-                      </span>
+                        <span>
+                          {session.date} • {session.time}
+                        </span>
+                      </div>
                     </div>
 
                     {session.room && (
-                      <span className="text-xs text-[#4A5E57] font-semibold flex items-center gap-1.5 bg-[#F7F5EE] px-3 py-1 rounded-full border border-[#DFD8C8]">
-                        <MapPin className="w-3.5 h-3.5 text-[#0D4838]" />
-                        {session.room}
-                      </span>
+                      <div className="inline-flex items-center gap-1.5 text-xs text-[#4A5E57] font-medium bg-[#F7F5EE] px-3 py-1 rounded-full border border-[#DFD8C8]">
+                        <MapPin className="w-3.5 h-3.5 text-[#C29B57]" />
+                        <span>{session.room}</span>
+                      </div>
                     )}
                   </div>
 
-                  {/* Tên phiên & Mô tả */}
-                  <div className="space-y-2">
-                    <h3 className="text-xl sm:text-2xl font-serif font-bold text-[#0D4838] leading-snug">
-                      {session.title}
-                    </h3>
+                  {/* Hàng 2: Tên & Mô tả phiên */}
+                  <div className="space-y-1.5">
                     {session.subTitle && (
-                      <p className="text-xs sm:text-sm font-semibold text-[#C29B57]">
+                      <span className="text-xs font-bold uppercase tracking-wider text-[#C29B57] block">
                         {session.subTitle}
-                      </p>
+                      </span>
                     )}
+
+                    <h5 className="text-base sm:text-lg lg:text-xl font-serif font-bold text-[#0D4838] leading-snug">
+                      {session.title}
+                    </h5>
+
                     {session.description && (
-                      <p className="text-xs sm:text-sm text-[#2E433C] leading-relaxed pt-1">
+                      <p className="text-xs sm:text-sm text-[#3E524B] leading-relaxed">
                         {session.description}
                       </p>
                     )}
+
+                    {session.chairperson && (
+                      <p className="text-xs font-semibold text-[#0D4838] pt-0.5">
+                        <span className="text-[#8C6D32]">Chủ trì phiên:</span> {session.chairperson}
+                      </p>
+                    )}
                   </div>
 
-                  {/* DIỄN GIẢ CỦA PHIÊN: CÓ ẢNH VÀ BẤM VÀO HIỆN MODAL */}
+                  {/* Hàng 3: Diễn giả của phiên (dạng chip gọn gàng) */}
                   {session.speakers && session.speakers.length > 0 && (
-                    <div className="space-y-3 pt-3 border-t border-[#DFD8C8]/60">
-                      <div className="flex items-center justify-between">
-                        <span className="text-xs font-bold uppercase tracking-wider text-[#0D4838] flex items-center gap-1.5">
-                          <Users className="w-4 h-4 text-[#C29B57]" />
-                          Chủ trì & Diễn giả phiên nghị sự:
-                        </span>
-                        <span className="text-[11px] text-[#4A5E57] italic hidden sm:inline">
-                          (Nhấn vào diễn giả để xem thông tin)
-                        </span>
-                      </div>
-
-                      {/* Lưới Thẻ Diễn Giả */}
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="pt-2 flex flex-wrap items-center gap-2">
+                      <span className="text-[11px] font-bold text-[#5C6E67] uppercase tracking-wider flex items-center gap-1 mr-1 shrink-0">
+                        <Users className="w-3.5 h-3.5 text-[#C29B57]" /> Diễn giả:
+                      </span>
+                      <div className="flex flex-wrap gap-2">
                         {session.speakers.map((sp) => (
-                          <div
+                          <button
                             key={sp.id}
+                            type="button"
                             onClick={() => setSelectedSpeaker(sp)}
-                            className="group flex items-start gap-4 p-4 rounded-2xl bg-[#F7F5EE]/60 hover:bg-[#F7F5EE] border border-[#DFD8C8] hover:border-[#C29B57] transition-all cursor-pointer shadow-2xs hover:shadow-sm"
-                            role="button"
-                            tabIndex={0}
-                            onKeyDown={(e) => {
-                              if (e.key === "Enter" || e.key === " ") {
-                                setSelectedSpeaker(sp);
-                              }
-                            }}
+                            className="group inline-flex items-center gap-2 p-1.5 pr-3 rounded-xl bg-[#F7F5EE] hover:bg-[#EFEAE0] border border-[#DFD8C8] hover:border-[#C29B57] transition-all cursor-pointer text-left shadow-2xs"
                           >
-                            {/* Ảnh đại diện diễn giả tỉ lệ 4:5 có Badge học hàm */}
-                            <div className="relative w-20 sm:w-24 aspect-[4/5] rounded-xl overflow-hidden shrink-0 border border-[#C29B57]/50 shadow-xs bg-muted">
+                            <div className="relative w-7 h-7 sm:w-8 sm:h-8 rounded-lg overflow-hidden shrink-0 border border-[#C29B57]/40 bg-muted">
                               <Image
                                 src={sp.avatarUrl}
                                 alt={sp.name}
                                 fill
-                                sizes="100px"
-                                className="object-cover transition-transform duration-500 group-hover:scale-105"
+                                sizes="32px"
+                                className="object-cover transition-transform group-hover:scale-105"
                               />
-                              {sp.degree && (
-                                <span className="absolute top-1 left-1 px-1.5 py-0.5 rounded-sm bg-[#0D4838] text-white text-[9px] font-bold shadow-2xs">
-                                  {sp.degree}
-                                </span>
-                              )}
                             </div>
-
-                            {/* Thông tin nhanh của diễn giả */}
-                            <div className="flex-1 min-w-0 space-y-1">
-                              <div className="flex items-center justify-between gap-1">
-                                <h5 className="text-sm sm:text-base font-bold text-[#0D4838] group-hover:text-[#073327] transition-colors truncate">
-                                  {sp.name}
-                                </h5>
-                                <span className="text-[11px] font-bold text-[#C29B57] group-hover:underline flex items-center gap-0.5 shrink-0">
-                                  Chi tiết <ArrowRight className="w-3 h-3" />
-                                </span>
-                              </div>
-
-                              <p className="text-xs font-semibold text-[#4A5E57] line-clamp-1">
-                                {sp.title}
-                              </p>
-
-                              <p className="text-[11px] text-[#5C6E67] line-clamp-1">
-                                {sp.organization}
-                              </p>
-
-                              {sp.topicSummary && (
-                                <p className="text-[11px] text-[#0D4838] italic line-clamp-2 pt-1 border-t border-[#DFD8C8]/60 mt-1">
-                                  &ldquo;{sp.topicSummary}&rdquo;
-                                </p>
-                              )}
+                            <div className="min-w-0">
+                              <span className="text-xs font-bold text-[#0D4838] group-hover:text-[#073327] block truncate">
+                                {sp.name}
+                              </span>
+                              <span className="text-[10px] text-[#5C6E67] block truncate max-w-[140px] sm:max-w-[180px]">
+                                {sp.organization || sp.title}
+                              </span>
                             </div>
-                          </div>
+                            <ArrowRight className="w-3 h-3 text-[#C29B57] group-hover:translate-x-0.5 transition-transform shrink-0 ml-0.5" />
+                          </button>
                         ))}
                       </div>
                     </div>
                   )}
                 </div>
-              </StaggerItem>
-            ))}
-          </StaggerContainer>
-        </div>
-
-        {/* ======================================================== */}
-        {/* 5. CỤM NÚT HÀNH ĐỘNG CUỐI KHỐI (CTA BAR)                */}
-        {/* ======================================================== */}
-        <div className="pt-4 flex flex-col sm:flex-row items-center justify-between gap-4 p-6 rounded-3xl bg-white border border-[#DFD8C8] shadow-sm">
-          <div className="flex items-center gap-2 text-xs sm:text-sm text-[#4A5E57]">
-            <CheckCircle className="w-4 h-4 text-emerald-600 shrink-0" />
-            <span>
-              Miễn phí tham dự phiên toàn thể cho các nhà khoa học, đại diện hiệp hội & sinh viên.
-            </span>
+              ))}
+            </div>
           </div>
 
-          <div className="flex items-center gap-3 w-full sm:w-auto">
-            <Link href={event.registrationUrl} className="w-full sm:w-auto">
-              <Button
-                size="lg"
-                className="w-full sm:w-auto bg-[#0D4838] hover:bg-[#073327] text-white font-bold border border-[#C29B57]/50 shadow-md cursor-pointer px-7 h-12 text-sm"
-              >
-                <span>Đăng ký tham dự đại biểu</span>
-                <ArrowRight className="w-4 h-4 ml-2" />
-              </Button>
-            </Link>
+          {/* PHẦN 3: CỤM NÚT HÀNH ĐỘNG CUỐI THẺ DIỄN ĐÀN (CTA FOOTER) */}
+          <div className="border-t border-[#DFD8C8] bg-[#F7F5EE]/90 p-5 sm:p-7 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div className="flex items-center gap-2 text-xs sm:text-sm text-[#4A5E57]">
+              <CheckCircle className="w-4 h-4 text-emerald-600 shrink-0" />
+              <span>
+                Miễn phí tham dự phiên toàn thể cho các nhà khoa học, đại diện hiệp hội & sinh viên.
+              </span>
+            </div>
 
-            <Link href="/forum" className="w-full sm:w-auto">
-              <Button
-                variant="outline"
-                size="lg"
-                className="w-full sm:w-auto bg-white hover:bg-[#F7F5EE] text-[#0D4838] border border-[#DFD8C8] font-bold cursor-pointer px-6 h-12 text-sm"
-              >
-                Xem chương trình chi tiết
-              </Button>
-            </Link>
+            <div className="flex items-center gap-3 w-full sm:w-auto">
+              <Link href={event.registrationUrl || "/lien-he?loai=tham-du#contact-form"} className="w-full sm:w-auto">
+                <Button
+                  size="lg"
+                  className="w-full sm:w-auto bg-[#0D4838] hover:bg-[#073327] text-white font-bold border border-[#C29B57]/50 shadow-md cursor-pointer px-7 h-11 text-xs sm:text-sm"
+                >
+                  <span>Đăng ký tham dự đại biểu</span>
+                  <ArrowRight className="w-4 h-4 ml-2" />
+                </Button>
+              </Link>
+
+              <Link href="/dien-dan" className="w-full sm:w-auto">
+                <Button
+                  variant="outline"
+                  size="lg"
+                  className="w-full sm:w-auto bg-white hover:bg-[#F7F5EE] text-[#0D4838] border border-[#DFD8C8] font-bold cursor-pointer px-6 h-11 text-xs sm:text-sm"
+                >
+                  Xem kỷ yếu chi tiết
+                </Button>
+              </Link>
+            </div>
           </div>
-        </div>
+        </FadeIn>
       </div>
 
       {/* ======================================================== */}

@@ -31,13 +31,13 @@ export function FeaturedProjectsSection({ projects }: FeaturedProjectsSectionPro
           </h3>
         </div>
 
-        <Link href="/projects">
+        <Link href="/du-an">
           <Button
             variant="ghost"
             size="sm"
             className="text-xs text-[#0D4838] dark:text-[#C29B57] hover:underline gap-1 cursor-pointer"
           >
-            <span>Xem tất cả</span>
+            <span>Khám phá dự án</span>
             <ArrowRight className="w-3.5 h-3.5" />
           </Button>
         </Link>

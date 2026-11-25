@@ -40,6 +40,7 @@ export function HomeHero({ hero }: HomeHeroProps) {
 
   // Đảm bảo video tự động chạy (Autoplay) mượt mà trên mọi trình duyệt
   useEffect(() => {
+    let isMounted = true;
     const video = videoRef.current;
     if (!video) return;
 
@@ -52,15 +53,19 @@ export function HomeHero({ hero }: HomeHeroProps) {
       if (playPromise !== undefined) {
         playPromise
           .then(() => {
-            setIsPlaying(true);
+            if (isMounted) setIsPlaying(true);
           })
           .catch(() => {
-            setIsPlaying(false);
+            if (isMounted) setIsPlaying(false);
           });
       }
     };
 
     startPlay();
+
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   const togglePlay = () => {
@@ -80,10 +85,19 @@ export function HomeHero({ hero }: HomeHeroProps) {
     setIsMuted(!isMuted);
   };
 
-  const primaryVideo = hero.videoUrl || "/videos/heritage-bg.mp4";
+  // Video nền di sản chính thức: Thước phim Vịnh Hạ Long Full HD chuẩn di sản thiên nhiên thế giới
+  const HERITAGE_DEFAULT_VIDEO =
+    "https://upload.wikimedia.org/wikipedia/commons/transcoded/b/be/Ha_Long_Bay%2C_Vietnam_-_Dec_2024.webm/Ha_Long_Bay%2C_Vietnam_-_Dec_2024.webm.1080p.vp9.webm";
+
+  const primaryVideo =
+    hero.videoUrl &&
+    hero.videoUrl !== "/videos/heritage-bg.mp4" &&
+    hero.videoUrl !== "/videos/test.mp4"
+      ? hero.videoUrl
+      : HERITAGE_DEFAULT_VIDEO;
 
   return (
-    <section className="relative overflow-hidden bg-[#F7F5EE] text-[#132A24] -mt-16 sm:-mt-20 pt-24 sm:pt-32 lg:pt-36 2xl:pt-40 pb-12 sm:pb-16 lg:pb-20 px-4 sm:px-8 lg:px-12 xl:px-16 2xl:px-24">
+    <section className="relative overflow-hidden bg-[#F7F5EE] text-[#132A24] w-full min-h-screen lg:h-screen lg:min-h-[720px] 2xl:min-h-[1080px] 2xl:h-[1080px] -mt-16 sm:-mt-20 pt-20 sm:pt-24 lg:pt-20 pb-8 sm:pb-10 lg:pb-8 px-4 sm:px-8 lg:px-12 xl:px-16 2xl:px-24 flex flex-col justify-center">
       {/* ======================================================== */}
       {/* 1. LỚP VIDEO BACKGROUND DI SẢN CHUYỂN ĐỘNG SỐNG ĐỘNG    */}
       {/* ======================================================== */}
@@ -95,14 +109,16 @@ export function HomeHero({ hero }: HomeHeroProps) {
           muted
           playsInline
           preload="auto"
-          poster={hero.imageUrl}
           className="w-full h-full object-cover scale-105"
         >
-          <source src={primaryVideo} type="video/mp4" />
-          <source src="/videos/heritage-bg.mp4" type="video/mp4" />
+          <source src={primaryVideo} type="video/webm" />
           <source
-            src="https://raw.githubusercontent.com/solodev/hero-with-video-bg/master/videos/hero-video.mp4"
-            type="video/mp4"
+            src="https://upload.wikimedia.org/wikipedia/commons/transcoded/b/be/Ha_Long_Bay%2C_Vietnam_-_Dec_2024.webm/Ha_Long_Bay%2C_Vietnam_-_Dec_2024.webm.1080p.vp9.webm"
+            type="video/webm"
+          />
+          <source
+            src="https://upload.wikimedia.org/wikipedia/commons/b/be/Ha_Long_Bay%2C_Vietnam_-_Dec_2024.webm"
+            type="video/webm"
           />
         </video>
       </div>
@@ -126,7 +142,7 @@ export function HomeHero({ hero }: HomeHeroProps) {
       {/* ======================================================== */}
       {/* 3. NỘI DUNG CHÍNH HERO (THIẾT KẾ FULLWIDTH KHOÁNG ĐẠT)    */}
       {/* ======================================================== */}
-      <div className="w-full max-w-[1840px] 2xl:max-w-[1920px] mx-auto relative z-10">
+      <div className="w-full max-w-[1840px] 2xl:max-w-[1920px] mx-auto relative z-10 my-auto py-2 sm:py-4 lg:py-6">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 xl:gap-16 2xl:gap-24 items-center">
           {/* CỘT TRÁI (DESKTOP) / XẾP DƯỚI (MOBILE): KHỐI NỘI DUNG CHUẨN MỰC TẠP CHÍ DI SẢN */}
           <FadeIn
@@ -139,28 +155,24 @@ export function HomeHero({ hero }: HomeHeroProps) {
               <div className="flex flex-wrap items-center gap-3">
                 <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/70 border border-[#0D4838]/20 text-[#0D4838] text-xs font-bold tracking-wider uppercase backdrop-blur-xs shadow-2xs">
                   <Sparkles className="w-3.5 h-3.5 text-[#C29B57]" />
-                  <span>TUẦN LỄ TRIẾT HỌC PHÁT TRIỂN 2026</span>
+                  <span>{hero.badgeText || "NỀN TẢNG ĐỐI THOẠI & KẾT NỐI QUỐC GIA"}</span>
                 </div>
                 <span className="text-xs font-bold tracking-[0.2em] text-[#C29B57] uppercase font-sans">
-                  HERITAGE ECONOMY FORUM
+                  {hero.title || "HERITAGE ECONOMY FORUM"}
                 </span>
               </div>
 
               {/* Tiêu đề chính: Font Serif Hoàng Gia Đậm Nét Chuẩn Quốc Gia, Tỷ Lệ Cân Đối */}
               <div>
                 <h1 className="text-3xl sm:text-5xl lg:text-5xl xl:text-6xl 2xl:text-[66px] font-serif font-bold text-[#0D4838] leading-[1.18] tracking-[0.02em] text-balance">
-                  DIỄN ĐÀN KINH TẾ DI SẢN
+                  {hero.vietnameseTitle || "DIỄN ĐÀN KINH TẾ DI SẢN"}
                 </h1>
               </div>
 
               {/* Khối Slogan & Tuyên Ngôn: Phong cách Trích Dẫn Học Thuật Cao Cấp */}
-              <div className="border-l-4 border-[#C29B57] pl-4 sm:pl-5 py-3 bg-white/40 rounded-r-2xl border-y border-r border-white/40 backdrop-blur-xs space-y-1">
+              <div className="border-l-4 border-[#C29B57] pl-4 sm:pl-5 py-3.5 bg-white/40 rounded-r-2xl border-y border-r border-white/40 backdrop-blur-xs">
                 <p className="text-base sm:text-lg lg:text-xl font-serif font-bold text-[#0D4838] leading-snug">
                   &ldquo;{hero.slogan}&rdquo;
-                </p>
-                <p className="text-xs sm:text-sm text-[#4A5E57] font-serif italic">
-                  Kết nối tri thức, nguồn lực và cộng đồng để phát huy giá trị di sản trong nền kinh
-                  tế đương đại
                 </p>
               </div>
 
@@ -171,24 +183,24 @@ export function HomeHero({ hero }: HomeHeroProps) {
 
               {/* 2 TUYẾN CTA: Thiết kế Tương tác Hiện đại */}
               <div className="pt-2 flex flex-col sm:flex-row items-center gap-4">
-                <Link href={hero.primaryCta.href} className="w-full sm:w-auto">
+                <Link href={hero.primaryCta?.href || "/dien-dan"} className="w-full sm:w-auto">
                   <Button
                     size="lg"
                     className="w-full sm:w-auto bg-[#0D4838] hover:bg-[#073327] text-white font-bold border border-[#C29B57]/40 shadow-md cursor-pointer px-7 sm:px-8 h-12 text-sm sm:text-base transition-all hover:shadow-lg"
                   >
                     <HefIcon name="Compass" size="sm" className="text-[#C29B57]" />
-                    <span className="ml-2">{hero.primaryCta.label}</span>
+                    <span className="ml-2">{hero.primaryCta?.label || "Khám phá diễn đàn"}</span>
                   </Button>
                 </Link>
 
-                <Link href={hero.secondaryCta.href} className="w-full sm:w-auto">
+                <Link href={hero.secondaryCta?.href || "/lien-he?loai=tham-du#contact-form"} className="w-full sm:w-auto">
                   <Button
                     variant="outline"
                     size="lg"
                     className="w-full sm:w-auto bg-white/90 hover:bg-white text-[#0D4838] hover:text-[#073327] border-2 border-[#0D4838]/25 font-bold cursor-pointer px-7 sm:px-8 shadow-xs h-12 text-sm sm:text-base transition-all"
                   >
                     <Calendar className="w-4 h-4 mr-2 text-[#C29B57]" />
-                    <span>{hero.secondaryCta.label}</span>
+                    <span>{hero.secondaryCta?.label || "Đăng ký tham dự"}</span>
                     <ArrowRight className="w-4 h-4 ml-2 text-[#0D4838]" />
                   </Button>
                 </Link>
@@ -196,30 +208,26 @@ export function HomeHero({ hero }: HomeHeroProps) {
 
               {/* Micro Metrics nhanh: Thanh thống kê 3 cột tinh gọn */}
               <div className="pt-5 border-t border-[#0D4838]/15 grid grid-cols-3 gap-4 sm:gap-8 text-left">
-                <div className="border-r border-[#0D4838]/10 pr-2 sm:pr-4">
-                  <span className="block text-2xl sm:text-3xl lg:text-4xl font-serif font-bold text-[#0D4838]">
-                    <AnimatedCounter to={500} suffix="+" />
-                  </span>
-                  <span className="text-[11px] sm:text-xs font-semibold text-[#4A5E57] mt-0.5 block">
-                    Đại biểu dự kiến
-                  </span>
-                </div>
-                <div className="border-r border-[#0D4838]/10 pr-2 sm:pr-4">
-                  <span className="block text-2xl sm:text-3xl lg:text-4xl font-serif font-bold text-[#0D4838]">
-                    <AnimatedCounter to={4} prefix="0" />
-                  </span>
-                  <span className="text-[11px] sm:text-xs font-semibold text-[#4A5E57] mt-0.5 block">
-                    Phiên chuyên đề
-                  </span>
-                </div>
-                <div>
-                  <span className="block text-2xl sm:text-3xl lg:text-4xl font-serif font-bold text-[#0D4838]">
-                    <AnimatedCounter to={30} suffix="+" />
-                  </span>
-                  <span className="text-[11px] sm:text-xs font-semibold text-[#4A5E57] mt-0.5 block">
-                    Mô hình di sản
-                  </span>
-                </div>
+                {(hero.metrics && hero.metrics.length > 0
+                  ? hero.metrics
+                  : [
+                      { value: 500, suffix: "+", label: "Đại biểu dự kiến" },
+                      { value: 4, prefix: "0", label: "Phiên chuyên đề" },
+                      { value: 30, suffix: "+", label: "Mô hình di sản" },
+                    ]
+                ).map((m, idx) => (
+                  <div
+                    key={idx}
+                    className={idx < 2 ? "border-r border-[#0D4838]/10 pr-2 sm:pr-4" : ""}
+                  >
+                    <span className="block text-2xl sm:text-3xl lg:text-4xl font-serif font-bold text-[#0D4838]">
+                      <AnimatedCounter to={m.value} prefix={m.prefix} suffix={m.suffix} />
+                    </span>
+                    <span className="text-[11px] sm:text-xs font-semibold text-[#4A5E57] mt-0.5 block">
+                      {m.label}
+                    </span>
+                  </div>
+                ))}
               </div>
             </div>
           </FadeIn>
@@ -233,7 +241,7 @@ export function HomeHero({ hero }: HomeHeroProps) {
             <div className="relative w-full aspect-[16/10] sm:aspect-[16/9] lg:aspect-[4/3] xl:aspect-[16/10] 2xl:aspect-[16/9] min-h-[340px] sm:min-h-[400px] lg:min-h-[440px] xl:min-h-[480px] 2xl:min-h-[520px] rounded-3xl overflow-hidden border-2 border-[#C29B57]/70 shadow-2xl bg-white group">
               <Image
                 src={hero.imageUrl}
-                alt={hero.imageAlt}
+                alt={hero.imageAlt || "Diễn đàn Kinh tế Di sản Việt Nam"}
                 fill
                 priority
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 900px"
@@ -248,11 +256,12 @@ export function HomeHero({ hero }: HomeHeroProps) {
                     <MapPin className="w-3.5 h-3.5 text-[#C29B57]" /> Địa điểm chính thức
                   </span>
                   <span className="text-sm sm:text-base font-bold text-[#0D4838] truncate block mt-0.5">
-                    Hoàng thành Thăng Long, Hà Nội
+                    {hero.locationBadge || "Hoàng thành Thăng Long, Hà Nội"}
                   </span>
                 </div>
                 <Badge className="bg-[#0D4838] text-white text-xs sm:text-sm py-1.5 px-3 border border-[#C29B57]/60 shrink-0 shadow-xs">
-                  <Users className="w-3.5 h-3.5 mr-1.5 text-[#C29B57]" /> Kỳ 2026
+                  <Users className="w-3.5 h-3.5 mr-1.5 text-[#C29B57]" />{" "}
+                  {hero.editionBadge || "Kỳ 2026"}
                 </Badge>
               </div>
             </div>
@@ -276,7 +285,9 @@ export function HomeHero({ hero }: HomeHeroProps) {
             <Play className="w-3.5 h-3.5 text-[#C29B57]" />
           )}
           <span className="hidden sm:inline">
-            {isPlaying ? "Video nền: Non nước Di sản" : "Đã tạm dừng"}
+            {isPlaying
+              ? hero.videoTitle || "Video nền: Non nước Di sản"
+              : "Đã tạm dừng"}
           </span>
           <Video className="w-3.5 h-3.5 text-[#0D4838] sm:hidden" />
         </button>

@@ -44,7 +44,7 @@ export function NewsFeedSection({ featuredNews, latestNews }: NewsFeedSectionPro
             </p>
           </div>
 
-          <Link href="/news">
+          <Link href="/tin-tuc">
             <Button
               variant="outline"
               size="sm"
