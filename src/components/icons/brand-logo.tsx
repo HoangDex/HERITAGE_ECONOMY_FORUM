@@ -7,14 +7,23 @@ import React from "react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 
-interface BrandLogoProps {
+export interface BrandLogoProps {
   className?: string;
   showSubtitle?: boolean;
+  showText?: boolean;
   href?: string;
   size?: "sm" | "md" | "lg";
+  variant?: "default" | "light" | "sidebar" | "icon-only";
 }
 
-export function BrandLogo({ className, showSubtitle = true, href, size = "md" }: BrandLogoProps) {
+export function BrandLogo({
+  className,
+  showSubtitle = true,
+  showText = true,
+  href,
+  size = "md",
+  variant = "default",
+}: BrandLogoProps) {
   const sizeClasses = {
     sm: "h-8",
     md: "h-10",
@@ -27,13 +36,19 @@ export function BrandLogo({ className, showSubtitle = true, href, size = "md" }:
     lg: "text-xl",
   };
 
+  const isDarkBg = variant === "light" || variant === "sidebar";
+  const isIconOnly = variant === "icon-only" || !showText;
+
   const content = (
     <div className={cn("inline-flex items-center gap-3 select-none group", className)}>
       {/* Biểu trưng hình họa di sản: Cổng Khuê Văn Các / Mái đình cổ */}
       <div
         className={cn(
           sizeClasses[size],
-          "aspect-square rounded-lg bg-[#0D4838] text-[#C29B57] flex items-center justify-center p-2 shadow-xs border border-[#C29B57]/30 transition-transform group-hover:scale-105"
+          "aspect-square rounded-lg flex items-center justify-center p-2 shadow-xs transition-transform group-hover:scale-105",
+          variant === "sidebar"
+            ? "bg-[#041D16] border border-[#C29B57]/50 text-[#C29B57]"
+            : "bg-[#0D4838] text-[#C29B57] border border-[#C29B57]/30"
         )}
       >
         <svg
@@ -58,21 +73,33 @@ export function BrandLogo({ className, showSubtitle = true, href, size = "md" }:
         </svg>
       </div>
 
-      <div className="flex flex-col">
-        <span
-          className={cn(
-            textClasses[size],
-            "font-serif font-extrabold tracking-tight text-[#0D4838] dark:text-[#C29B57] leading-tight"
-          )}
-        >
-          HERITAGE ECONOMY
-        </span>
-        {showSubtitle && (
-          <span className="text-[10px] tracking-wider uppercase font-semibold text-[#5c554b] dark:text-[#a69c8f]">
-            Diễn đàn Kinh tế Di sản
+      {!isIconOnly && (
+        <div className="flex flex-col">
+          <span
+            className={cn(
+              textClasses[size],
+              "font-serif font-extrabold tracking-tight leading-tight",
+              isDarkBg ? "text-white" : "text-[#0D4838] dark:text-[#C29B57]"
+            )}
+          >
+            HERITAGE ECONOMY
           </span>
-        )}
-      </div>
+          {showSubtitle && (
+            <span
+              className={cn(
+                "text-[10px] tracking-wider uppercase font-semibold",
+                variant === "sidebar"
+                  ? "text-[#C29B57] font-bold tracking-widest text-[9px]"
+                  : isDarkBg
+                  ? "text-[#E6D7C3]"
+                  : "text-[#5c554b] dark:text-[#a69c8f]"
+              )}
+            >
+              {variant === "sidebar" ? "KHU VỰC QUẢN TRỊ" : "Diễn đàn Kinh tế Di sản"}
+            </span>
+          )}
+        </div>
+      )}
     </div>
   );
 

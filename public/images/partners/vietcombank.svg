@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 160" width="100%" height="100%">
+  <rect width="320" height="160" rx="12" fill="#FDFBF7"/>
+  <rect x="36" y="36" width="88" height="88" rx="16" fill="#005A36"/>
+  <!-- Vietcombank 3D Chevron Emblem -->
+  <path d="M80 50 L102 76 L80 102 L58 76 Z" fill="none" stroke="#6CB33F" stroke-width="6" stroke-linejoin="round"/>
+  <path d="M80 62 L94 76 L80 90 L66 76 Z" fill="#6CB33F"/>
+  <circle cx="80" cy="76" r="4" fill="#FFFFFF"/>
+  <!-- Typography -->
+  <text x="145" y="65" font-family="'Be Vietnam Pro', sans-serif" font-size="12" font-weight="800" fill="#005A36" letter-spacing="0.5">VIETCOMBANK</text>
+  <text x="145" y="83" font-family="'Be Vietnam Pro', sans-serif" font-size="10.5" font-weight="700" fill="#132A24">NGÂN HÀNG NGOẠI THƯƠNG</text>
+  <text x="145" y="103" font-family="'Be Vietnam Pro', sans-serif" font-size="9" font-weight="600" fill="#6CB33F" letter-spacing="1">ĐỐI TÁC TÀI CHÍNH DI SẢN</text>
+</svg>
