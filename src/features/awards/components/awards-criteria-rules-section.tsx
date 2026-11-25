@@ -46,7 +46,7 @@ export function AwardsCriteriaRulesSection({
               <div className="flex items-center justify-between gap-2">
                 <h3 className="text-lg font-bold text-[#292929] leading-snug">{crit.title}</h3>
                 <Badge className="bg-[#0D4838] text-white font-bold text-sm px-3 py-1">
-                  {crit.weightPercent}%
+                  {crit.weightPercent ?? 25}%
                 </Badge>
               </div>
 
@@ -57,7 +57,7 @@ export function AwardsCriteriaRulesSection({
                   Yêu cầu hồ sơ minh chứng:
                 </span>
                 <ul className="space-y-1.5">
-                  {crit.evidenceRequirements.map((req, idx) => (
+                  {(crit.evidenceRequirements || []).map((req, idx) => (
                     <li key={idx} className="flex items-start gap-2 text-xs text-[#292929]">
                       <CheckCircle2 className="w-3.5 h-3.5 text-[#C29B57] shrink-0 mt-0.5" />
                       <span>{req}</span>

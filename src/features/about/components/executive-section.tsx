@@ -68,10 +68,10 @@ export function ExecutiveSection({
           <div>
             <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#0D4838]/10 text-[#0D4838] text-xs font-semibold uppercase tracking-wider mb-2">
               <Briefcase className="w-3.5 h-3.5 text-[#C29B57]" />
-              <span>Sơ Đồ Phân Cấp Bộ Máy Vận Hành</span>
+              <span>Bộ Máy Vận Hành</span>
             </div>
             <h2 className="text-2xl sm:text-4xl font-serif font-bold text-[#0D4838]">
-              Cây Phân Cấp Ban Điều Hành
+              Ban Điều Hành
             </h2>
             <p className="mt-2 text-xs sm:text-sm text-[#4A5E57] max-w-2xl leading-relaxed">
               Bộ máy chuyên trách điều phối thường trực: Trưởng ban Điều hành thống nhất chỉ huy, Cố

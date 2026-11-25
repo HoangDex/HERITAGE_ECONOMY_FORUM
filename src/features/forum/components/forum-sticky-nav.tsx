@@ -1,65 +1,104 @@
 /**
  * COMPONENT: FORUM STICKY NAV (ĐIỀU HƯỚNG NỘI TRANG KỲ DIỄN ĐÀN)
- * Thanh điều hướng ghim (sticky) đồng bộ chính xác theo từng phân đoạn nội dung:
- * [Tổng quan] | [4 Phiên Nghị sự] | [Lịch trình (Timeline)] | [Diễn giả Tiêu biểu] | [Kỷ yếu & Tài liệu] | [Ban Tổ Chức & Đối tác] | [Hỏi đáp (FAQ)]
+ * Wireframe Desktop:
+ * - ĐIỀU HƯỚNG STICKY: Tổng quan | Các phiên | Timeline | Diễn giả | Tài liệu | Kết quả
+ * Wireframe Mobile:
+ * - MENU NỘI TRANG: Tabs cuộn ngang
  */
 
 "use client";
 
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
+import {
+  Compass,
+  Layers,
+  Clock,
+  Users,
+  FolderDown,
+  Award,
+} from "lucide-react";
 
 interface NavLinkItem {
   id: string;
   label: string;
+  icon: React.ComponentType<{ className?: string }>;
   href: string;
 }
 
 const FORUM_NAV_LINKS: NavLinkItem[] = [
-  { id: "tong-quan", label: "Tổng quan", href: "#tong-quan" },
-  { id: "cac-phien", label: "4 Phiên Nghị sự", href: "#cac-phien" },
-  { id: "timeline", label: "Lịch trình (Timeline)", href: "#timeline" },
-  { id: "dien-gia", label: "Diễn giả Tiêu biểu", href: "#dien-gia" },
-  { id: "tai-lieu", label: "Kỷ yếu & Tài liệu", href: "#tai-lieu" },
-  { id: "doi-tac", label: "Ban Tổ Chức & Đối tác", href: "#doi-tac" },
-  { id: "faq", label: "Hỏi đáp (FAQ)", href: "#faq" },
+  { id: "tong-quan", label: "Tổng quan", icon: Compass, href: "#tong-quan" },
+  { id: "cac-phien", label: "Các phiên", icon: Layers, href: "#cac-phien" },
+  { id: "timeline", label: "Timeline", icon: Clock, href: "#timeline" },
+  { id: "dien-gia", label: "Diễn giả", icon: Users, href: "#dien-gia" },
+  { id: "tai-lieu", label: "Tài liệu", icon: FolderDown, href: "#tai-lieu" },
+  { id: "ket-qua", label: "Kết quả", icon: Award, href: "#ket-qua" },
 ];
 
 export function ForumStickyNav() {
-  const [activeHash, setActiveHash] = useState("#tong-quan");
+  const [activeId, setActiveId] = useState("tong-quan");
 
   useEffect(() => {
-    const handleHash = () => {
-      if (window.location.hash) {
-        setActiveHash(window.location.hash);
+    const handleScroll = () => {
+      const scrollY = window.scrollY;
+      const offset = 180;
+
+      for (let i = FORUM_NAV_LINKS.length - 1; i >= 0; i--) {
+        const item = FORUM_NAV_LINKS[i];
+        const el = document.getElementById(item.id);
+        if (el) {
+          const top = el.offsetTop - offset;
+          if (scrollY >= top) {
+            setActiveId(item.id);
+            break;
+          }
+        }
       }
     };
-    window.addEventListener("hashchange", handleHash);
-    return () => window.removeEventListener("hashchange", handleHash);
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
+    e.preventDefault();
+    setActiveId(id);
+    const element = document.getElementById(id);
+    if (element) {
+      const yOffset = -85;
+      const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
+      window.scrollTo({ top: y, behavior: "smooth" });
+    }
+  };
+
   return (
-    <div className="sticky top-16 z-30 bg-[#F7F5EE]/95 backdrop-blur-md border-b border-[#dfd7c8] shadow-2xs">
-      <div className="container mx-auto px-4 sm:px-8 max-w-7xl">
-        <nav className="flex items-center justify-start sm:justify-center gap-1 sm:gap-2.5 overflow-x-auto py-2.5 no-scrollbar text-xs sm:text-sm font-medium">
+    <nav
+      aria-label="Mục lục nội trang Kỳ Diễn đàn"
+      className="sticky top-16 sm:top-[72px] z-30 w-full bg-[#FBF9F4]/95 backdrop-blur-md border-b border-[#dfd7c8] shadow-xs"
+    >
+      <div className="container mx-auto px-4 sm:px-8 max-w-6xl">
+        <div className="flex items-center justify-start sm:justify-center gap-1.5 sm:gap-3 overflow-x-auto py-2.5 no-scrollbar text-xs sm:text-sm font-medium">
           {FORUM_NAV_LINKS.map((link) => {
-            const isActive = activeHash === link.href;
+            const Icon = link.icon;
+            const isActive = activeId === link.id;
+
             return (
               <a
                 key={link.id}
                 href={link.href}
-                onClick={() => setActiveHash(link.href)}
-                className={`whitespace-nowrap px-3.5 py-1.5 rounded-full transition-all cursor-pointer ${
+                onClick={(e) => handleNavClick(e, link.id)}
+                className={`whitespace-nowrap inline-flex items-center gap-1.5 sm:gap-2 px-3.5 sm:px-4 py-1.5 rounded-full transition-all cursor-pointer ${
                   isActive
                     ? "bg-[#0D4838] text-white shadow-xs font-semibold"
-                    : "text-[#5c554b] hover:text-[#0D4838] hover:bg-[#dfd7c8]/40"
+                    : "bg-white/80 hover:bg-white text-[#5c554b] hover:text-[#0D4838] border border-[#dfd7c8]/80 hover:border-[#C29B57]/60"
                 }`}
               >
-                {link.label}
+                <Icon className={`w-3.5 h-3.5 ${isActive ? "text-[#C29B57]" : "text-[#7D7063]"}`} />
+                <span>{link.label}</span>
               </a>
             );
           })}
-        </nav>
+        </div>
       </div>
-    </div>
+    </nav>
   );
 }

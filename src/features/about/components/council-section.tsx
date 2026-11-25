@@ -62,10 +62,10 @@ export function CouncilSection({
           <div>
             <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#0D4838]/10 text-[#0D4838] text-xs font-semibold uppercase tracking-wider mb-2">
               <Award className="w-3.5 h-3.5 text-[#C29B57]" />
-              <span>Sơ Đồ Cây Phân Cấp Học Thuật</span>
+              <span>Phân Cấp Học Thuật</span>
             </div>
             <h2 className="text-2xl sm:text-4xl font-serif font-bold text-[#0D4838]">
-              Cây Phân Cấp Hội Đồng Diễn Đàn
+              Hội Đồng Diễn Đàn
             </h2>
             <p className="mt-2 text-xs sm:text-sm text-[#4A5E57] max-w-2xl leading-relaxed">
               Cơ cấu tổ chức học thuật phân cấp hoàn chỉnh: Chủ tịch Hội đồng ở đỉnh cây, nhánh Cố

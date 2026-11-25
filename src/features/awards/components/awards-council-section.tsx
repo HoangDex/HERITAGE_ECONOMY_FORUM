@@ -76,45 +76,7 @@ export function AwardsCouncilSection({ judges }: AwardsCouncilSectionProps) {
           ))}
         </StaggerContainer>
 
-        {/* CTA Nộp đề cử */}
-        <FadeIn
-          direction="up"
-          className="rounded-3xl bg-gradient-to-br from-[#0D4838] via-[#073327] to-[#041D16] p-8 sm:p-12 text-white relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-8 shadow-xl border-2 border-[#C29B57]"
-        >
-          <div className="space-y-3 max-w-2xl text-center md:text-left">
-            <Badge className="bg-[#C29B57] text-[#041D16] font-bold px-3 py-1 uppercase tracking-wider">
-              Cổng Đề Cử 2026 Đang Mở
-            </Badge>
-            <h3 className="text-2xl sm:text-4xl font-serif font-bold tracking-tight text-[#F7F5EE]">
-              Đề Cử Sáng Kiến & Doanh Nghiệp Của Bạn
-            </h3>
-            <p className="text-white/85 text-sm sm:text-base leading-relaxed">
-              Cùng lan tỏa những giá trị bảo tồn thích ứng và mô hình kinh tế di sản xuất sắc vì một
-              tương lai văn hóa bền vững của Việt Nam.
-            </p>
-          </div>
 
-          <div className="shrink-0 flex flex-col sm:flex-row gap-3">
-            <Link href="/contact?loai=giai-thuong#contact-form">
-              <Button
-                size="lg"
-                className="bg-[#C29B57] hover:bg-[#a98342] text-[#041D16] font-bold shadow-lg h-12 px-8 cursor-pointer"
-              >
-                <span>Nộp Hồ Sơ Đề Cử</span>
-                <ArrowRight className="w-4 h-4 ml-2" />
-              </Button>
-            </Link>
-            <Link href="/awards#quy-che">
-              <Button
-                variant="outline"
-                size="lg"
-                className="border-white/40 text-[#F7F5EE] hover:bg-white/10 hover:text-white h-12 px-6 cursor-pointer"
-              >
-                <span>Xem Quy Chế Bình Chọn</span>
-              </Button>
-            </Link>
-          </div>
-        </FadeIn>
       </div>
     </section>
   );

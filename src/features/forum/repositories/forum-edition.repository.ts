@@ -4,6 +4,8 @@
  */
 
 import type { ForumEdition, IForumRepository } from "../types/forum-edition.types";
+import { pageRepository } from "@/features/pages/repositories/page.repository";
+import { masterDataRepository } from "@/features/pages/repositories/master-data.repository";
 
 export const HEF_2026_EDITION: ForumEdition = {
   id: "hef-edition-2026",
@@ -428,8 +430,49 @@ export const HEF_2025_EDITION: ForumEdition = {
 
 export class ForumEditionRepository implements IForumRepository {
   async getEditionByYear(year: number): Promise<ForumEdition | null> {
-    if (year === 2026) return HEF_2026_EDITION;
     if (year === 2025) return HEF_2025_EDITION;
+    if (year === 2026) {
+      try {
+        const [page, masterSpeakers] = await Promise.all([
+          pageRepository.findBySlug("forum"),
+          masterDataRepository.getSpeakers(),
+        ]);
+
+        if (page && page.sections && page.sections.length > 0) {
+          const heroSec = page.sections.find((s) => s.type === "FORUM_HERO" || s.type === "HERO");
+          const hProps = heroSec?.props as Record<string, unknown> | undefined;
+
+          let speakers = HEF_2026_EDITION.speakers;
+          if (masterSpeakers.length > 0) {
+            speakers = masterSpeakers.map((sp) => ({
+              id: sp.id,
+              name: sp.name,
+              degree: sp.degree || undefined,
+              title: sp.title,
+              organization: sp.organization,
+              avatarUrl: sp.avatarUrl,
+              bio: sp.bio || "",
+              sessionTitle: "Phiên Chuyên Đề",
+              topicSummary: "Kinh tế Di sản và Phát triển bền vững",
+              slug: sp.slug,
+            }));
+          }
+
+          return {
+            ...HEF_2026_EDITION,
+            title: (hProps?.title as string) || HEF_2026_EDITION.title,
+            theme: (hProps?.theme as string) || HEF_2026_EDITION.theme,
+            datesText: (hProps?.datesText as string) || HEF_2026_EDITION.datesText,
+            venueName: (hProps?.venueName as string) || HEF_2026_EDITION.venueName,
+            venueAddress: (hProps?.venueAddress as string) || HEF_2026_EDITION.venueAddress,
+            speakers,
+          };
+        }
+      } catch {
+        // Fallback
+      }
+      return HEF_2026_EDITION;
+    }
     return null;
   }
 

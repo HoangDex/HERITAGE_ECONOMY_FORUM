@@ -3,6 +3,7 @@
  */
 
 import type { ContactPageData, IContactRepository } from "../types/contact.types";
+import { pageRepository } from "@/features/pages/repositories/page.repository";
 
 const MOCK_CONTACT_DATA: ContactPageData = {
   title: "Kết nối cùng Diễn đàn",
@@ -37,6 +38,43 @@ const MOCK_CONTACT_DATA: ContactPageData = {
 
 export class ContactRepository implements IContactRepository {
   async getContactPageData(): Promise<ContactPageData> {
+    try {
+      const page = await pageRepository.findBySlug("contact");
+      if (page && page.sections && page.sections.length > 0) {
+        const bannerSec = page.sections.find((s) => s.type === "CONTACT_BANNER");
+        const infoSec = page.sections.find((s) => s.type === "CONTACT_INFO");
+
+        const bProps = bannerSec?.props as Record<string, unknown> | undefined;
+        const iProps = infoSec?.props as Record<string, unknown> | undefined;
+
+        let faqs = MOCK_CONTACT_DATA.faqs;
+        if (Array.isArray(iProps?.faqs) && iProps.faqs.length > 0) {
+          faqs = (iProps.faqs as Array<{ question?: string; answer?: string; q?: string; a?: string }>).map((f) => ({
+            question: f.question || f.q || "",
+            answer: f.answer || f.a || "",
+          }));
+        }
+
+        return {
+          title: (bProps?.title as string) || MOCK_CONTACT_DATA.title,
+          slogan: (bProps?.slogan as string) || MOCK_CONTACT_DATA.slogan,
+          description: (bProps?.description as string) || MOCK_CONTACT_DATA.description,
+          info: {
+            secretariatTitle:
+              (iProps?.organizationName as string) ||
+              (iProps?.secretariatTitle as string) ||
+              MOCK_CONTACT_DATA.info.secretariatTitle,
+            address: (iProps?.address as string) || MOCK_CONTACT_DATA.info.address,
+            hotline: (iProps?.hotline as string) || MOCK_CONTACT_DATA.info.hotline,
+            email: (iProps?.email as string) || MOCK_CONTACT_DATA.info.email,
+            workingHours: (iProps?.workingHours as string) || MOCK_CONTACT_DATA.info.workingHours,
+          },
+          faqs,
+        };
+      }
+    } catch {
+      // Fallback
+    }
     return MOCK_CONTACT_DATA;
   }
 }
