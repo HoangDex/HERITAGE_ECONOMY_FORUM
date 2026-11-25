@@ -6,7 +6,6 @@ import Link from "next/link";
 import { Search, MapPin, ArrowRight, Sparkles } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { StaggerContainer, StaggerItem, InteractiveCard } from "@/components/animations";
 import type { HeritageProject } from "../types/heritage.types";
 
@@ -102,7 +101,7 @@ export function ProjectsDirectoryView({ initialProjects }: ProjectsDirectoryView
               <StaggerItem key={proj.id}>
                 <Link href={`/projects/${proj.slug}`} className="group block h-full cursor-pointer">
                   <InteractiveCard className="h-full">
-                    <Card className="border border-[#dfd7c8] bg-white shadow-xs hover:shadow-lg transition-all h-full flex flex-col justify-between hover:border-[#0D4838] overflow-hidden rounded-2xl">
+                    <div className="border border-[#dfd7c8] bg-white shadow-xs hover:shadow-lg transition-all h-full flex flex-col justify-between hover:border-[#0D4838] overflow-hidden rounded-2xl">
                       {/* Project Image Banner */}
                       {proj.imageUrl ? (
                         <div className="relative w-full aspect-[16/10] bg-[#dfd7c8]/30 overflow-hidden">
@@ -153,17 +152,17 @@ export function ProjectsDirectoryView({ initialProjects }: ProjectsDirectoryView
                         </div>
                       )}
 
-                      <CardHeader className="p-5 pb-3 space-y-2">
-                        <CardTitle className="text-lg font-serif font-bold text-[#292929] group-hover:text-[#0D4838] transition-colors leading-snug line-clamp-2">
+                      <div className="p-5 pb-3 space-y-2">
+                        <h3 className="text-lg font-serif font-bold text-[#292929] group-hover:text-[#0D4838] transition-colors leading-snug line-clamp-2">
                           {proj.name}
-                        </CardTitle>
+                        </h3>
 
                         <p className="text-xs text-[#5c554b] line-clamp-2 leading-relaxed">
                           {proj.description}
                         </p>
-                      </CardHeader>
+                      </div>
 
-                      <CardContent className="p-5 pt-0 space-y-3">
+                      <div className="p-5 pt-0 space-y-3">
                         {/* Economic Factsheet */}
                         <div className="grid grid-cols-3 gap-2 p-3 rounded-xl bg-[#F5EFE5] border border-[#dfd7c8]/80 text-center">
                           <div>
@@ -199,8 +198,8 @@ export function ProjectsDirectoryView({ initialProjects }: ProjectsDirectoryView
                           </span>
                           <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                         </div>
-                      </CardContent>
-                    </Card>
+                      </div>
+                    </div>
                   </InteractiveCard>
                 </Link>
               </StaggerItem>
