@@ -123,3 +123,132 @@
   background-image: radial-gradient(#0d4838 0.5px, transparent 0.5px);
   background-size: 24px 24px;
 }
+
+/* ====================================================================
+   HEF ADMIN CMS TYPOGRAPHY SCALE (TĂNG FONT CHỮ TỔNG THỂ TOÀN TRANG ADMIN)
+   ==================================================================== */
+.hef-admin-scope {
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+/* Tăng font cho các class text nhỏ trong Admin để giao diện thông thoáng, dễ nhìn */
+.hef-admin-scope .text-xs {
+  font-size: 0.84rem !important; /* ~13.5px thay vì 12px */
+  line-height: 1.3rem !important;
+}
+
+.hef-admin-scope .text-sm {
+  font-size: 0.975rem !important; /* ~15.5px thay vì 14px */
+  line-height: 1.45rem !important;
+}
+
+.hef-admin-scope .text-base {
+  font-size: 1.075rem !important; /* ~17.2px thay vì 16px */
+  line-height: 1.55rem !important;
+}
+
+.hef-admin-scope .text-lg {
+  font-size: 1.22rem !important;
+  line-height: 1.7rem !important;
+}
+
+.hef-admin-scope .text-xl {
+  font-size: 1.4rem !important;
+  line-height: 1.85rem !important;
+}
+
+.hef-admin-scope .text-2xl {
+  font-size: 1.7rem !important;
+  line-height: 2.1rem !important;
+}
+
+.hef-admin-scope .text-3xl {
+  font-size: 2.05rem !important;
+  line-height: 2.45rem !important;
+}
+
+.hef-admin-scope .text-\[9px\] {
+  font-size: 11.5px !important;
+  line-height: 1rem !important;
+}
+
+.hef-admin-scope .text-\[10px\] {
+  font-size: 12.5px !important;
+  line-height: 1.15rem !important;
+}
+
+.hef-admin-scope .text-\[11px\] {
+  font-size: 13.5px !important;
+  line-height: 1.25rem !important;
+}
+
+/* Nâng cấp form input, select, textarea trong Admin */
+.hef-admin-scope input,
+.hef-admin-scope textarea,
+.hef-admin-scope select {
+  font-size: 0.9rem !important;
+}
+
+.hef-admin-scope label {
+  font-size: 0.875rem !important;
+}
+
+/* ====================================================================
+   ISOLATED PREVIEW VIEWPORT (BẢO VỆ PREVIEW KHỎI BỊ LỆCH FONT BỞI ADMIN)
+   Đảm bảo các component hiển thị 100% chuẩn typography website công khai
+   ==================================================================== */
+.preview-viewport-isolated {
+  font-size: 16px !important;
+  line-height: 1.5 !important;
+}
+
+.preview-viewport-isolated .text-xs {
+  font-size: 0.75rem !important; /* 12px */
+  line-height: 1rem !important;
+}
+
+.preview-viewport-isolated .text-sm {
+  font-size: 0.875rem !important; /* 14px */
+  line-height: 1.25rem !important;
+}
+
+.preview-viewport-isolated .text-base {
+  font-size: 1rem !important; /* 16px */
+  line-height: 1.5rem !important;
+}
+
+.preview-viewport-isolated .text-lg {
+  font-size: 1.125rem !important; /* 18px */
+  line-height: 1.75rem !important;
+}
+
+.preview-viewport-isolated .text-xl {
+  font-size: 1.25rem !important; /* 20px */
+  line-height: 1.75rem !important;
+}
+
+.preview-viewport-isolated .text-2xl {
+  font-size: 1.5rem !important; /* 24px */
+  line-height: 2rem !important;
+}
+
+.preview-viewport-isolated .text-3xl {
+  font-size: 1.875rem !important; /* 30px */
+  line-height: 2.25rem !important;
+}
+
+.preview-viewport-isolated .text-\[9px\] {
+  font-size: 9px !important;
+  line-height: 12px !important;
+}
+
+.preview-viewport-isolated .text-\[10px\] {
+  font-size: 10px !important;
+  line-height: 14px !important;
+}
+
+.preview-viewport-isolated .text-\[11px\] {
+  font-size: 11px !important;
+  line-height: 16px !important;
+}
