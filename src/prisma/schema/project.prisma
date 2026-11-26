@@ -5,31 +5,36 @@ enum ProjectStatus {
   COMPLETED
 }
 
-model HeritageProject {
-  id                    String   @id @default(cuid())
-  pageSlug              String?  @db.VarChar(150) // Query qua slug trang CMS (/projects)
-  pageName              String?  @db.VarChar(150) // Query qua tên trang CMS ("Dự án di sản")
-  page                  Page?    @relation(fields: [pageSlug], references: [slug], onDelete: SetNull)
-  name                  String   @db.VarChar(255)
-  slug                  String   @unique @db.VarChar(255)
-  location              String   @db.VarChar(150)
-  category              String   @db.VarChar(100)
-  status                String   @default("Đang vận hành") @db.VarChar(50)
-  description           String   @db.Text
+model ProjectCategory {
+  id       Int       @id @default(autoincrement())
+  name     String    @db.VarChar(100)
+  projects Project[]
+
+  @@map("project_categories")
+}
+
+model Project {
+  id                    String          @id @default(cuid())
+  name                  String          @db.VarChar(255)
+  slug                  String          @unique @db.VarChar(255)
+  location              String          @db.VarChar(150)
+  categoryId            Int
+  category              ProjectCategory @relation(fields: [categoryId], references: [id])
+  status                String          @default("Đang vận hành") @db.VarChar(50)
+  description           String          @db.Text
   highlights            Json?
-  thumbnailUrl          String?  @db.VarChar(255)
+  thumbnailUrl          String?         @db.VarChar(255)
   galleryUrls           Json?
-  annualRevenue         String?  @db.VarChar(100)
-  jobsCreated           Int      @default(0)
-  conservationFundShare String?  @db.VarChar(50)
-  ownerOrg              String?  @db.VarChar(255)
-  websiteUrl            String?  @db.VarChar(255)
-  isFeatured            Boolean  @default(false)
-  createdAt             DateTime @default(now())
-  updatedAt             DateTime @updatedAt
+  annualRevenue         String?         @db.VarChar(100)
+  jobsCreated           Int             @default(0)
+  conservationFundShare String?         @db.VarChar(50)
+  ownerOrg              String?         @db.VarChar(255)
+  websiteUrl            String?         @db.VarChar(255)
+  isFeatured            Boolean         @default(false)
+  createdAt             DateTime        @default(now())
+  updatedAt             DateTime        @updatedAt
 
   @@index([slug])
-  @@index([pageSlug])
-  @@index([category])
-  @@map("heritage_projects")
+  @@index([categoryId])
+  @@map("projects")
 }

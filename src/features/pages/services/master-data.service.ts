@@ -6,6 +6,11 @@
 import { masterDataRepository } from "../repositories/master-data.repository";
 import type {
   MasterDataOverview,
+  MasterDataCategory,
+  MasterDataProjectCategory,
+  MasterDataAwardCategory,
+  CreateCategoryDTO,
+  UpdateCategoryDTO,
   MasterDataProject,
   CreateProjectDTO,
   UpdateProjectDTO,
@@ -30,6 +35,90 @@ export class MasterDataService implements IMasterDataService {
 
   async getMasterDataOverview(): Promise<MasterDataOverview> {
     return this.repo.getOverview();
+  }
+
+  // ==========================================
+  // PROJECT CATEGORIES (PROJECT CATEGORY: { id, name })
+  // ==========================================
+  async getProjectCategories(): Promise<MasterDataProjectCategory[]> {
+    return this.repo.getProjectCategories();
+  }
+
+  async getProjectCategoryById(id: string): Promise<MasterDataProjectCategory | null> {
+    if (!id) return null;
+    return this.repo.getProjectCategoryById(id);
+  }
+
+  async createProjectCategory(dto: CreateCategoryDTO): Promise<MasterDataProjectCategory> {
+    return this.repo.createProjectCategory(dto);
+  }
+
+  async updateProjectCategory(
+    id: string,
+    dto: UpdateCategoryDTO
+  ): Promise<MasterDataProjectCategory | null> {
+    if (!id) return null;
+    return this.repo.updateProjectCategory(id, dto);
+  }
+
+  async deleteProjectCategory(id: string): Promise<boolean> {
+    if (!id) return false;
+    return this.repo.deleteProjectCategory(id);
+  }
+
+  // ==========================================
+  // CATEGORIES (NEWS CATEGORY: { id, name })
+  // ==========================================
+  async getCategories(): Promise<MasterDataCategory[]> {
+    return this.repo.getCategories();
+  }
+
+  async getCategoryById(id: string): Promise<MasterDataCategory | null> {
+    if (!id) return null;
+    return this.repo.getCategoryById(id);
+  }
+
+  async createCategory(dto: CreateCategoryDTO): Promise<MasterDataCategory> {
+    return this.repo.createCategory(dto);
+  }
+
+  async updateCategory(id: string, dto: UpdateCategoryDTO): Promise<MasterDataCategory | null> {
+    if (!id) return null;
+    return this.repo.updateCategory(id, dto);
+  }
+
+  async deleteCategory(id: string): Promise<boolean> {
+    if (!id) return false;
+    return this.repo.deleteCategory(id);
+  }
+
+  // ==========================================
+  // AWARD CATEGORIES (AWARD CATEGORY: { id, name })
+  // ==========================================
+  async getAwardCategories(): Promise<MasterDataAwardCategory[]> {
+    return this.repo.getAwardCategories();
+  }
+
+  async getAwardCategoryById(id: string): Promise<MasterDataAwardCategory | null> {
+    if (!id) return null;
+    return this.repo.getAwardCategoryById(id);
+  }
+
+  async createAwardCategory(dto: CreateCategoryDTO): Promise<MasterDataAwardCategory> {
+    return this.repo.createAwardCategory(dto);
+  }
+
+  async updateAwardCategory(
+    id: string,
+    dto: UpdateCategoryDTO
+  ): Promise<MasterDataAwardCategory | null> {
+    if (!id) return null;
+    return this.repo.updateAwardCategory(id, dto);
+  }
+
+  async deleteAwardCategory(id: string): Promise<boolean> {
+    if (!id) return false;
+    return this.repo.deleteAwardCategory(id);
   }
 
   // ==========================================

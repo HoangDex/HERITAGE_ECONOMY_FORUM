@@ -31,6 +31,7 @@ export interface NewsItem {
   sapo: string;
   content: string; // Nội dung bài báo HTML
   contentJson?: Record<string, unknown> | Array<unknown>; // Cấu trúc khối CKEditor JSON
+  categoryId: number;
   category: NewsCategorySlug;
   categoryName: string;
   coverImage: string;
@@ -43,11 +44,34 @@ export interface NewsItem {
   tags: string[];
 }
 
+export interface NewsFilterCategoryGroup {
+  title: string;
+  ids: number[];
+}
+
+export interface NewsPaginationData {
+  news: NewsItem[];
+  page: number;
+  limit: number;
+  total: number;
+  totalPages: number;
+}
+
+export interface NewsHeroProps {
+  badge?: string;
+  title: string;
+  description: string;
+}
+
 export interface NewsPageData {
+  hero?: NewsHeroProps;
+  featuredNewsId?: string;
   featuredArticle: NewsItem;
   topSideArticles: NewsItem[];
   latestArticles: NewsItem[];
   categories: NewsCategory[];
+  filterCategories?: NewsFilterCategoryGroup[];
+  newsPagination?: NewsPaginationData;
 }
 
 export interface INewsRepository {

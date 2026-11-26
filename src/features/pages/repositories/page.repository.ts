@@ -1,59 +1,83 @@
 /**
  * LAYER 3: REPOSITORY / DATA ACCESS LAYER (Page & Sections)
- * Thao tác với bảng `pages` qua Prisma 7 Client và quản lý cấu trúc JSON
+ * Thao tác với bảng `pages` qua Prisma 7 Client và quản lý cấu trúc `props` JSON chia theo từng section.
  */
 
 import { prisma } from "@/lib/prisma";
-import type {
-  PageEntity,
-  CreatePageDTO,
-  UpdatePageDTO,
-  IPageRepository,
-  PageSection,
+import {
+  pagePropsToSections,
+  sectionsToPageProps,
+  type PageEntity,
+  type CreatePageDTO,
+  type UpdatePageDTO,
+  type IPageRepository,
+  type PageSection,
+  type PagePropsMap,
+  type UniversalSectionProps,
 } from "../types/page.types";
 import { DEFAULT_HEF_PAGES } from "../data/default-pages.data";
 
 export { DEFAULT_HEF_PAGES };
 
 export class PageRepository implements IPageRepository {
-  private inMemoryPages: PageEntity[] = [...DEFAULT_HEF_PAGES];
+  private inMemoryPages: PageEntity[] = DEFAULT_HEF_PAGES.map((p) => ({
+    ...p,
+    props: { ...p.props },
+    sections: pagePropsToSections(p.props),
+  }));
+
+  private normalizeProps(rawProps: unknown, slug: string): PagePropsMap {
+    const defaultPage = DEFAULT_HEF_PAGES.find((p) => p.slug === slug);
+    const defaultProps = defaultPage?.props || {};
+
+    // Nếu rawProps là object hợp lệ (theo cấu trúc mới: { hero: {...}, pillars: {...}, ... })
+    if (rawProps && typeof rawProps === "object" && !Array.isArray(rawProps)) {
+      const entries = Object.entries(rawProps as Record<string, unknown>);
+      if (entries.length > 0) {
+        return rawProps as PagePropsMap;
+      }
+    }
+
+    // Nếu rawProps trong DB cũ là mảng sections: chuyển đổi sang PagePropsMap
+    if (Array.isArray(rawProps) && rawProps.length > 0) {
+      return sectionsToPageProps(rawProps as PageSection[]);
+    }
+
+    return { ...defaultProps };
+  }
 
   private mapToEntity(item: {
     id: string;
     slug: string;
     name: string;
-    title: string;
-    description: string | null;
-    seoProps: unknown;
-    sections: unknown;
+    props: unknown;
     isPublished: boolean;
-    order: number;
-    publishedAt: Date | null;
     createdAt?: Date;
     updatedAt?: Date;
   }): PageEntity {
-    // Nếu sections trong DB rỗng, fallback về default sections của page đó
-    let resolvedSections: PageSection[] = [];
-    if (Array.isArray(item.sections) && item.sections.length > 0) {
-      resolvedSections = item.sections as PageSection[];
-    } else {
-      const defaultPage = DEFAULT_HEF_PAGES.find((p) => p.slug === item.slug);
-      if (defaultPage?.sections) {
-        resolvedSections = defaultPage.sections;
-      }
-    }
+    const defaultPage = DEFAULT_HEF_PAGES.find((p) => p.slug === item.slug);
+    const resolvedProps = this.normalizeProps(item.props, item.slug);
+    const resolvedSections = pagePropsToSections(resolvedProps);
+    const firstSection = Object.values(resolvedProps)[0];
 
     return {
       id: item.id,
       slug: item.slug,
       name: item.name,
-      title: item.title,
-      description: item.description || undefined,
-      seoProps: (item.seoProps as PageEntity["seoProps"]) || undefined,
-      sections: resolvedSections,
+      props: resolvedProps,
       isPublished: item.isPublished,
-      order: item.order,
-      publishedAt: item.publishedAt?.toISOString(),
+      title:
+        defaultPage?.title ||
+        firstSection?.title ||
+        item.name,
+      description:
+        defaultPage?.description ||
+        firstSection?.description ||
+        firstSection?.quote,
+      seoProps: defaultPage?.seoProps,
+      sections: resolvedSections,
+      order: defaultPage?.order ?? 1,
+      publishedAt: item.createdAt?.toISOString() || defaultPage?.publishedAt,
       createdAt: item.createdAt?.toISOString(),
       updatedAt: item.updatedAt?.toISOString(),
     };
@@ -63,10 +87,12 @@ export class PageRepository implements IPageRepository {
     try {
       const pages = await prisma.page.findMany({
         where: publishedOnly ? { isPublished: true } : undefined,
-        orderBy: { order: "asc" },
+        orderBy: { createdAt: "asc" },
       });
       if (pages.length > 0) {
-        return pages.map((p) => this.mapToEntity(p));
+        return pages
+          .map((p) => this.mapToEntity(p))
+          .sort((a, b) => a.order - b.order);
       }
     } catch {
       // Fallback in-memory
@@ -100,22 +126,22 @@ export class PageRepository implements IPageRepository {
       // Fallback
     }
 
-    const mock = this.inMemoryPages.find((p) => p.slug === slug);
+    const mock = this.inMemoryPages.find((p) => p.slug === slug || p.id === slug);
     return mock || null;
   }
 
   async create(data: CreatePageDTO): Promise<PageEntity> {
+    const initialProps: PagePropsMap =
+      data.props ||
+      (data.sections && data.sections.length > 0 ? sectionsToPageProps(data.sections) : {});
+
     try {
       const page = await prisma.page.create({
         data: {
           slug: data.slug,
           name: data.name,
-          title: data.title,
-          description: data.description,
-          seoProps: (data.seoProps || {}) as object,
-          sections: (data.sections || []) as object,
-          isPublished: data.isPublished || false,
-          order: data.order || 0,
+          props: initialProps as object,
+          isPublished: data.isPublished ?? true,
         },
       });
       return this.mapToEntity(page);
@@ -124,13 +150,15 @@ export class PageRepository implements IPageRepository {
         id: "page_" + Math.random().toString(36).substring(2, 9),
         slug: data.slug,
         name: data.name,
-        title: data.title,
+        props: initialProps,
+        title: data.title || data.name,
         description: data.description,
         seoProps: data.seoProps,
-        sections: data.sections || [],
-        isPublished: data.isPublished || false,
-        order: data.order || 0,
+        sections: pagePropsToSections(initialProps),
+        isPublished: data.isPublished ?? true,
+        order: data.order || this.inMemoryPages.length + 1,
         createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
       };
       this.inMemoryPages.push(newMock);
       return newMock;
@@ -138,25 +166,32 @@ export class PageRepository implements IPageRepository {
   }
 
   async update(id: string, data: UpdatePageDTO): Promise<PageEntity | null> {
+    const existing = await this.findById(id);
+    if (!existing) return null;
+
+    const nextProps =
+      data.props ??
+      (data.sections ? sectionsToPageProps(data.sections) : existing.props);
+
     try {
       const updated = await prisma.page.update({
-        where: { id },
+        where: { id: existing.id },
         data: {
-          name: data.name,
-          title: data.title,
-          description: data.description,
-          seoProps: data.seoProps ? (data.seoProps as object) : undefined,
-          isPublished: data.isPublished,
-          order: data.order,
+          name: data.name ?? existing.name,
+          props: nextProps as object,
+          isPublished: data.isPublished ?? existing.isPublished,
         },
       });
       return this.mapToEntity(updated);
     } catch {
-      const idx = this.inMemoryPages.findIndex((p) => p.id === id);
+      const idx = this.inMemoryPages.findIndex((p) => p.id === id || p.slug === id);
       if (idx === -1) return null;
       this.inMemoryPages[idx] = {
         ...this.inMemoryPages[idx],
         ...data,
+        props: nextProps,
+        sections: pagePropsToSections(nextProps),
+        updatedAt: new Date().toISOString(),
       };
       return this.inMemoryPages[idx];
     }
@@ -167,7 +202,7 @@ export class PageRepository implements IPageRepository {
       await prisma.page.delete({ where: { id } });
       return true;
     } catch {
-      const idx = this.inMemoryPages.findIndex((p) => p.id === id);
+      const idx = this.inMemoryPages.findIndex((p) => p.id === id || p.slug === id);
       if (idx !== -1) {
         this.inMemoryPages.splice(idx, 1);
         return true;
@@ -176,51 +211,78 @@ export class PageRepository implements IPageRepository {
     }
   }
 
-  async updateSections(pageId: string, sections: PageSection[]): Promise<PageEntity | null> {
+  async getSectionByKey(slug: string, sectionKey: string): Promise<UniversalSectionProps | null> {
+    const page = await this.findBySlug(slug);
+    if (!page) return null;
+    const section = page.props[sectionKey];
+    return section || null;
+  }
+
+  async updateSectionByKey(
+    slug: string,
+    sectionKey: string,
+    sectionProps: UniversalSectionProps
+  ): Promise<PageEntity | null> {
+    const page = await this.findBySlug(slug);
+    if (!page) return null;
+
+    const currentSection = page.props[sectionKey] || {};
+    const mergedProps: PagePropsMap = {
+      ...page.props,
+      [sectionKey]: {
+        ...currentSection,
+        ...sectionProps,
+      },
+    };
+
+    return this.updatePropsBySlug(page.slug, mergedProps);
+  }
+
+  async updatePropsBySlug(slug: string, props: PagePropsMap): Promise<PageEntity | null> {
+    // Luôn đồng bộ vào in-memory cache để dev/fallback nhận ngay thay đổi
+    const memIdx = this.inMemoryPages.findIndex((p) => p.slug === slug || p.id === slug);
+    if (memIdx !== -1) {
+      this.inMemoryPages[memIdx] = {
+        ...this.inMemoryPages[memIdx],
+        props,
+        sections: pagePropsToSections(props),
+        updatedAt: new Date().toISOString(),
+      };
+    }
+
     try {
-      // 1. Thử cập nhật theo ID trong CSDL
       const updated = await prisma.page.update({
-        where: { id: pageId },
+        where: { slug },
         data: {
-          sections: sections as object,
+          props: props as object,
         },
       });
       return this.mapToEntity(updated);
     } catch {
       try {
-        // 2. Thử cập nhật theo Slug trong CSDL nếu pageId là slug
-        const updatedBySlug = await prisma.page.update({
-          where: { slug: pageId },
+        const updatedById = await prisma.page.update({
+          where: { id: slug },
           data: {
-            sections: sections as object,
+            props: props as object,
           },
         });
-        return this.mapToEntity(updatedBySlug);
+        return this.mapToEntity(updatedById);
       } catch {
-        // 3. Fallback in-memory
-        const page = this.inMemoryPages.find((p) => p.id === pageId || p.slug === pageId);
-        if (!page) return null;
-        page.sections = sections;
-        return page;
+        return memIdx !== -1 ? this.inMemoryPages[memIdx] : null;
       }
     }
   }
 
+  async updateSections(pageId: string, sections: PageSection[]): Promise<PageEntity | null> {
+    const page = await this.findById(pageId);
+    if (!page) return null;
+    const nextProps = sectionsToPageProps(sections);
+    return this.updatePropsBySlug(page.slug, nextProps);
+  }
+
   async updateSectionsBySlug(slug: string, sections: PageSection[]): Promise<PageEntity | null> {
-    try {
-      const updated = await prisma.page.update({
-        where: { slug },
-        data: {
-          sections: sections as object,
-        },
-      });
-      return this.mapToEntity(updated);
-    } catch {
-      const page = this.inMemoryPages.find((p) => p.slug === slug);
-      if (!page) return null;
-      page.sections = sections;
-      return page;
-    }
+    const nextProps = sectionsToPageProps(sections);
+    return this.updatePropsBySlug(slug, nextProps);
   }
 }
 

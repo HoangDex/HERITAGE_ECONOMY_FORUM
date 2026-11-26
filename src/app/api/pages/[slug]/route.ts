@@ -7,6 +7,7 @@
 import { NextRequest } from "next/server";
 import { apiSuccess, apiError, apiValidationError } from "@/lib/api-response";
 import { pageService } from "@/features/pages/services/page.service";
+import { newsRepository } from "@/features/news/repositories/news.repository";
 import {
   updatePageSchema,
   homePageSectionsListSchema,
@@ -18,7 +19,7 @@ interface RouteContext {
   params: Promise<{ slug: string }>;
 }
 
-export async function GET(_request: NextRequest, context: RouteContext) {
+export async function GET(request: NextRequest, context: RouteContext) {
   try {
     const { slug } = await context.params;
 
@@ -26,12 +27,53 @@ export async function GET(_request: NextRequest, context: RouteContext) {
       return apiError("Tham số slug không hợp lệ", 400);
     }
 
-    const page = await pageService.getPageBySlug(slug.toLowerCase().trim());
+    const cleanSlug = slug.toLowerCase().trim();
+    const page = await pageService.getPageBySlug(cleanSlug);
     if (!page) {
       return apiError(`Không tìm thấy trang với định danh: ${slug}`, 404);
     }
 
-    return apiSuccess(page, {
+    const cleanPage = {
+      id: page.id,
+      slug: page.slug,
+      name: page.name,
+      props: page.props,
+      isPublished: page.isPublished,
+      createdAt: page.createdAt,
+      updatedAt: page.updatedAt,
+    };
+
+    // Khi gọi GET /api/pages/news, truy vấn kèm thêm phân trang bài viết newsPagination trả trong response
+    if (cleanSlug === "news") {
+      const { searchParams } = new URL(request.url);
+      const pageNum = Math.max(1, Number(searchParams.get("page")) || 1);
+      const limit = Math.max(1, Math.min(100, Number(searchParams.get("limit")) || 6));
+      const rawCategoryIds = searchParams.get("categoryIds") || "";
+      const categoryIds = rawCategoryIds
+        .split(",")
+        .map((id) => id.trim())
+        .filter(Boolean);
+      const search = searchParams.get("search") || undefined;
+
+      const newsPagination = await newsRepository.getPaginatedNews({
+        page: pageNum,
+        limit,
+        categoryIds,
+        search,
+      });
+
+      return apiSuccess(
+        {
+          ...cleanPage,
+          newsPagination,
+        },
+        {
+          message: `Lấy thông tin trang ${page.name} kèm danh sách tin tức phân trang thành công`,
+        }
+      );
+    }
+
+    return apiSuccess(cleanPage, {
       message: `Lấy thông tin trang ${page.name} thành công`,
     });
   } catch (error) {

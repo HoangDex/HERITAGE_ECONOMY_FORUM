@@ -3,36 +3,26 @@ enum NewsStatus {
   PUBLISHED
   ARCHIVED
 }
-
+ 
 model Category {
-  id          String   @id @default(cuid())
-  name        String   @db.VarChar(100)
-  slug        String   @unique @db.VarChar(100)
-  description String?  @db.Text
-  news        News[]
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id   Int    @id @default(autoincrement())
+  name String @db.VarChar(100)
+  news News[]
 
   @@map("categories")
 }
 
 model News {
   id                 String       @id @default(cuid())
-  pageSlug           String?      @db.VarChar(150) // Query qua slug trang CMS (/news, /)
-  pageName           String?      @db.VarChar(150) // Query qua tên trang CMS ("Tin tức", "Trang chủ")
-  page               Page?        @relation(fields: [pageSlug], references: [slug], onDelete: SetNull)
   title              String       @db.VarChar(255)
   slug               String       @unique @db.VarChar(255)
   excerpt            String       @db.Text
   coverImageUrl      String?      @db.VarChar(255)
-  imageCaption       String?      @db.VarChar(255)
   authorName         String?      @db.VarChar(150)
   authorTitle        String?      @db.VarChar(150)
-  categoryId         String
+  categoryId         Int
   category           Category     @relation(fields: [categoryId], references: [id])
   status             NewsStatus   @default(DRAFT)
-  isFeatured         Boolean      @default(false)
-  viewsCount         Int          @default(0)
   readingTimeMinutes Int          @default(5)
   contentDetail      NewsContent? // Quan hệ 1:1 sang bảng nội dung nặng (CKEditor)
   publishedAt        DateTime?
@@ -40,7 +30,6 @@ model News {
   updatedAt          DateTime     @updatedAt
 
   @@index([slug])
-  @@index([pageSlug])
   @@index([categoryId])
   @@index([status, publishedAt])
   @@map("news")

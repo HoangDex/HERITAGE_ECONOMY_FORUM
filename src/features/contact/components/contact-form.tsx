@@ -5,36 +5,69 @@ import { useSearchParams } from "next/navigation";
 import { Send, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import type { ContactRequestType } from "../types/contact.types";
+import type { ContactFormConfig } from "../types/contact.types";
 
-const REQUEST_TYPE_OPTIONS: { id: ContactRequestType; label: string }[] = [
-  { id: "tham-du", label: "Đăng ký tham dự Đại biểu" },
-  { id: "dien-gia", label: "Đăng ký Diễn giả / Gửi bài tham luận" },
-  { id: "hop-tac", label: "Hợp tác Chiến lược & Phát triển" },
-  { id: "tai-tro", label: "Tài trợ & Đồng hành Diễn đàn" },
-  { id: "du-an", label: "Đề xuất Dự án / Mô hình Di sản" },
-  { id: "giai-thuong", label: "Giải thưởng Phát triển Bền vững" },
-  { id: "truyen-thong", label: "Báo chí & Truyền thông" },
-  { id: "khac", label: "Yêu cầu / Ý kiến khác" },
-];
+const DEFAULT_CONTACT_FORM_CONFIG: ContactFormConfig = {
+  title: "Biểu Mẫu Tiếp Nhận Chính Thức",
+  description:
+    "Vui lòng chọn đúng nhóm nhu cầu để Ban Thư ký phân công chuyên viên phụ trách phù hợp.",
+  consentText:
+    "Tôi xác nhận đồng ý để Diễn đàn lưu trữ và xử lý thông tin liên hệ cho mục đích điều phối công vụ theo Quy định bảo vệ dữ liệu cá nhân.",
+  submitLabel: "Gửi yêu cầu chính thức",
+  fields: {
+    type: {
+      label: "Nhóm Yêu Cầu *",
+      options: [
+        "Đăng ký tham dự Đại biểu",
+        "Hợp tác Chiến lược & Phát triển",
+        "Tài trợ & Đồng hành Diễn đàn",
+        "Đề xuất Dự án / Mô hình Di sản",
+        "Giải thưởng Phát triển Bền vững",
+        "Yêu cầu / Ý kiến khác",
+      ],
+    },
+    fullName: { label: "Họ và tên *", placeholder: "Nguyễn Văn A" },
+    organization: {
+      label: "Đơn vị / Cơ quan *",
+      placeholder: "Tên viện, trường, doanh nghiệp...",
+    },
+    position: {
+      label: "Chức danh / Học vị",
+      placeholder: "Chuyên viên, Giám đốc, PGS.TS...",
+    },
+    phone: { label: "Số điện thoại liên hệ *", placeholder: "09xx xxx xxx" },
+    email: { label: "Email công vụ / cá nhân *", placeholder: "email@example.com" },
+    message: {
+      label: "Nội dung yêu cầu / Ghi chú trao đổi *",
+      placeholder:
+        "Mô tả tóm tắt nội dung Quý vị muốn trao đổi cùng Ban Thư ký Diễn đàn...",
+    },
+  },
+};
 
-export function ContactForm() {
+interface ContactFormProps {
+  formConfig?: ContactFormConfig;
+}
+
+export function ContactForm({ formConfig = DEFAULT_CONTACT_FORM_CONFIG }: ContactFormProps) {
   const searchParams = useSearchParams();
-  const queryLoai = searchParams.get("loai") as ContactRequestType | null;
+  const queryLoai = searchParams.get("loai");
+  const options = formConfig.fields.type.options || [];
 
-  const defaultRequestType: ContactRequestType =
-    queryLoai && REQUEST_TYPE_OPTIONS.some((opt) => opt.id === queryLoai) ? queryLoai : "tham-du";
-
-  const [requestType, setRequestType] = useState<ContactRequestType>(defaultRequestType);
+  const [requestType, setRequestType] = useState<string>(options[0] || "Đăng ký tham dự Đại biểu");
 
   useEffect(() => {
-    if (queryLoai && REQUEST_TYPE_OPTIONS.some((opt) => opt.id === queryLoai)) {
-      setRequestType(queryLoai);
+    if (queryLoai) {
+      const matched = options.find((opt) =>
+        opt.toLowerCase().includes(queryLoai.replace(/-/g, " ").toLowerCase())
+      );
+      if (matched) setRequestType(matched);
     }
-  }, [queryLoai]);
+  }, [queryLoai, options]);
+
   const [fullName, setFullName] = useState("");
   const [organization, setOrganization] = useState("");
-  const [title, setTitle] = useState("");
+  const [position, setPosition] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [message, setMessage] = useState("");
@@ -63,7 +96,7 @@ export function ContactForm() {
         message: "Yêu cầu của Quý vị đã được ghi nhận vào hệ thống tiếp nhận chính thức.",
       });
       setIsSubmitting(false);
-    }, 600);
+    }, 500);
   };
 
   if (result?.success) {
@@ -96,6 +129,8 @@ export function ContactForm() {
     );
   }
 
+  const { fields } = formConfig;
+
   return (
     <div id="form" className="scroll-mt-28">
       <form
@@ -103,124 +138,125 @@ export function ContactForm() {
         onSubmit={handleSubmit}
         className="scroll-mt-28 p-6 sm:p-8 bg-white rounded-3xl border border-[#dfd7c8] shadow-xs space-y-5"
       >
-      <div className="space-y-1">
-        <h3 className="text-xl font-bold text-[#292929]">Biểu Mẫu Tiếp Nhận Chính Thức</h3>
-        <p className="text-xs text-[#5c554b]">
-          Vui lòng chọn đúng nhóm nhu cầu để Ban Thư ký phân công chuyên viên phụ trách phù hợp.
-        </p>
-      </div>
+        <div className="space-y-1">
+          <h3 className="text-xl font-bold text-[#292929]">{formConfig.title}</h3>
+          <p className="text-xs text-[#5c554b]">{formConfig.description}</p>
+        </div>
 
-      {/* Nhóm yêu cầu */}
-      <div className="space-y-1.5">
-        <label className="text-xs font-semibold text-[#292929]">Nhóm Yêu Cầu *</label>
-        <select
-          className="w-full text-xs h-10 px-3 rounded-lg border border-[#dfd7c8] bg-white text-[#292929] focus:outline-[#0D4838]"
-          value={requestType}
-          onChange={(e) => setRequestType(e.target.value as ContactRequestType)}
+        {/* Nhóm yêu cầu */}
+        <div className="space-y-1.5">
+          <label className="text-xs font-semibold text-[#292929]">{fields.type.label}</label>
+          <select
+            className="w-full text-xs h-10 px-3 rounded-lg border border-[#dfd7c8] bg-white text-[#292929] focus:outline-[#0D4838]"
+            value={requestType}
+            onChange={(e) => setRequestType(e.target.value)}
+          >
+            {options.map((opt) => (
+              <option key={opt} value={opt}>
+                {opt}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="space-y-1.5">
+            <label className="text-xs font-semibold text-[#292929]">
+              {fields.fullName.label}
+            </label>
+            <Input
+              required
+              placeholder={fields.fullName.placeholder}
+              value={fullName}
+              onChange={(e) => setFullName(e.target.value)}
+              className="border-[#dfd7c8] text-xs h-9.5"
+            />
+          </div>
+
+          <div className="space-y-1.5">
+            <label className="text-xs font-semibold text-[#292929]">
+              {fields.organization.label}
+            </label>
+            <Input
+              required
+              placeholder={fields.organization.placeholder}
+              value={organization}
+              onChange={(e) => setOrganization(e.target.value)}
+              className="border-[#dfd7c8] text-xs h-9.5"
+            />
+          </div>
+
+          <div className="space-y-1.5">
+            <label className="text-xs font-semibold text-[#292929]">
+              {fields.position.label}
+            </label>
+            <Input
+              placeholder={fields.position.placeholder}
+              value={position}
+              onChange={(e) => setPosition(e.target.value)}
+              className="border-[#dfd7c8] text-xs h-9.5"
+            />
+          </div>
+
+          <div className="space-y-1.5">
+            <label className="text-xs font-semibold text-[#292929]">{fields.phone.label}</label>
+            <Input
+              required
+              placeholder={fields.phone.placeholder}
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              className="border-[#dfd7c8] text-xs h-9.5"
+            />
+          </div>
+        </div>
+
+        <div className="space-y-1.5">
+          <label className="text-xs font-semibold text-[#292929]">{fields.email.label}</label>
+          <Input
+            type="email"
+            required
+            placeholder={fields.email.placeholder}
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="border-[#dfd7c8] text-xs h-9.5"
+          />
+        </div>
+
+        <div className="space-y-1.5">
+          <label className="text-xs font-semibold text-[#292929]">{fields.message.label}</label>
+          <textarea
+            required
+            rows={4}
+            placeholder={fields.message.placeholder}
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            className="w-full text-xs p-3 rounded-lg border border-[#dfd7c8] bg-white text-[#292929] focus:outline-[#0D4838]"
+          />
+        </div>
+
+        <div className="flex items-start gap-2 pt-1 text-xs text-[#5c554b]">
+          <input
+            type="checkbox"
+            id="consent"
+            checked={consent}
+            onChange={(e) => setConsent(e.target.checked)}
+            className="mt-0.5 rounded text-[#0D4838] focus:ring-[#0D4838]"
+          />
+          <label htmlFor="consent" className="cursor-pointer leading-relaxed">
+            {formConfig.consentText}
+          </label>
+        </div>
+
+        <Button
+          type="submit"
+          size="lg"
+          disabled={isSubmitting}
+          className="w-full bg-[#0D4838] hover:bg-[#0D4838]/90 text-white gap-2 font-medium shadow-sm cursor-pointer"
         >
-          {REQUEST_TYPE_OPTIONS.map((opt) => (
-            <option key={opt.id} value={opt.id}>
-              {opt.label}
-            </option>
-          ))}
-        </select>
-      </div>
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div className="space-y-1.5">
-          <label className="text-xs font-semibold text-[#292929]">Họ và tên *</label>
-          <Input
-            required
-            placeholder="Nguyễn Văn A"
-            value={fullName}
-            onChange={(e) => setFullName(e.target.value)}
-            className="border-[#dfd7c8] text-xs h-9.5"
-          />
-        </div>
-
-        <div className="space-y-1.5">
-          <label className="text-xs font-semibold text-[#292929]">Đơn vị / Cơ quan *</label>
-          <Input
-            required
-            placeholder="Tên viện, trường, doanh nghiệp..."
-            value={organization}
-            onChange={(e) => setOrganization(e.target.value)}
-            className="border-[#dfd7c8] text-xs h-9.5"
-          />
-        </div>
-
-        <div className="space-y-1.5">
-          <label className="text-xs font-semibold text-[#292929]">Chức danh / Học vị</label>
-          <Input
-            placeholder="Chuyên viên, Giám đốc, PGS.TS..."
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            className="border-[#dfd7c8] text-xs h-9.5"
-          />
-        </div>
-
-        <div className="space-y-1.5">
-          <label className="text-xs font-semibold text-[#292929]">Số điện thoại liên hệ *</label>
-          <Input
-            required
-            placeholder="09xx xxx xxx"
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
-            className="border-[#dfd7c8] text-xs h-9.5"
-          />
-        </div>
-      </div>
-
-      <div className="space-y-1.5">
-        <label className="text-xs font-semibold text-[#292929]">Email công vụ / cá nhân *</label>
-        <Input
-          type="email"
-          required
-          placeholder="email@example.com"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          className="border-[#dfd7c8] text-xs h-9.5"
-        />
-      </div>
-
-      <div className="space-y-1.5">
-        <label className="text-xs font-semibold text-[#292929]">
-          Nội dung yêu cầu / Ghi chú trao đổi *
-        </label>
-        <textarea
-          required
-          rows={4}
-          placeholder="Mô tả tóm tắt nội dung Quý vị muốn trao đổi cùng Ban Thư ký Diễn đàn..."
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-          className="w-full text-xs p-3 rounded-lg border border-[#dfd7c8] bg-white text-[#292929] focus:outline-[#0D4838]"
-        />
-      </div>
-
-      <div className="flex items-start gap-2 pt-1 text-xs text-[#5c554b]">
-        <input
-          type="checkbox"
-          id="consent"
-          checked={consent}
-          onChange={(e) => setConsent(e.target.checked)}
-          className="mt-0.5 rounded text-[#0D4838] focus:ring-[#0D4838]"
-        />
-        <label htmlFor="consent" className="cursor-pointer leading-relaxed">
-          Tôi xác nhận đồng ý để Diễn đàn lưu trữ và xử lý thông tin liên hệ cho mục đích điều phối
-          công vụ theo Quy định bảo vệ dữ liệu cá nhân.
-        </label>
-      </div>
-
-      <Button
-        type="submit"
-        size="lg"
-        disabled={isSubmitting}
-        className="w-full bg-[#0D4838] hover:bg-[#0D4838]/90 text-white gap-2 font-medium shadow-sm"
-      >
-        <Send className="w-4 h-4" />
-        {isSubmitting ? "Đang xử lý tiếp nhận..." : "Gửi Thông Tin Yêu Cầu"}
-      </Button>
-    </form>
-  </div>
+          <Send className="w-4 h-4" />
+          {isSubmitting ? "Đang xử lý tiếp nhận..." : formConfig.submitLabel}
+        </Button>
+      </form>
+    </div>
   );
 }

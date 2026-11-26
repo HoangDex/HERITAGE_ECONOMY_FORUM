@@ -1,17 +1,15 @@
 /**
- * LAYER 5: PUBLIC API ROUTE HANDLER - PAGE SECTIONS JSON CRUD
- * Quản lý trực tiếp mảng JSON sections của từng trang (Home, About, ...)
- * Ràng buộc chặt chẽ Request & Response bằng Zod Schemas riêng biệt
+ * LAYER 5: PUBLIC API ROUTE HANDLER - PAGE SECTIONS & PROPS JSON CRUD
+ * Hỗ trợ đọc và cập nhật `page.props` (object chứa các section theo key ngắn gọn)
+ * cũng như tương thích ngược với mảng `sections`.
  */
 
 import { NextRequest } from "next/server";
 import { apiSuccess, apiError, apiValidationError } from "@/lib/api-response";
 import { pageService } from "@/features/pages/services/page.service";
-import {
-  homePageSectionsListSchema,
-  aboutPageSectionsListSchema,
-  pageSectionsListSchema,
-} from "@/features/pages/schemas";
+import { pageRepository } from "@/features/pages/repositories/page.repository";
+import { pagePropsMapSchema } from "@/features/pages/schemas/page.schema";
+import { sectionsToPageProps, type PageSection } from "@/features/pages/types/page.types";
 
 interface RouteContext {
   params: Promise<{ slug: string }>;
@@ -27,9 +25,18 @@ export async function GET(_request: NextRequest, context: RouteContext) {
       return apiError(`Không tìm thấy trang với slug: ${slug}`, 404);
     }
 
-    return apiSuccess(page.sections, {
-      message: `Lấy danh sách Section của trang ${page.name} thành công`,
-    });
+    return apiSuccess(
+      {
+        id: page.id,
+        slug: page.slug,
+        name: page.name,
+        props: page.props,
+        sections: page.sections,
+      },
+      {
+        message: `Lấy cấu trúc Props & Sections của trang ${page.name} thành công`,
+      }
+    );
   } catch (error) {
     return apiError(
       error instanceof Error ? error.message : "Lỗi máy chủ khi lấy danh sách Section",
@@ -49,45 +56,24 @@ export async function PUT(request: NextRequest, context: RouteContext) {
       return apiError(`Không tìm thấy trang với slug: ${slug}`, 404);
     }
 
-    // Xác thực danh sách sections gửi lên: có thể là mảng trực tiếp hoặc { sections: [...] }
-    const rawSections = Array.isArray(body) ? body : body.sections;
+    // Hỗ trợ cả định dạng mới `props: Record<string, UniversalSectionProps>` hoặc mảng `sections`
+    const rawProps =
+      body && typeof body === "object" && !Array.isArray(body) && "props" in body
+        ? body.props
+        : Array.isArray(body)
+        ? sectionsToPageProps(body as PageSection[])
+        : Array.isArray(body?.sections)
+        ? sectionsToPageProps(body.sections as PageSection[])
+        : body;
 
-    if (!Array.isArray(rawSections)) {
-      return apiError("Dữ liệu sections phải là một mảng", 422);
-    }
-
-    // Validate theo schema chuyên biệt của từng page
-    if (cleanSlug === "home") {
-      const validation = homePageSectionsListSchema.safeParse(rawSections);
-      if (!validation.success) {
-        return apiValidationError(validation.error);
-      }
-      const updatedPage = await pageService.updateSectionsBySlug(cleanSlug, validation.data);
-      return apiSuccess(updatedPage?.sections || validation.data, {
-        message: "Cập nhật các Section của Trang Chủ (Home) thành công",
-      });
-    }
-
-    if (cleanSlug === "about") {
-      const validation = aboutPageSectionsListSchema.safeParse(rawSections);
-      if (!validation.success) {
-        return apiValidationError(validation.error);
-      }
-      const updatedPage = await pageService.updateSectionsBySlug(cleanSlug, validation.data);
-      return apiSuccess(updatedPage?.sections || validation.data, {
-        message: "Cập nhật các Section của Trang Giới Thiệu (About) thành công",
-      });
-    }
-
-    // Các trang khác dùng generic schema
-    const validation = pageSectionsListSchema.safeParse(rawSections);
+    const validation = pagePropsMapSchema.safeParse(rawProps);
     if (!validation.success) {
       return apiValidationError(validation.error);
     }
 
-    const updatedPage = await pageService.updateSectionsBySlug(cleanSlug, validation.data);
-    return apiSuccess(updatedPage?.sections || validation.data, {
-      message: `Cập nhật các Section của trang ${page.name} thành công`,
+    const updatedPage = await pageRepository.updatePropsBySlug(cleanSlug, validation.data);
+    return apiSuccess(updatedPage?.props || validation.data, {
+      message: `Cập nhật cấu trúc Props của trang ${page.name} thành công`,
     });
   } catch (error) {
     return apiError(

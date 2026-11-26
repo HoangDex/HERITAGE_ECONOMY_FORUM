@@ -20,38 +20,23 @@ interface SectionFormDispatcherProps {
 
 export function SectionFormDispatcher({ type, propsData, onChange }: SectionFormDispatcherProps) {
   switch (type) {
+    // Legacy typed forms (nếu dữ liệu cũ vẫn dùng mã IN_HOA)
     case "HOME_HERO":
-    case "HERO":
       return <HeroSectionForm propsData={propsData} onChange={onChange} />;
-
     case "HOME_INTRO_PILLARS":
-    case "PILLARS_5":
       return <PillarsSectionForm propsData={propsData} onChange={onChange} />;
-
     case "HOME_EVENT_HIGHLIGHT":
-    case "EVENT_HIGHLIGHT":
       return <EventSectionForm propsData={propsData} onChange={onChange} />;
-
     case "HOME_AWARDS_SHOWCASE":
-    case "AWARDS_SHOWCASE":
       return <AwardsSectionForm propsData={propsData} onChange={onChange} />;
-
     case "HOME_FEATURED_PROJECTS":
-    case "PROJECT_GRID":
       return <ProjectsSectionForm propsData={propsData} onChange={onChange} />;
-
     case "HOME_NEWS_FEED":
-    case "NEWS_FEED":
       return <NewsSectionForm propsData={propsData} onChange={onChange} />;
-
     case "HOME_PARTNERS_SLIDER":
-    case "PARTNERS_SLIDER":
       return <PartnersSectionForm propsData={propsData} onChange={onChange} />;
-
     case "HOME_CONVERSION_CTA":
-    case "CTA_BANNER":
       return <CtaSectionForm propsData={propsData} onChange={onChange} />;
-
     case "ABOUT_BANNER":
     case "ABOUT_VISION_MISSION":
     case "ABOUT_COUNCIL":
@@ -59,7 +44,8 @@ export function SectionFormDispatcher({ type, propsData, onChange }: SectionForm
     case "ABOUT_PARTNERS":
       return <AboutSectionsForm type={type} propsData={propsData} onChange={onChange} />;
 
+    // Universal short section keys (hero, pillars, event, showcase, news, partners, cta, banner, vision, council, executive, ...)
     default:
-      return <GenericSectionForm propsData={propsData} onChange={onChange} />;
+      return <GenericSectionForm sectionKey={type} propsData={propsData} onChange={onChange} />;
   }
 }

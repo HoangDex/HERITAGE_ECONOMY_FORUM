@@ -1,6 +1,7 @@
 /**
  * LAYER 3: DATA ACCESS / REPOSITORY CHO MODULE GIẢI THƯỞNG
- * Dữ liệu 8 hạng mục tham khảo, 7 bước quy trình và tiêu chí theo Đề án Mục 08
+ * Đọc `page.props` (hero, categories, criteria, process, cta)
+ * và giải tham chiếu mảng `ids: string[]` trong `props.categories.ids` sang danh mục AwardCategory.
  */
 
 import type { AwardsPageData, IAwardsRepository } from "../types/awards.types";
@@ -13,83 +14,83 @@ export { MOCK_AWARDS_DATA };
 export class AwardsRepository implements IAwardsRepository {
   async getAwardsPageData(): Promise<AwardsPageData> {
     try {
-      const [page, masterAwards] = await Promise.all([
-        pageRepository.findBySlug("awards"),
-        masterDataRepository.getAwards(),
-      ]);
+      const page = await pageRepository.findBySlug("awards");
+      const props = page?.props || {};
 
-      const heroSec = page?.sections?.find((s) => s.type === "AWARDS_HERO" || s.type === "HERO");
-      const criteriaSec = page?.sections?.find(
-        (s) => s.type === "AWARDS_CRITERIA" || s.type === "AWARDS_SHOWCASE"
-      );
-      const processSec = page?.sections?.find((s) => s.type === "AWARDS_PROCESS");
+      const heroSec = props.hero || {};
+      const categoriesSec = props.categories || {};
+      const criteriaSec = props.criteria || {};
+      const processSec = props.process || {};
 
-      const hProps = heroSec?.props as Record<string, unknown> | undefined;
-      const cProps = criteriaSec?.props as Record<string, unknown> | undefined;
-      const pProps = processSec?.props as Record<string, unknown> | undefined;
+      // 1. Giải tham chiếu `ids` của các hạng mục giải thưởng (props.categories.ids)
+      const categoryIds = Array.isArray(categoriesSec.ids) ? categoriesSec.ids : [];
+      const resolvedCategories = await masterDataRepository.getAwardCategoriesByIds(categoryIds);
 
-      // Hạng mục giải thưởng lấy từ Master Data CSDL quan hệ
-      let categories = MOCK_AWARDS_DATA.categories;
-      if (masterAwards.length > 0 && masterAwards[0].categories.length > 0) {
-        categories = masterAwards[0].categories.map((c, i) => ({
-          id: c.id,
-          order: i + 1,
-          title: c.name,
-          subtitle: `Hạng mục xét giải số ${i + 1}`,
-          description: c.description || "",
-          iconName: "Award",
-          targetAudience: "Tổ chức, doanh nghiệp, cộng đồng và cá nhân",
-        }));
-      }
+      const categories =
+        resolvedCategories.length > 0
+          ? resolvedCategories.map((c, i) => {
+              const fallbackCat =
+                MOCK_AWARDS_DATA.categories[i] || MOCK_AWARDS_DATA.categories[0];
+              return {
+                id: c.id,
+                order: i + 1,
+                title: c.name,
+                subtitle: `Hạng mục xét giải số 0${i + 1}`,
+                description: fallbackCat?.description || "",
+                iconName: fallbackCat?.iconName || "Award",
+                targetAudience:
+                  fallbackCat?.targetAudience ||
+                  "Tổ chức, doanh nghiệp, cộng đồng và cá nhân",
+              };
+            })
+          : MOCK_AWARDS_DATA.categories;
 
-      // Chuẩn hóa và bảo vệ kiểu dữ liệu cho criteriaList (phòng vệ trường hợp thiếu evidenceRequirements)
-      let criteriaList = MOCK_AWARDS_DATA.criteriaList;
-      if (Array.isArray(cProps?.criteriaList) && cProps.criteriaList.length > 0) {
-        criteriaList = (cProps.criteriaList as Array<Record<string, unknown>>).map((c, idx) => {
-          const fallback = MOCK_AWARDS_DATA.criteriaList[idx] || MOCK_AWARDS_DATA.criteriaList[0];
-          const rawWeight = c.weightPercent ?? c.weight;
-          const weightNum =
-            typeof rawWeight === "number"
-              ? rawWeight
-              : typeof rawWeight === "string"
-              ? parseInt(rawWeight, 10) || fallback.weightPercent
-              : fallback.weightPercent;
+      // 2. Map criteria từ `props.criteria.cards`
+      const criteriaCards = Array.isArray(criteriaSec.cards) ? criteriaSec.cards : [];
+      const criteriaList =
+        criteriaCards.length > 0
+          ? criteriaCards.map((card, idx) => {
+              const fallback =
+                MOCK_AWARDS_DATA.criteriaList[idx] || MOCK_AWARDS_DATA.criteriaList[0];
+              const weightNum = parseInt(String(card.badge || ""), 10) || fallback.weightPercent;
+              const evidenceReqs =
+                Array.isArray(card.stats) && card.stats.length > 0
+                  ? card.stats.map((st) => st.value).filter(Boolean)
+                  : fallback.evidenceRequirements;
 
-          const reqs = Array.isArray(c.evidenceRequirements) && c.evidenceRequirements.length > 0
-            ? (c.evidenceRequirements as string[])
-            : fallback.evidenceRequirements;
+              return {
+                id: `crit-${idx + 1}`,
+                title: card.title || fallback.title,
+                weightPercent: weightNum,
+                description: card.description || fallback.description,
+                evidenceRequirements: evidenceReqs,
+              };
+            })
+          : MOCK_AWARDS_DATA.criteriaList;
 
-          return {
-            id: (c.id as string) || `crit-${c.order || idx + 1}`,
-            title: (c.title as string) || fallback.title,
-            weightPercent: weightNum,
-            description: (c.description as string) || fallback.description,
-            evidenceRequirements: reqs,
-          };
-        });
-      }
-
-      // Chuẩn hóa và bảo vệ kiểu dữ liệu cho processSteps
-      let processSteps = MOCK_AWARDS_DATA.processSteps;
-      if (Array.isArray(pProps?.steps) && pProps.steps.length > 0) {
-        processSteps = (pProps.steps as Array<Record<string, unknown>>).map((s, idx) => {
-          const fallback = MOCK_AWARDS_DATA.processSteps[idx] || MOCK_AWARDS_DATA.processSteps[0];
-          return {
-            step: Number(s.step) || idx + 1,
-            title: (s.title as string) || (s.name as string) || fallback.title,
-            timeframe: (s.timeframe as string) || (s.time as string) || fallback.timeframe,
-            description: (s.description as string) || (s.desc as string) || fallback.description,
-            actionLabel: (s.actionLabel as string) || fallback.actionLabel,
-          };
-        });
-      }
+      // 3. Map processSteps từ `props.process.cards`
+      const processCards = Array.isArray(processSec.cards) ? processSec.cards : [];
+      const processSteps =
+        processCards.length > 0
+          ? processCards.map((card, idx) => {
+              const fallback =
+                MOCK_AWARDS_DATA.processSteps[idx] || MOCK_AWARDS_DATA.processSteps[0];
+              return {
+                step: idx + 1,
+                title: card.title || fallback.title,
+                timeframe: card.badge || card.subtitle || fallback.timeframe,
+                description: card.description || fallback.description,
+                actionLabel: card.actionLabel || fallback.actionLabel,
+              };
+            })
+          : MOCK_AWARDS_DATA.processSteps;
 
       return {
-        title: (hProps?.title as string) || MOCK_AWARDS_DATA.title,
-        englishTitle: (hProps?.englishTitle as string) || MOCK_AWARDS_DATA.englishTitle,
-        slogan: (hProps?.slogan as string) || MOCK_AWARDS_DATA.slogan,
-        philosophy: (hProps?.philosophy as string) || MOCK_AWARDS_DATA.philosophy,
-        rulesVersion: (cProps?.rulesVersion as string) || MOCK_AWARDS_DATA.rulesVersion,
+        title: heroSec.title || MOCK_AWARDS_DATA.title,
+        englishTitle: heroSec.subBadge || MOCK_AWARDS_DATA.englishTitle,
+        slogan: heroSec.quote || MOCK_AWARDS_DATA.slogan,
+        philosophy: heroSec.description || MOCK_AWARDS_DATA.philosophy,
+        rulesVersion: criteriaSec.note || MOCK_AWARDS_DATA.rulesVersion,
         categories,
         criteriaList,
         processSteps,

@@ -979,12 +979,12 @@ export function MasterDataCatalogView({ data }: MasterDataCatalogViewProps) {
                     {award.categories.map((cat) => (
                       <div
                         key={cat.id}
-                        className="p-3 rounded-lg bg-[#F5EFE5]/40 border border-[#C29B57]/20"
+                        className="p-3 rounded-lg bg-[#F5EFE5]/40 border border-[#C29B57]/20 flex items-center justify-between"
                       >
                         <div className="font-bold text-xs text-[#0D4838]">{cat.name}</div>
-                        <div className="text-[11px] text-muted-foreground mt-0.5">
-                          {cat.description}
-                        </div>
+                        <span className="font-mono text-[10px] text-muted-foreground">
+                          ID: {cat.id}
+                        </span>
                       </div>
                     ))}
                   </div>

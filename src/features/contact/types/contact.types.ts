@@ -3,18 +3,10 @@
  * Theo Đề án Mục 11. LIÊN HỆ – CONTACT
  */
 
-export type ContactRequestType =
-  | "tham-du"
-  | "dien-gia"
-  | "hop-tac"
-  | "tai-tro"
-  | "du-an"
-  | "giai-thuong"
-  | "truyen-thong"
-  | "khac";
+export type ContactRequestType = string;
 
 export interface ContactInfo {
-  secretariatTitle: string;
+  title: string;
   address: string;
   hotline: string;
   email: string;
@@ -26,12 +18,37 @@ export interface ContactFaq {
   answer: string;
 }
 
+export interface ContactFormFieldConfig {
+  label: string;
+  placeholder?: string;
+  options?: string[];
+}
+
+export interface ContactFormConfig {
+  title: string;
+  description: string;
+  consentText: string;
+  submitLabel: string;
+  fields: {
+    type: ContactFormFieldConfig;
+    fullName: ContactFormFieldConfig;
+    organization: ContactFormFieldConfig;
+    position: ContactFormFieldConfig;
+    phone: ContactFormFieldConfig;
+    email: ContactFormFieldConfig;
+    message: ContactFormFieldConfig;
+  };
+}
+
 export interface ContactPageData {
+  badge?: string;
   title: string;
   slogan: string;
   description: string;
   info: ContactInfo;
+  faqTitle: string;
   faqs: ContactFaq[];
+  form: ContactFormConfig;
 }
 
 export interface IContactRepository {
@@ -42,5 +59,9 @@ export interface IContactService {
   getContactPageData(): Promise<ContactPageData>;
   submitContact(
     data: unknown
-  ): Promise<{ success: boolean; message: string; trackingCode?: string }>;
+  ): Promise<{
+    success: boolean;
+    message: string;
+    trackingCode?: string;
+  }>;
 }

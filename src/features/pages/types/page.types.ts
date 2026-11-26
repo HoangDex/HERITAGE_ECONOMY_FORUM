@@ -1,10 +1,37 @@
 /**
  * LAYER 1: TYPES & DOMAIN ENTITIES CHO MODULE CMS PAGES & DYNAMIC SECTIONS
- * Định nghĩa kiến trúc JSON Database cho toàn bộ các trang và section động của website
+ * Cấu trúc Page lưu `props` dạng JSON phân chia thành các section có tên ngắn gọn,
+ * sử dụng các trường biến chung (universal props) và mảng `ids` để tham chiếu tới các schema danh mục.
  */
 
 export type SectionType =
-  // Home Sections
+  // Universal short section keys
+  | "hero"
+  | "pillars"
+  | "event"
+  | "showcase"
+  | "news"
+  | "partners"
+  | "cta"
+  | "banner"
+  | "vision"
+  | "council"
+  | "executive"
+  | "sessions"
+  | "timeline"
+  | "speakers"
+  | "resources"
+  | "faq"
+  | "categories"
+  | "criteria"
+  | "process"
+  | "directory"
+  | "feed"
+  | "featured_news"
+  | "filter"
+  | "info"
+  | "form"
+  // Backward-compatible legacy section type identifiers
   | "HOME_HERO"
   | "HOME_INTRO_PILLARS"
   | "HOME_EVENT_HIGHLIGHT"
@@ -13,13 +40,11 @@ export type SectionType =
   | "HOME_NEWS_FEED"
   | "HOME_PARTNERS_SLIDER"
   | "HOME_CONVERSION_CTA"
-  // About Sections
   | "ABOUT_BANNER"
   | "ABOUT_VISION_MISSION"
   | "ABOUT_COUNCIL"
   | "ABOUT_EXECUTIVE"
   | "ABOUT_PARTNERS"
-  // Generic / Legacy Sections
   | "HERO"
   | "PILLARS_5"
   | "EVENT_HIGHLIGHT"
@@ -27,8 +52,6 @@ export type SectionType =
   | "PROJECT_GRID"
   | "NEWS_FEED"
   | "PARTNERS_SLIDER"
-  | "ABOUT_COUNCIL"
-  | "ABOUT_EXECUTIVE"
   | "TIMELINE"
   | "SPEAKERS_GRID"
   | "CONTACT_FORM"
@@ -36,9 +59,121 @@ export type SectionType =
   | "CUSTOM_HTML";
 
 /**
- * Định nghĩa cấu trúc chuẩn của một Section bên trong mảng JSON của Page
+ * Các phần tử con dùng chung (Universal Primitives) trong mọi Section:
+ * Không đặt tên biến kèm số, không đặt tên quá cụ thể theo ngữ cảnh.
  */
-export interface PageSection<TProps = Record<string, unknown>> {
+export interface ActionItem {
+  label: string;
+  href: string;
+  icon?: string;
+}
+
+export interface StatItem {
+  value: string;
+  label: string;
+  icon?: string;
+  note?: string;
+}
+
+export interface CardItem {
+  badge?: string;
+  subBadge?: string;
+  title?: string;
+  subtitle?: string;
+  quote?: string;
+  description?: string;
+  note?: string;
+  icon?: string;
+  imageUrl?: string;
+  imageAlt?: string;
+  actionLabel?: string;
+  href?: string;
+  ids?: Array<string | number>;
+  stats?: StatItem[];
+  actions?: ActionItem[];
+}
+
+export interface GroupItem {
+  badge?: string;
+  subBadge?: string;
+  title?: string;
+  subtitle?: string;
+  quote?: string;
+  description?: string;
+  note?: string;
+  icon?: string;
+  imageUrl?: string;
+  imageAlt?: string;
+  actionLabel?: string;
+  href?: string;
+  /** Mảng ID tham chiếu tới các bản ghi của schema khác (News, Project, Organization, Speaker, Award, Category) */
+  ids?: Array<string | number>;
+  stats?: StatItem[];
+  actions?: ActionItem[];
+  cards?: CardItem[];
+}
+
+export interface FaqQuestionItem {
+  question: string;
+  answer: string;
+}
+
+export interface FormFieldConfigItem {
+  label: string;
+  placeholder?: string;
+  options?: string[];
+}
+
+/**
+ * Cấu trúc chuẩn của một Section bên trong `Page.props`
+ */
+export interface UniversalSectionProps {
+  id?: string | number;
+  badge?: string;
+  subBadge?: string;
+  title?: string;
+  subtitle?: string;
+  quote?: string;
+  description?: string;
+  note?: string;
+  icon?: string;
+  imageUrl?: string;
+  imageAlt?: string;
+  videoUrl?: string;
+  videoTitle?: string;
+  actionLabel?: string;
+  href?: string;
+  address?: string;
+  hotline?: string;
+  email?: string;
+  workingHours?: string;
+  consentText?: string;
+  submitLabel?: string;
+  /**
+   * Mảng ID tham chiếu sang các schema danh mục (News, Project, Organization, Speaker, Award, ForumEdition).
+   * Chỉ dùng cho các section hiển thị một vài mục chọn lọc.
+   */
+  ids?: Array<string | number>;
+  actions?: ActionItem[];
+  stats?: StatItem[];
+  cards?: CardItem[];
+  groups?: GroupItem[];
+  categories?: GroupItem[];
+  questions?: FaqQuestionItem[];
+  fields?: Record<string, FormFieldConfigItem>;
+  [key: string]: unknown;
+}
+
+/**
+ * Kiểu dữ liệu của cột `props` trong bảng `pages`:
+ * Object chứa các section với key là tên ngắn có nghĩa (vd: hero, pillars, event, showcase, news, partners, cta)
+ */
+export type PagePropsMap = Record<string, UniversalSectionProps>;
+
+/**
+ * Cấu trúc đại diện một Section khi chuyển đổi sang danh sách hiển thị trên Admin UI
+ */
+export interface PageSection<TProps = UniversalSectionProps> {
   id: string;
   type: SectionType | string;
   title?: string;
@@ -49,7 +184,7 @@ export interface PageSection<TProps = Record<string, unknown>> {
 }
 
 /**
- * Cấu hình SEO lưu trong cột seoProps (JSON)
+ * Cấu hình SEO
  */
 export interface PageSeoProps {
   metaTitle?: string;
@@ -60,17 +195,20 @@ export interface PageSeoProps {
 }
 
 /**
- * Domain Entity đại diện cho một Page động lưu trữ trong bảng `pages`
+ * Domain Entity đại diện cho một Page lưu trữ trong bảng `pages`
+ * Schema DB: id, slug, name, props (Json), isPublished, createdAt, updatedAt
  */
 export interface PageEntity {
   id: string;
   slug: string;
   name: string;
+  props: PagePropsMap;
+  isPublished: boolean;
+  /** Các trường dẫn xuất giúp tương thích giao diện Admin & SEO */
   title: string;
   description?: string;
   seoProps?: PageSeoProps;
   sections: PageSection[];
-  isPublished: boolean;
   order: number;
   publishedAt?: string;
   createdAt?: string;
@@ -83,7 +221,8 @@ export interface PageEntity {
 export interface CreatePageDTO {
   slug: string;
   name: string;
-  title: string;
+  props?: PagePropsMap;
+  title?: string;
   description?: string;
   seoProps?: PageSeoProps;
   sections?: PageSection[];
@@ -94,15 +233,16 @@ export interface CreatePageDTO {
 export type UpdatePageDTO = Partial<CreatePageDTO>;
 
 /**
- * DTOs thao tác với Section bên trong Page
+ * DTOs thao tác với từng Section
  */
 export interface AddSectionDTO {
+  key?: string;
   type: SectionType | string;
   title?: string;
   subtitle?: string;
   order?: number;
   isVisible?: boolean;
-  props: Record<string, unknown>;
+  props: UniversalSectionProps;
 }
 
 export interface UpdateSectionDTO {
@@ -110,11 +250,69 @@ export interface UpdateSectionDTO {
   subtitle?: string;
   order?: number;
   isVisible?: boolean;
-  props?: Record<string, unknown>;
+  props?: UniversalSectionProps;
 }
 
 export interface ReorderSectionsDTO {
   sectionIds: string[];
+}
+
+/**
+ * Helper chuyển đổi qua lại giữa `props: PagePropsMap` (lưu trong DB) và `sections: PageSection[]` (hiển thị trên UI)
+ */
+export function pagePropsToSections(props: PagePropsMap | null | undefined): PageSection[] {
+  if (!props || typeof props !== "object" || Array.isArray(props)) {
+    return [];
+  }
+
+  return Object.entries(props).map(([key, sectionProps], index) => {
+    const safeProps: UniversalSectionProps =
+      typeof sectionProps === "string"
+        ? { id: sectionProps, ids: [sectionProps] }
+        : sectionProps && typeof sectionProps === "object"
+          ? (sectionProps as UniversalSectionProps)
+          : {};
+
+    return {
+      id: key,
+      type: key,
+      title:
+        (typeof safeProps.title === "string" && safeProps.title) ||
+        (typeof safeProps.badge === "string" && safeProps.badge) ||
+        key.toUpperCase(),
+      subtitle:
+        (typeof safeProps.subtitle === "string" && safeProps.subtitle) ||
+        (typeof safeProps.quote === "string" && safeProps.quote) ||
+        (typeof safeProps.subBadge === "string" && safeProps.subBadge) ||
+        undefined,
+      order: index + 1,
+      isVisible: safeProps.isVisible !== false,
+      props: safeProps,
+    };
+  });
+}
+
+export function sectionsToPageProps(sections: PageSection[]): PagePropsMap {
+  const result: PagePropsMap = {};
+  for (const sec of sections) {
+    const key = sec.id || sec.type;
+    if (
+      key === "featured_news" &&
+      (typeof sec.props?.id === "string" ||
+        (Array.isArray(sec.props?.ids) && typeof sec.props.ids[0] === "string"))
+    ) {
+      const featuredId =
+        typeof sec.props.id === "string" ? sec.props.id : (sec.props.ids?.[0] ?? "news_1");
+      result[key] = featuredId as unknown as UniversalSectionProps;
+      continue;
+    }
+    result[key] = {
+      ...(sec.props || {}),
+      ...(sec.title && !sec.props?.title ? { title: sec.title } : {}),
+      ...(sec.subtitle && !sec.props?.subtitle ? { subtitle: sec.subtitle } : {}),
+    };
+  }
+  return result;
 }
 
 /**
@@ -127,6 +325,13 @@ export interface IPageRepository {
   create(page: CreatePageDTO): Promise<PageEntity>;
   update(id: string, page: UpdatePageDTO): Promise<PageEntity | null>;
   delete(id: string): Promise<boolean>;
+  getSectionByKey(slug: string, sectionKey: string): Promise<UniversalSectionProps | null>;
+  updateSectionByKey(
+    slug: string,
+    sectionKey: string,
+    sectionProps: UniversalSectionProps
+  ): Promise<PageEntity | null>;
+  updatePropsBySlug(slug: string, props: PagePropsMap): Promise<PageEntity | null>;
   updateSections(pageId: string, sections: PageSection[]): Promise<PageEntity | null>;
   updateSectionsBySlug(slug: string, sections: PageSection[]): Promise<PageEntity | null>;
 }
@@ -141,6 +346,12 @@ export interface IPageService {
   createPage(dto: CreatePageDTO): Promise<PageEntity>;
   updatePage(id: string, dto: UpdatePageDTO): Promise<PageEntity | null>;
   deletePage(id: string): Promise<boolean>;
+  getSectionByKey(slug: string, sectionKey: string): Promise<UniversalSectionProps | null>;
+  updateSectionByKey(
+    slug: string,
+    sectionKey: string,
+    sectionProps: UniversalSectionProps
+  ): Promise<PageEntity | null>;
   addSection(pageId: string, section: AddSectionDTO): Promise<PageEntity | null>;
   updateSection(
     pageId: string,

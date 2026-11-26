@@ -13,9 +13,6 @@ enum SpeakerRoleType {
 
 model ForumEdition {
   id              String          @id @default(cuid())
-  pageSlug        String?         @db.VarChar(150) // Query qua slug trang CMS (/forum)
-  pageName        String?         @db.VarChar(150) // Query qua tên trang CMS ("Diễn đàn")
-  page            Page?           @relation(fields: [pageSlug], references: [slug], onDelete: SetNull)
   year            Int             @unique
   slug            String          @unique @db.VarChar(50)
   title           String          @db.VarChar(255)
@@ -36,7 +33,6 @@ model ForumEdition {
   updatedAt       DateTime        @updatedAt
 
   @@index([year])
-  @@index([pageSlug])
   @@map("forum_editions")
 }
 

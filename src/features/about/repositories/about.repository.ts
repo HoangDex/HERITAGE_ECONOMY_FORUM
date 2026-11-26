@@ -1,7 +1,7 @@
 /**
  * LAYER 3: DATA ACCESS / REPOSITORY CHO MODULE ABOUT
- * Cung cấp dữ liệu chuẩn hóa cho Trang Giới Thiệu: Tôn chỉ, Hội đồng, Ban Điều hành, Đối tác
- * Tuân thủ Clean Architecture: Tách biệt dữ liệu fallback sang data/about-fallback.data.ts
+ * Đọc `page.props` (5 sections: banner, vision, council, executive, partners)
+ * và giải tham chiếu mảng `ids: string[]` sang bảng `speakers` và `organizations`.
  */
 
 import type {
@@ -13,6 +13,7 @@ import type {
   PartnerCategory,
 } from "../types/about.types";
 import { pageRepository } from "@/features/pages/repositories/page.repository";
+import { masterDataRepository } from "@/features/pages/repositories/master-data.repository";
 import {
   fallbackVisionMission,
   fallbackPersons,
@@ -24,19 +25,23 @@ export class AboutRepository implements IAboutRepository {
   async getVisionMission(): Promise<VisionMission> {
     try {
       const page = await pageRepository.findBySlug("about");
-      if (page && page.sections && page.sections.length > 0) {
-        const vmSec = page.sections.find(
-          (s) => s.type === "ABOUT_VISION_MISSION" || s.type === "CUSTOM_HTML"
-        );
-        if (vmSec?.props) {
-          const props = vmSec.props as Record<string, unknown>;
-          if (props.visionMission) {
-            return props.visionMission as VisionMission;
-          }
-          if (props.vision && props.mission) {
-            return props as unknown as VisionMission;
-          }
-        }
+      const visionSec = page?.props?.vision;
+      if (visionSec) {
+        const cards = Array.isArray(visionSec.cards) ? visionSec.cards : [];
+        return {
+          aboutPlatform: visionSec.description || fallbackVisionMission.aboutPlatform,
+          vision: visionSec.quote || fallbackVisionMission.vision,
+          mission: visionSec.note || fallbackVisionMission.mission,
+          coreValues:
+            cards.length > 0
+              ? cards.map((c, idx) => ({
+                  id: `val_${idx + 1}`,
+                  title: c.title || "",
+                  description: c.description || "",
+                  iconName: c.icon || "ShieldCheck",
+                }))
+              : fallbackVisionMission.coreValues,
+        };
       }
       return fallbackVisionMission;
     } catch (error) {
@@ -48,34 +53,67 @@ export class AboutRepository implements IAboutRepository {
   async getAllPersons(): Promise<Person[]> {
     try {
       const page = await pageRepository.findBySlug("about");
-      if (page && page.sections && page.sections.length > 0) {
-        const councilSec = page.sections.find((s) => s.type === "ABOUT_COUNCIL");
-        const execSec = page.sections.find((s) => s.type === "ABOUT_EXECUTIVE");
+      const councilIds = page?.props?.council?.ids || [];
+      const execIds = page?.props?.executive?.ids || [];
 
-        const persons: Person[] = [];
+      if (councilIds.length > 0 || execIds.length > 0) {
+        const [councilSpeakers, execSpeakers] = await Promise.all([
+          councilIds.length > 0
+            ? masterDataRepository.getSpeakersByIds(councilIds)
+            : Promise.resolve([]),
+          execIds.length > 0
+            ? masterDataRepository.getSpeakersByIds(execIds)
+            : Promise.resolve([]),
+        ]);
 
-        if (councilSec?.props) {
-          const cProps = councilSec.props as Record<string, unknown>;
-          if (cProps.president) persons.push(cProps.president as Person);
-          if (Array.isArray(cProps.vicePresidents))
-            persons.push(...(cProps.vicePresidents as Person[]));
-          if (Array.isArray(cProps.councilMembers))
-            persons.push(...(cProps.councilMembers as Person[]));
-          if (Array.isArray(cProps.scientificAdvisors))
-            persons.push(...(cProps.scientificAdvisors as Person[]));
+        const mappedCouncil: Person[] = councilSpeakers.map((sp, idx) => ({
+          id: sp.id,
+          fullName: sp.name,
+          academicTitle: sp.degree || "",
+          councilRole:
+            idx === 0
+              ? "PRESIDENT"
+              : idx <= 2
+              ? "VICE_PRESIDENT"
+              : "COUNCIL_MEMBER",
+          positionTitle: sp.title,
+          organization: sp.organization,
+          expertiseField: "Kinh tế Di sản & Phát triển Bền vững",
+          avatarUrl: sp.avatarUrl,
+          altText: `Chân dung ${sp.name}`,
+          bio: sp.bio || "",
+          papers: [],
+          isApproved: true,
+          order: idx + 1,
+          updatedAt: "03/11/2026 09:00:00",
+        }));
+
+        const mappedExec: Person[] = execSpeakers.map((sp, idx) => ({
+          id: `exec_${sp.id}`,
+          fullName: sp.name,
+          academicTitle: sp.degree || "",
+          executiveRole: idx === 0 ? "HEAD" : "DEPUTY_HEAD",
+          positionTitle: idx === 0 ? "Trưởng ban Điều hành Diễn đàn" : sp.title,
+          organization: sp.organization,
+          expertiseField: "Điều phối Chương trình & Hợp tác Di sản",
+          avatarUrl: sp.avatarUrl,
+          altText: `Chân dung ${sp.name}`,
+          bio: sp.bio || "",
+          papers: [],
+          isApproved: true,
+          order: 10 + idx,
+          updatedAt: "03/11/2026 09:00:00",
+        }));
+
+        // Kết hợp thêm các nhân sự fallback để giao diện luôn đầy đủ các cấp hội đồng & ban điều hành
+        const combined = [...mappedCouncil, ...mappedExec];
+        const existingNames = new Set(combined.map((p) => p.fullName.toLowerCase()));
+        for (const fb of fallbackPersons) {
+          if (!existingNames.has(fb.fullName.toLowerCase())) {
+            combined.push(fb);
+          }
         }
-
-        if (execSec?.props) {
-          const eProps = execSec.props as Record<string, unknown>;
-          if (eProps.executiveHead) persons.push(eProps.executiveHead as Person);
-          if (eProps.executiveAdvisor) persons.push(eProps.executiveAdvisor as Person);
-          if (Array.isArray(eProps.executiveDeputies))
-            persons.push(...(eProps.executiveDeputies as Person[]));
-        }
-
-        if (persons.length > 0) {
-          return persons.filter((p) => p.isApproved).sort((a, b) => a.order - b.order);
-        }
+        return combined.filter((p) => p.isApproved).sort((a, b) => a.order - b.order);
       }
 
       return fallbackPersons.filter((p) => p.isApproved).sort((a, b) => a.order - b.order);
@@ -103,17 +141,24 @@ export class AboutRepository implements IAboutRepository {
   async getExecutiveDepartments(): Promise<ExecutiveDepartment[]> {
     try {
       const page = await pageRepository.findBySlug("about");
-      const execSec = page?.sections?.find((s) => s.type === "ABOUT_EXECUTIVE");
+      const execSec = page?.props?.executive;
       const executiveMembers = await this.getExecutiveMembers();
 
-      if (execSec?.props) {
-        const eProps = execSec.props as Record<string, unknown>;
-        if (Array.isArray(eProps.executiveDepartments) && eProps.executiveDepartments.length > 0) {
-          return (eProps.executiveDepartments as ExecutiveDepartment[]).map((dept) => ({
-            ...dept,
-            members: executiveMembers.filter((m) => m.departmentCode === dept.code),
-          }));
-        }
+      if (execSec && Array.isArray(execSec.cards) && execSec.cards.length > 0) {
+        return execSec.cards.map((card, idx) => {
+          const fallbackDept = fallbackDepartments[idx] || fallbackDepartments[0];
+          const code = (card.badge as ExecutiveDepartment["code"]) || fallbackDept.code;
+          const [emailPart, phonePart] = (card.note || "").split("•").map((s) => s.trim());
+          return {
+            id: `dept_${idx + 1}`,
+            code,
+            name: card.title || fallbackDept.name,
+            mission: card.description || fallbackDept.mission,
+            contactEmail: emailPart || fallbackDept.contactEmail,
+            contactPhone: phonePart || fallbackDept.contactPhone,
+            members: executiveMembers.filter((m) => m.departmentCode === code),
+          };
+        });
       }
 
       return fallbackDepartments.map((dept) => ({
@@ -133,15 +178,26 @@ export class AboutRepository implements IAboutRepository {
   async getPartners(category?: PartnerCategory): Promise<PartnerOrganization[]> {
     try {
       const page = await pageRepository.findBySlug("about");
+      const partnerIds = page?.props?.partners?.ids || [];
+
       let partners: PartnerOrganization[] = [];
 
-      if (page && page.sections && page.sections.length > 0) {
-        const partnersSec = page.sections.find((s) => s.type === "ABOUT_PARTNERS");
-        if (partnersSec?.props) {
-          const pProps = partnersSec.props as Record<string, unknown>;
-          if (Array.isArray(pProps.partners) && pProps.partners.length > 0) {
-            partners = pProps.partners as PartnerOrganization[];
-          }
+      if (partnerIds.length > 0) {
+        const resolvedOrgs = await masterDataRepository.getOrganizationsByIds(partnerIds);
+        if (resolvedOrgs.length > 0) {
+          partners = resolvedOrgs.map((org, idx) => ({
+            id: org.id,
+            name: org.name,
+            shortName: org.shortName || org.name,
+            logoUrl: org.logoUrl,
+            category: org.category as PartnerCategory,
+            roleDescription: `${org.categoryLabel} đồng hành phát triển hệ sinh thái Diễn đàn Kinh tế Di sản.`,
+            websiteUrl: org.websiteUrl || "",
+            relatedEvents: ["Kỳ Diễn đàn 2026"],
+            order: idx + 1,
+            isApproved: true,
+            updatedAt: org.createdAt,
+          }));
         }
       }
 

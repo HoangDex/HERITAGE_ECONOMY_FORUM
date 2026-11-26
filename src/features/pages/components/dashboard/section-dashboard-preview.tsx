@@ -205,65 +205,200 @@ function SectionDashboardPreviewComponent({
       // ==========================================
       // 1. CÁC SECTION TRANG CHỦ (HOME PAGE)
       // ==========================================
+      case "hero":
       case "HOME_HERO":
       case "HERO": {
+        if (publicUrl === "/forum") {
+          const edition = {
+            ...HEF_2026_EDITION,
+            title: String(propsData.title || HEF_2026_EDITION.title),
+            theme: String(propsData.quote || propsData.theme || HEF_2026_EDITION.theme),
+          } as typeof HEF_2026_EDITION;
+          return <ForumHero edition={edition} />;
+        }
+        if (publicUrl === "/awards") {
+          return (
+            <AwardsHero
+              title={String(propsData.title || MOCK_AWARDS_DATA.title)}
+              englishTitle={String(propsData.subBadge || propsData.englishTitle || MOCK_AWARDS_DATA.englishTitle)}
+              slogan={String(propsData.quote || propsData.slogan || MOCK_AWARDS_DATA.slogan)}
+              philosophy={String(propsData.description || propsData.philosophy || MOCK_AWARDS_DATA.philosophy)}
+            />
+          );
+        }
+        if (publicUrl === "/projects") {
+          return <ProjectsHero />;
+        }
+        const actions = Array.isArray(propsData.actions)
+          ? (propsData.actions as Array<{ label: string; href: string }>)
+          : [];
+        const cards = Array.isArray(propsData.cards)
+          ? (propsData.cards as Array<Record<string, unknown>>)
+          : [];
+        const firstCard = cards[0] || {};
         const heroProps = {
-          title: String(propsData.englishTitle || propsData.title || fallbackHomePageData.hero.title),
-          vietnameseTitle: String(propsData.vietnameseTitle || propsData.vnTitle || fallbackHomePageData.hero.vietnameseTitle),
-          slogan: String(propsData.slogan || subtitle || fallbackHomePageData.hero.slogan),
+          title: String(
+            propsData.subBadge || propsData.englishTitle || fallbackHomePageData.hero.title
+          ),
+          vietnameseTitle: String(
+            propsData.vietnameseTitle || propsData.title || fallbackHomePageData.hero.vietnameseTitle
+          ),
+          slogan: String(
+            propsData.quote || propsData.slogan || subtitle || fallbackHomePageData.hero.slogan
+          ),
           description: String(propsData.description || fallbackHomePageData.hero.description),
-          primaryCta: (propsData.primaryCta as { label: string; href: string }) || fallbackHomePageData.hero.primaryCta,
-          secondaryCta: (propsData.secondaryCta as { label: string; href: string }) || fallbackHomePageData.hero.secondaryCta,
-          imageUrl: String(propsData.imageUrl || fallbackHomePageData.hero.imageUrl),
-          imageAlt: String(propsData.imageAlt || fallbackHomePageData.hero.imageAlt),
-          badgeText: String(propsData.badgeText || fallbackHomePageData.hero.badgeText),
+          primaryCta:
+            actions[0] ||
+            (propsData.primaryCta as { label: string; href: string }) ||
+            fallbackHomePageData.hero.primaryCta,
+          secondaryCta:
+            actions[1] ||
+            (propsData.secondaryCta as { label: string; href: string }) ||
+            fallbackHomePageData.hero.secondaryCta,
+          imageUrl: String(
+            firstCard.imageUrl || propsData.imageUrl || fallbackHomePageData.hero.imageUrl
+          ),
+          imageAlt: String(
+            firstCard.imageAlt || propsData.imageAlt || fallbackHomePageData.hero.imageAlt
+          ),
+          badgeText: String(
+            propsData.badge || propsData.badgeText || fallbackHomePageData.hero.badgeText
+          ),
           videoUrl: String(propsData.videoUrl || fallbackHomePageData.hero.videoUrl),
           videoTitle: String(propsData.videoTitle || fallbackHomePageData.hero.videoTitle),
-          locationBadge: String(propsData.locationBadge || fallbackHomePageData.hero.locationBadge),
-          editionBadge: String(propsData.editionBadge || fallbackHomePageData.hero.editionBadge),
-          metrics: (Array.isArray(propsData.metrics) && propsData.metrics.length > 0
-            ? propsData.metrics
-            : fallbackHomePageData.hero.metrics) as Array<{ value: number; suffix?: string; prefix?: string; label: string }>,
+          locationBadge: String(
+            firstCard.title || propsData.locationBadge || fallbackHomePageData.hero.locationBadge
+          ),
+          editionBadge: String(
+            firstCard.subBadge || propsData.editionBadge || fallbackHomePageData.hero.editionBadge
+          ),
+          metrics: fallbackHomePageData.hero.metrics,
         };
         return <HomeHero hero={heroProps} />;
       }
 
+      case "pillars":
       case "HOME_INTRO_PILLARS":
       case "PILLARS_5": {
-        const intro = (propsData.quickIntro as { content: string; subContent: string; title?: string; badge?: string; actionLabel?: string }) || {
-          content: String(propsData.content || fallbackHomePageData.quickIntro.content),
-          subContent: String(propsData.subContent || fallbackHomePageData.quickIntro.subContent),
+        const intro = (propsData.quickIntro as {
+          content: string;
+          subContent: string;
+          title?: string;
+          badge?: string;
+          actionLabel?: string;
+        }) || {
+          badge: String(propsData.badge || "ĐỊNH VỊ DIỄN ĐÀN"),
+          title: String(propsData.title || title || "Không Gian Đối Thoại & Chuyển Hóa Nguồn Lực Di Sản"),
+          content: String(
+            propsData.description || propsData.content || fallbackHomePageData.quickIntro.content
+          ),
+          subContent: String(
+            propsData.quote || propsData.subContent || fallbackHomePageData.quickIntro.subContent
+          ),
         };
-        const pillars = (Array.isArray(propsData.pillars) && propsData.pillars.length > 0
-          ? propsData.pillars
-          : fallbackHomePageData.pillars) as typeof fallbackHomePageData.pillars;
+        const rawCards = Array.isArray(propsData.cards)
+          ? (propsData.cards as Array<Record<string, unknown>>)
+          : [];
+        const pillars =
+          rawCards.length > 0
+            ? rawCards.map((c, idx) => ({
+                id: `pillar_${idx + 1}`,
+                orderNumber: `0${idx + 1}`,
+                title: String(c.title || ""),
+                subtitle: String(c.subtitle || ""),
+                description: String(c.description || ""),
+                iconName: String(c.icon || "BookOpen"),
+              }))
+            : (Array.isArray(propsData.pillars) && propsData.pillars.length > 0
+                ? propsData.pillars
+                : fallbackHomePageData.pillars) as typeof fallbackHomePageData.pillars;
         return <IntroPillarsSection intro={intro} pillars={pillars} />;
       }
 
+      case "event":
       case "HOME_EVENT_HIGHLIGHT":
       case "EVENT_HIGHLIGHT": {
         const eventData = {
           ...fallbackHomePageData.activeEvent,
           ...propsData,
-          sessions: Array.isArray(propsData.sessions) && propsData.sessions.length > 0
-            ? propsData.sessions
-            : fallbackHomePageData.activeEvent.sessions,
+          heading: String(propsData.title || fallbackHomePageData.activeEvent.heading || "Kỳ Diễn Đàn Nổi Bật 2026"),
+          subHeading: String(propsData.subtitle || fallbackHomePageData.activeEvent.subHeading || ""),
+          sessions:
+            Array.isArray(propsData.sessions) && propsData.sessions.length > 0
+              ? propsData.sessions
+              : fallbackHomePageData.activeEvent.sessions,
         } as typeof fallbackHomePageData.activeEvent;
         return <EventHighlightSection event={eventData} />;
       }
 
+      case "showcase":
       case "HOME_AWARDS_SHOWCASE":
       case "AWARDS_SHOWCASE": {
+        const groups = Array.isArray(propsData.groups)
+          ? (propsData.groups as Array<Record<string, unknown>>)
+          : [];
+        const awardGrp = groups[0] || {};
+        const projGrp = groups[1] || {};
+        const projectIds = (
+          Array.isArray(projGrp.ids)
+            ? projGrp.ids
+            : Array.isArray(propsData.ids)
+            ? propsData.ids
+            : []
+        ) as string[];
+
+        const matchedProjects =
+          projectIds.length > 0
+            ? INITIAL_HERITAGE_PROJECTS.filter((p) => projectIds.includes(p.id)).map((p) => ({
+                id: p.id,
+                name: p.name,
+                slug: p.slug,
+                location: p.location,
+                category: p.category,
+                description: p.description,
+                thumbnailUrl:
+                  p.imageUrl ||
+                  "https://images.unsplash.com/photo-1559592413-7cec4d0cae2b?auto=format&fit=crop&w=800&h=520&q=80",
+                annualRevenue: p.economicMetrics.annualRevenue,
+                jobsCreated: p.economicMetrics.jobsCreated,
+                conservationShare: `${p.economicMetrics.conservationFundShare} trích quỹ bảo tồn`,
+              }))
+            : fallbackHomePageData.featuredProjects;
+
         const awardData = {
           ...fallbackHomePageData.award,
-          ...propsData,
-          criteria: Array.isArray(propsData.criteria) && propsData.criteria.length > 0
-            ? propsData.criteria
-            : fallbackHomePageData.award.criteria,
+          badge: String(awardGrp.badge || propsData.badge || fallbackHomePageData.award.badge),
+          awardName: String(
+            awardGrp.title || propsData.awardName || fallbackHomePageData.award.awardName
+          ),
+          subtitle: String(
+            awardGrp.quote || propsData.subtitle || fallbackHomePageData.award.subtitle
+          ),
+          description: String(
+            awardGrp.description || propsData.description || fallbackHomePageData.award.description
+          ),
+          criteria: fallbackHomePageData.award.criteria,
         } as typeof fallbackHomePageData.award;
-        return <AwardsShowcaseSection award={awardData} />;
+
+        return (
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 p-6">
+            <div className="lg:col-span-5">
+              <AwardsShowcaseSection award={awardData} />
+            </div>
+            <div className="lg:col-span-7">
+              <FeaturedProjectsSection
+                projects={
+                  matchedProjects.length > 0
+                    ? matchedProjects
+                    : fallbackHomePageData.featuredProjects
+                }
+              />
+            </div>
+          </div>
+        );
       }
 
+      case "directory":
       case "HOME_FEATURED_PROJECTS":
       case "PROJECT_GRID": {
         const projects = (Array.isArray(propsData.projects) && propsData.projects.length > 0
@@ -274,36 +409,79 @@ function SectionDashboardPreviewComponent({
         return <FeaturedProjectsSection projects={projects} />;
       }
 
+      case "news":
+      case "feed":
       case "HOME_NEWS_FEED":
       case "NEWS_FEED": {
-        const featured = (propsData.featuredNews as typeof fallbackHomePageData.featuredNews) || fallbackHomePageData.featuredNews;
-        const latest = (Array.isArray(propsData.latestNews) && propsData.latestNews.length > 0
-          ? propsData.latestNews
-          : fallbackHomePageData.latestNews) as typeof fallbackHomePageData.latestNews;
+        const allMockNews = [
+          ...fallbackHomePageData.featuredNews,
+          ...fallbackHomePageData.latestNews,
+        ];
+        const newsIds = (Array.isArray(propsData.ids) ? propsData.ids : []) as string[];
+        const selectedNews =
+          newsIds.length > 0
+            ? newsIds
+                .map((id) => allMockNews.find((n) => n.id === id))
+                .filter((n): n is (typeof allMockNews)[0] => Boolean(n))
+            : [];
+
+        const featured =
+          selectedNews.length > 0
+            ? [selectedNews[0]]
+            : (propsData.featuredNews as typeof fallbackHomePageData.featuredNews) ||
+              fallbackHomePageData.featuredNews;
+        const latest =
+          selectedNews.length > 1
+            ? selectedNews.slice(1)
+            : (Array.isArray(propsData.latestNews) && propsData.latestNews.length > 0
+                ? propsData.latestNews
+                : fallbackHomePageData.latestNews) as typeof fallbackHomePageData.latestNews;
         return <NewsFeedSection featuredNews={featured} latestNews={latest} />;
       }
 
+      case "partners":
       case "HOME_PARTNERS_SLIDER":
       case "PARTNERS_SLIDER": {
-        const partners = (Array.isArray(propsData.partners) && propsData.partners.length > 0
-          ? propsData.partners
-          : fallbackHomePageData.partners) as typeof fallbackHomePageData.partners;
+        const partnerIds = (Array.isArray(propsData.ids) ? propsData.ids : []) as string[];
+        const resolvedPartners =
+          partnerIds.length > 0
+            ? fallbackHomePageData.partners.filter((p) => partnerIds.includes(p.id))
+            : [];
+        const partners =
+          resolvedPartners.length > 0
+            ? resolvedPartners
+            : (Array.isArray(propsData.partners) && propsData.partners.length > 0
+                ? propsData.partners
+                : fallbackHomePageData.partners) as typeof fallbackHomePageData.partners;
         return <PartnersSliderSection partners={partners} />;
       }
 
+      case "cta":
       case "HOME_CONVERSION_CTA":
       case "CTA_BANNER": {
         const baseCta = fallbackHomePageData.conversionCta || {
-          headline: "Cùng Kiến Tạo Giá Trị Di Sản",
-          description: "Mỗi sáng kiến của quý vị đều góp phần hồi sinh và phát huy bền vững kho tàng văn hóa di sản.",
+          title: "Cùng Kiến Tạo Giá Trị Di Sản",
+          subtitle:
+            "Mỗi sáng kiến của quý vị đều góp phần hồi sinh và phát huy bền vững kho tàng văn hóa di sản.",
           cards: [],
         };
+        const rawCards = Array.isArray(propsData.cards)
+          ? (propsData.cards as Array<Record<string, unknown>>)
+          : [];
+        const mappedCards =
+          rawCards.length > 0
+            ? rawCards.map((c) => ({
+                title: String(c.title || ""),
+                description: String(c.description || ""),
+                ctaText: String(c.actionLabel || c.ctaText || "Tìm hiểu thêm"),
+                ctaLink: String(c.href || c.ctaLink || "/contact"),
+              }))
+            : baseCta.cards;
         const ctaData = {
           ...baseCta,
-          ...propsData,
-          cards: Array.isArray(propsData.cards) && propsData.cards.length > 0
-            ? propsData.cards
-            : baseCta.cards,
+          title: String(propsData.title || baseCta.title),
+          subtitle: String(propsData.description || propsData.subtitle || baseCta.subtitle),
+          cards: mappedCards,
         } as typeof fallbackHomePageData.conversionCta;
         return <ConversionCtaSection cta={ctaData} />;
       }
@@ -311,21 +489,27 @@ function SectionDashboardPreviewComponent({
       // ==========================================
       // 2. CÁC SECTION TRANG GIỚI THIỆU (ABOUT PAGE)
       // ==========================================
+      case "banner":
       case "ABOUT_BANNER": {
         return <AboutBanner lastUpdated={propsData.lastUpdated as string} />;
       }
 
+      case "vision":
       case "ABOUT_VISION_MISSION": {
         const vmData = {
           ...fallbackVisionMission,
-          ...propsData,
-          coreValues: Array.isArray(propsData.coreValues) && propsData.coreValues.length > 0
-            ? propsData.coreValues
-            : fallbackVisionMission.coreValues,
+          aboutPlatform: String(propsData.description || fallbackVisionMission.aboutPlatform),
+          vision: String(propsData.quote || fallbackVisionMission.vision),
+          mission: String(propsData.note || fallbackVisionMission.mission),
+          coreValues:
+            Array.isArray(propsData.coreValues) && propsData.coreValues.length > 0
+              ? propsData.coreValues
+              : fallbackVisionMission.coreValues,
         } as typeof fallbackVisionMission;
         return <VisionMissionSection data={vmData} />;
       }
 
+      case "council":
       case "ABOUT_COUNCIL": {
         return (
           <CouncilSection
@@ -345,6 +529,7 @@ function SectionDashboardPreviewComponent({
         );
       }
 
+      case "executive":
       case "ABOUT_EXECUTIVE": {
         return (
           <ExecutiveSection
@@ -442,25 +627,35 @@ function SectionDashboardPreviewComponent({
       }
 
       case "CONTACT_INFO": {
-        const info = (propsData.info as { secretariatTitle: string; address: string; hotline: string; email: string; workingHours: string }) || {
-          secretariatTitle: "Ban Thư Ký Diễn Đàn Kinh Tế Di Sản",
-          address: "Trung tâm Hội nghị Quốc tế & Hoàng thành Thăng Long, Ba Đình, Hà Nội",
-          hotline: "+84 (0) 24 3838 8888",
-          email: "contact@heritageforum.vn",
-          workingHours: "Thứ Hai – Thứ Sáu: 08:00 – 17:30 (GMT+7)",
+        const info = {
+          title: String(
+            propsData.title || "Văn phòng Thường trực Ban Thư ký Diễn đàn Kinh tế Di sản"
+          ),
+          address: String(
+            propsData.address ||
+              "Trung tâm Bảo tồn Di sản Thăng Long, 19C Hoàng Diệu, Ba Đình, Hà Nội"
+          ),
+          hotline: String(propsData.hotline || "+84 (024) 3823 4567"),
+          email: String(propsData.email || "contact@heritageeconomy.vn"),
+          workingHours: String(
+            propsData.workingHours || "Thứ Hai – Thứ Sáu: 08:30 – 17:30 (GMT+7)"
+          ),
         };
-        const faqs = (Array.isArray(propsData.faqs) && propsData.faqs.length > 0
-          ? propsData.faqs
-          : [
-              {
-                question: "Đăng ký đại biểu chính thức theo hình thức nào?",
-                answer: "Quý đại biểu có thể đăng ký trực tuyến qua cổng thông tin hoặc gửi công văn đề xuất tới Ban Thư ký.",
-              },
-              {
-                question: "Thời hạn tiếp nhận hồ sơ đề cử giải thưởng?",
-                answer: "Ban Tổ chức tiếp nhận hồ sơ đề cử đến hết ngày 15/10/2026.",
-              },
-            ]) as Array<{ question: string; answer: string }>;
+        const faqs = (Array.isArray(propsData.questions) && propsData.questions.length > 0
+          ? propsData.questions
+          : Array.isArray(propsData.faqs) && propsData.faqs.length > 0
+            ? propsData.faqs
+            : [
+                {
+                  question: "Đăng ký đại biểu chính thức theo hình thức nào?",
+                  answer:
+                    "Quý đại biểu có thể đăng ký trực tuyến qua cổng thông tin hoặc gửi công văn đề xuất tới Ban Thư ký.",
+                },
+                {
+                  question: "Thời hạn tiếp nhận hồ sơ đề cử giải thưởng?",
+                  answer: "Ban Tổ chức tiếp nhận hồ sơ đề cử đến hết ngày 15/10/2026.",
+                },
+              ]) as Array<{ question: string; answer: string }>;
         return <ContactInfoSection info={info} faqs={faqs} />;
       }
 

@@ -1,438 +1,142 @@
 /**
- * DỮ LIỆU SECTIONS MẶC ĐỊNH CHO TRANG GIỚI THIỆU (ABOUT - 5 SECTIONS)
- * Tách biệt thành file riêng để đảm bảo tính module và rõ ràng nghiệp vụ.
+ * DỮ LIỆU PROPS MẶC ĐỊNH CHO TRANG GIỚI THIỆU (ABOUT - 5 SECTIONS)
+ * Chia thành 5 section có tên ngắn gọn: banner, vision, council, executive, partners.
+ * Các nhân sự Hội đồng/Diễn giả và Tổ chức Đối tác tham chiếu qua mảng `ids: string[]`.
  */
 
-import type { AnyAboutSectionDTO } from "../../schemas/sections/about-sections.schema";
+import {
+  pagePropsToSections,
+  type PagePropsMap,
+  type PageSection,
+} from "../../types/page.types";
 
-export const DEFAULT_ABOUT_SECTIONS: AnyAboutSectionDTO[] = [
-  {
-    id: "sec_about_banner",
-    type: "ABOUT_BANNER",
-    title: "Về Diễn Đàn Kinh Tế Di Sản",
-    subtitle: "Nền tảng đối thoại và kết nối uy tín về kinh tế di sản tại Việt Nam",
-    order: 1,
-    isVisible: true,
-    props: {
-      title: "VỀ DIỄN ĐÀN KINH TẾ DI SẢN",
-      englishTitle: "VIETNAM HERITAGE ECONOMY FORUM (HEF)",
-      slogan: "Di sản kiến tạo giá trị – Phát triển hướng tương lai",
-      description:
-        "Quy tụ các nhà khoa học, chuyên gia bảo tồn, doanh nghiệp và cộng đồng địa phương cùng kiến tạo chuỗi giá trị có trách nhiệm, lấy di sản làm nguồn lực sáng tạo và cộng đồng làm chủ thể phát triển.",
-      breadcrumb: "Trang chủ / Giới thiệu",
-      lastUpdated: "03/11/2026 15:00:00",
-    },
+export const DEFAULT_ABOUT_PROPS: PagePropsMap = {
+  // 1. Banner Giới thiệu
+  banner: {
+    badge: "VỀ DIỄN ĐÀN KINH TẾ DI SẢN",
+    subBadge: "VIETNAM HERITAGE ECONOMY FORUM (HEF)",
+    title: "VỀ DIỄN ĐÀN KINH TẾ DI SẢN",
+    quote: "Di sản kiến tạo giá trị – Phát triển hướng tương lai",
+    description:
+      "Quy tụ các nhà khoa học, chuyên gia bảo tồn, doanh nghiệp và cộng đồng địa phương cùng kiến tạo chuỗi giá trị có trách nhiệm, lấy di sản làm nguồn lực sáng tạo và cộng đồng làm chủ thể phát triển.",
+    note: "Trang chủ / Giới thiệu",
   },
-  {
-    id: "sec_about_vision_mission",
-    type: "ABOUT_VISION_MISSION",
+
+  // 2. Tôn chỉ, Tầm nhìn & Sứ mệnh
+  vision: {
+    badge: "ĐỊNH HƯỚNG CHIẾN LƯỢC",
     title: "Tôn Chỉ, Tầm Nhìn & Sứ Mệnh",
-    subtitle: "Định hướng chiến lược dài hạn và các giá trị cốt lõi",
-    order: 2,
-    isVisible: true,
-    props: {
-      aboutPlatform:
-        "Diễn đàn Kinh tế Di sản là nền tảng kết nối liên ngành nhằm nghiên cứu, nhận diện và phát huy các giá trị di sản trong phát triển kinh tế, văn hóa và xã hội. Diễn đàn thúc đẩy đối thoại, hợp tác và các mô hình thực hành có trách nhiệm, lấy di sản làm nguồn lực sáng tạo và cộng đồng làm chủ thể phát triển.",
-      vision: "Trở thành nền tảng đối thoại và kết nối có uy tín về kinh tế di sản tại Việt Nam.",
-      mission: "Kết nối tri thức và nguồn lực để phát huy giá trị di sản một cách bền vững.",
-      coreValues: [
-        {
-          id: "val_respect",
-          title: "Tôn trọng di sản",
-          description:
-            "Bảo tồn tính nguyên bản, tôn vinh chiều sâu lịch sử và giá trị văn hóa dân tộc.",
-          iconName: "ShieldCheck",
-        },
-        {
-          id: "val_interdisciplinary",
-          title: "Liên ngành",
-          description:
-            "Quy tụ các nhà hoạch định chính sách, học giả, doanh nhân, kiến trúc sư và cộng đồng.",
-          iconName: "Layers",
-        },
-        {
-          id: "val_innovation",
-          title: "Đổi mới",
-          description:
-            "Ứng dụng chuyển đổi số, công nghệ và tư duy kinh tế sáng tạo vào không gian di sản.",
-          iconName: "Lightbulb",
-        },
-        {
-          id: "val_cooperation",
-          title: "Hợp tác",
-          description: "Liên kết chuỗi giá trị công – tư – cộng đồng (PPP), mở rộng mạng lưới quốc tế.",
-          iconName: "Handshake",
-        },
-        {
-          id: "val_community",
-          title: "Phụng sự cộng đồng",
-          description:
-            "Lấy người dân bản địa làm chủ thể gìn giữ, hưởng lợi trực tiếp từ kinh tế di sản.",
-          iconName: "HeartHandshake",
-        },
-      ],
-    },
+    subtitle: "Định hướng chiến lược dài hạn và 05 giá trị cốt lõi",
+    description:
+      "Diễn đàn Kinh tế Di sản là nền tảng kết nối liên ngành nhằm nghiên cứu, nhận diện và phát huy các giá trị di sản trong phát triển kinh tế, văn hóa và xã hội. Diễn đàn thúc đẩy đối thoại, hợp tác và các mô hình thực hành có trách nhiệm, lấy di sản làm nguồn lực sáng tạo và cộng đồng làm chủ thể phát triển.",
+    quote: "Trở thành nền tảng đối thoại và kết nối có uy tín về kinh tế di sản tại Việt Nam.",
+    note: "Kết nối tri thức và nguồn lực để phát huy giá trị di sản một cách bền vững.",
+    cards: [
+      {
+        badge: "GIÁ TRỊ CỐT LÕI",
+        title: "Tôn trọng di sản",
+        description:
+          "Bảo tồn tính nguyên bản, tôn vinh chiều sâu lịch sử và giá trị văn hóa dân tộc.",
+        icon: "ShieldCheck",
+      },
+      {
+        badge: "GIÁ TRỊ CỐT LÕI",
+        title: "Liên ngành",
+        description:
+          "Quy tụ các nhà hoạch định chính sách, học giả, doanh nhân, kiến trúc sư và cộng đồng.",
+        icon: "Layers",
+      },
+      {
+        badge: "GIÁ TRỊ CỐT LÕI",
+        title: "Đổi mới",
+        description:
+          "Ứng dụng chuyển đổi số, công nghệ và tư duy kinh tế sáng tạo vào không gian di sản.",
+        icon: "Lightbulb",
+      },
+      {
+        badge: "GIÁ TRỊ CỐT LÕI",
+        title: "Hợp tác",
+        description:
+          "Liên kết chuỗi giá trị công – tư – cộng đồng (PPP), mở rộng mạng lưới quốc tế.",
+        icon: "Handshake",
+      },
+      {
+        badge: "GIÁ TRỊ CỐT LÕI",
+        title: "Phụng sự cộng đồng",
+        description:
+          "Lấy người dân bản địa làm chủ thể gìn giữ, hưởng lợi trực tiếp từ kinh tế di sản.",
+        icon: "HeartHandshake",
+      },
+    ],
   },
-  {
-    id: "sec_about_council",
-    type: "ABOUT_COUNCIL",
+
+  // 3. Hội Đồng Diễn Đàn (tham chiếu Speaker IDs + cards mở rộng)
+  council: {
+    badge: "HỘI ĐỒNG KHOA HỌC & CỐ VẤN",
     title: "Hội Đồng Diễn Đàn",
     subtitle: "Chủ tịch, các Phó Chủ tịch và Hội đồng Cố vấn Khoa học",
-    order: 3,
-    isVisible: true,
-    props: {
-      title: "Hội Đồng Diễn Đàn",
-      subtitle: "Chủ tịch, các Phó Chủ tịch và Hội đồng Cố vấn Khoa học",
-      president: {
-        id: "person_council_pres",
-        fullName: "GS.TS. Trần Quốc Vượng",
-        academicTitle: "GS.TS",
-        councilRole: "PRESIDENT",
-        positionTitle: "Chủ tịch Hội đồng Diễn đàn",
-        organization: "Hội Di sản Văn hóa Việt Nam / Nguyên Viện trưởng Viện Khảo cổ học",
-        expertiseField: "Lịch sử – Khảo cổ học & Kinh tế Văn hóa Di sản",
-        avatarUrl:
-          "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=600&h=750&q=80",
-        altText: "Chân dung GS.TS Trần Quốc Vượng - Chủ tịch Hội đồng Diễn đàn Kinh tế Di sản",
-        bio: "Hơn 40 năm kinh nghiệm nghiên cứu và tư vấn chiến lược di sản văn hóa quốc gia; chủ trì nhiều chương trình hợp tác quốc tế với UNESCO.",
-        papers: [
-          "Định lượng hóa giá trị kinh tế của di sản kiến trúc đô thị tại Việt Nam (2024)",
-          "Mô hình đối tác công tư trong bảo tồn và phát huy di sản thế giới (2025)",
-        ],
-        email: "president@hef.vn",
-        isApproved: true,
-        order: 1,
-        updatedAt: "03/11/2026 09:00:00",
-      },
-      vicePresidents: [
-        {
-          id: "person_council_vp1",
-          fullName: "PGS.TS. Đặng Hoàng Lan",
-          academicTitle: "PGS.TS",
-          councilRole: "VICE_PRESIDENT",
-          positionTitle: "Phó Chủ tịch Hội đồng Phụ trách Khoa học & Đào tạo",
-          organization: "Đại học Quốc gia Hà Nội – Khoa Các khoa học liên ngành",
-          expertiseField: "Chính sách Văn hóa & Quản trị Kinh tế Di sản",
-          avatarUrl:
-            "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=600&h=750&q=80",
-          altText: "Chân dung PGS.TS Đặng Hoàng Lan - Phó Chủ tịch Hội đồng Diễn đàn",
-          bio: "Chuyên gia đầu ngành về kinh tế học văn hóa, tư vấn xây dựng hồ sơ công nghiệp sáng tạo cho nhiều đô thị di sản.",
-          papers: ["Kinh tế di sản trong bối cảnh công nghiệp văn hóa tại Việt Nam (2025)"],
-          email: "lan.dang@hef.vn",
-          isApproved: true,
-          order: 2,
-          updatedAt: "03/11/2026 09:00:00",
-        },
-        {
-          id: "person_council_vp2",
-          fullName: "KTS. Lê Hoàng Phương",
-          academicTitle: "KTS",
-          councilRole: "VICE_PRESIDENT",
-          positionTitle: "Phó Chủ tịch Hội đồng Phụ trách Bảo tồn & Phát triển",
-          organization: "Viện Kiến trúc Quốc gia – Bộ Xây dựng",
-          expertiseField: "Bảo tồn Thích ứng Kiến trúc Đô thị & Chuyển đổi Số Di sản",
-          avatarUrl:
-            "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=600&h=750&q=80",
-          altText: "Chân dung KTS Lê Hoàng Phương - Phó Chủ tịch Hội đồng",
-          bio: "Chủ trì quy hoạch và trùng tu tôn tạo nhiều quần thể di tích quốc gia đặc biệt; tiên phong triển khai công nghệ bản sao số (Digital Twin).",
-          papers: ["Bảo tồn thích ứng kiến trúc gỗ và nhà cổ truyền thống (2024)"],
-          email: "phuong.le@hef.vn",
-          isApproved: true,
-          order: 3,
-          updatedAt: "03/11/2026 09:00:00",
-        },
-      ],
-      councilMembers: [
-        {
-          id: "person_council_m1",
-          fullName: "TS. Nguyễn Thị Bích Liên",
-          academicTitle: "TS",
-          councilRole: "COUNCIL_MEMBER",
-          positionTitle: "Ủy viên Hội đồng – Trưởng Tiểu ban Làng nghề & Sinh kế",
-          organization: "Viện Văn hóa Nghệ thuật Quốc gia Việt Nam (VICAS)",
-          expertiseField: "Di sản Văn hóa Phi vật thể & Sinh kế Cộng đồng",
-          avatarUrl:
-            "https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=600&h=750&q=80",
-          altText: "Chân dung TS Nguyễn Thị Bích Liên - Ủy viên Hội đồng",
-          bio: "Nghiên cứu sâu về chuỗi cung ứng sản phẩm thủ công truyền thống và thương mại công bằng cho nghệ nhân bản địa.",
-          papers: ["Bảo vệ bản quyền tri thức dân gian trong kinh tế thị trường (2025)"],
-          isApproved: true,
-          order: 4,
-          updatedAt: "03/11/2026 09:00:00",
-        },
-      ],
-      scientificAdvisors: [
-        {
-          id: "person_council_adv1",
-          fullName: "GS.TS. Michael DiStefano",
-          academicTitle: "GS.TS",
-          councilRole: "SCIENTIFIC_ADVISOR",
-          positionTitle: "Cố vấn Khoa học Quốc tế",
-          organization: "Hội đồng Di tích và Di chỉ Quốc tế (ICOMOS International)",
-          expertiseField: "Quản trị Di sản Thế giới & Phát triển Bền vững (SDGs)",
-          avatarUrl:
-            "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=600&h=750&q=80",
-          altText: "Chân dung GS.TS Michael DiStefano - Cố vấn Khoa học Quốc tế",
-          bio: "Nguyên Chủ tịch ICOMOS Australia, chuyên gia đánh giá độc lập các hồ sơ đề cử Di sản Thế giới của UNESCO tại Châu Á – Thái Bình Dương.",
-          papers: ["Heritage-driven economic regeneration in Southeast Asia (2025)"],
-          isApproved: true,
-          order: 6,
-          updatedAt: "03/11/2026 09:00:00",
-        },
-      ],
-    },
+    ids: ["spk_1", "spk_2", "spk_3"],
   },
-  {
-    id: "sec_about_executive",
-    type: "ABOUT_EXECUTIVE",
+
+  // 4. Ban Điều Hành Chuyên Trách
+  executive: {
+    badge: "CƠ CẤU VẬN HÀNH",
     title: "Ban Điều Hành Chuyên Trách",
     subtitle: "Cơ cấu chuyên trách điều phối và triển khai các chương trình",
-    order: 4,
-    isVisible: true,
-    props: {
-      title: "Ban Điều Hành Chuyên Trách",
-      subtitle: "Cơ cấu chuyên trách điều phối và triển khai các chương trình",
-      executiveHead: {
-        id: "person_exec_head",
-        fullName: "TS. Phạm Trung Dũng",
-        academicTitle: "TS",
-        executiveRole: "HEAD",
-        positionTitle: "Trưởng ban Điều hành Diễn đàn",
-        organization: "Ban Thư ký Thường trực Diễn đàn Kinh tế Di sản",
-        expertiseField: "Quản trị Dự án Văn hóa & Phát triển Đối tác Công – Tư",
-        avatarUrl:
-          "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=600&h=750&q=80",
-        altText: "Chân dung TS Phạm Trung Dũng - Trưởng ban Điều hành HEF",
-        bio: "Hơn 20 năm kinh nghiệm điều phối các diễn đàn kinh tế quốc gia, quản lý chương trình xúc tiến đầu tư và kết nối hệ sinh thái sáng tạo.",
-        papers: [],
-        email: "dung.pham@hef.vn",
-        isApproved: true,
-        order: 10,
-        updatedAt: "03/11/2026 09:00:00",
+    ids: ["spk_2"],
+    cards: [
+      {
+        badge: "ACADEMIC",
+        title: "Nhóm Nội dung – Học thuật",
+        description:
+          "Biên soạn tài liệu hội thảo, thẩm định báo cáo chuyên môn, điều phối ấn phẩm Kỷ yếu và xây dựng bộ chỉ số kinh tế di sản.",
+        note: "academic@hef.vn • (+84) 24 3823 4567 (ext. 101)",
       },
-      executiveDeputies: [
-        {
-          id: "person_exec_dep1",
-          fullName: "ThS. Đỗ Thùy Trang",
-          academicTitle: "ThS",
-          executiveRole: "DEPUTY_HEAD",
-          positionTitle: "Phó Trưởng ban Điều hành Phụ trách Đối ngoại & Dự án",
-          organization: "Ban Điều hành HEF",
-          expertiseField: "Ngoại giao Văn hóa & Quan hệ Đối tác",
-          avatarUrl:
-            "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&w=600&h=750&q=80",
-          altText: "Chân dung ThS Đỗ Thùy Trang - Phó Trưởng ban Điều hành",
-          bio: "Điều phối mạng lưới đối tác quốc tế, quỹ tài trợ bảo tồn và các địa phương đăng cai tổ chức các kỳ Diễn đàn.",
-          papers: [],
-          email: "trang.do@hef.vn",
-          isApproved: true,
-          order: 11,
-          updatedAt: "03/11/2026 09:00:00",
-        },
-        {
-          id: "person_exec_dep2",
-          fullName: "ThS. Vũ Nam Phương",
-          academicTitle: "ThS",
-          executiveRole: "DEPUTY_HEAD",
-          positionTitle: "Phó Trưởng ban Điều hành Phụ trách Vận hành & Truyền thông",
-          organization: "Ban Điều hành HEF",
-          expertiseField: "Vận hành Sự kiện Quy mô Lớn & Nền tảng Số",
-          avatarUrl:
-            "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=600&h=750&q=80",
-          altText: "Chân dung ThS Vũ Nam Phương - Phó Trưởng ban Điều hành",
-          bio: "Quản lý hệ sinh thái truyền thông, cổng thông tin số và quy trình tiếp đón đại biểu cấp cao.",
-          papers: [],
-          email: "phuong.vu@hef.vn",
-          isApproved: true,
-          order: 12,
-          updatedAt: "03/11/2026 09:00:00",
-        },
-      ],
-      executiveDepartments: [
-        {
-          id: "dept_acad",
-          code: "ACADEMIC",
-          name: "Nhóm Nội dung – Học thuật",
-          mission:
-            "Biên soạn tài liệu hội thảo, thẩm định báo cáo chuyên môn, điều phối ấn phẩm Kỷ yếu và xây dựng bộ chỉ số kinh tế di sản.",
-          contactEmail: "academic@hef.vn",
-          contactPhone: "(+84) 24 3823 4567 (ext. 101)",
-          members: [],
-        },
-        {
-          id: "dept_ops",
-          code: "OPERATIONS",
-          name: "Nhóm Tổ chức – Vận hành",
-          mission:
-            "Hậu cần, điều phối địa điểm, lễ tân khánh tiết, điều phối phiên họp, an ninh và trải nghiệm đại biểu tham dự.",
-          contactEmail: "operations@hef.vn",
-          contactPhone: "(+84) 24 3823 4567 (ext. 102)",
-          members: [],
-        },
-        {
-          id: "dept_ext",
-          code: "EXTERNAL_AFFAIRS",
-          name: "Nhóm Đối ngoại – Hợp tác",
-          mission:
-            "Kết nối các tổ chức quốc tế (UNESCO, ICOMOS), các bộ ngành trung ương, địa phương và vận động các quỹ tài trợ bảo tồn.",
-          contactEmail: "external@hef.vn",
-          contactPhone: "(+84) 24 3823 4567 (ext. 103)",
-          members: [],
-        },
-        {
-          id: "dept_comms",
-          code: "COMMUNICATIONS",
-          name: "Nhóm Truyền thông – Báo chí",
-          mission:
-            "Quản lý thông cáo báo chí, sản xuất nội dung số, điều phối các cơ quan bảo trợ truyền thông và duy trì tương tác cộng đồng.",
-          contactEmail: "media@hef.vn",
-          contactPhone: "(+84) 24 3823 4567 (ext. 104)",
-          members: [],
-        },
-        {
-          id: "dept_proj",
-          code: "PROJECTS",
-          name: "Nhóm Dự án – Phát triển",
-          mission:
-            "Theo dõi và ươm tạo các sáng kiến di sản, điều phối mạng lưới nghệ nhân, doanh nghiệp bản địa và chuyển giao mô hình số hóa.",
-          contactEmail: "projects@hef.vn",
-          contactPhone: "(+84) 24 3823 4567 (ext. 105)",
-          members: [],
-        },
-        {
-          id: "dept_sec",
-          code: "SECRETARIAT",
-          name: "Ban Thư ký Tổng hợp",
-          mission:
-            "Tổng hợp chương trình nghị sự, quản lý cơ sở dữ liệu đại biểu, quản trị văn thư hành chính và theo dõi kết luận các kỳ họp.",
-          contactEmail: "secretariat@hef.vn",
-          contactPhone: "(+84) 24 3823 4567 (ext. 100)",
-          members: [],
-        },
-      ],
-    },
+      {
+        badge: "OPERATIONS",
+        title: "Nhóm Tổ chức – Vận hành",
+        description:
+          "Hậu cần, điều phối địa điểm, lễ tân khánh tiết, điều phối phiên họp, an ninh và trải nghiệm đại biểu tham dự.",
+        note: "operations@hef.vn • (+84) 24 3823 4567 (ext. 102)",
+      },
+      {
+        badge: "EXTERNAL_AFFAIRS",
+        title: "Nhóm Đối ngoại – Hợp tác",
+        description:
+          "Kết nối các tổ chức quốc tế (UNESCO, ICOMOS), các bộ ngành trung ương, địa phương và vận động các quỹ tài trợ bảo tồn.",
+        note: "external@hef.vn • (+84) 24 3823 4567 (ext. 103)",
+      },
+      {
+        badge: "COMMUNICATIONS",
+        title: "Nhóm Truyền thông – Báo chí",
+        description:
+          "Quản lý thông cáo báo chí, sản xuất nội dung số, điều phối các cơ quan bảo trợ truyền thông và duy trì tương tác cộng đồng.",
+        note: "media@hef.vn • (+84) 24 3823 4567 (ext. 104)",
+      },
+      {
+        badge: "PROJECTS",
+        title: "Nhóm Dự án – Phát triển",
+        description:
+          "Theo dõi và ươm tạo các sáng kiến di sản, điều phối mạng lưới nghệ nhân, doanh nghiệp bản địa và chuyển giao mô hình số hóa.",
+        note: "projects@hef.vn • (+84) 24 3823 4567 (ext. 105)",
+      },
+      {
+        badge: "SECRETARIAT",
+        title: "Ban Thư ký Tổng hợp",
+        description:
+          "Tổng hợp chương trình nghị sự, quản lý cơ sở dữ liệu đại biểu, quản trị văn thư hành chính và theo dõi kết luận các kỳ họp.",
+        note: "secretariat@hef.vn • (+84) 24 3823 4567 (ext. 100)",
+      },
+    ],
   },
-  {
-    id: "sec_about_partners",
-    type: "ABOUT_PARTNERS",
+
+  // 5. Mạng lưới Đối tác Đồng hành (tham chiếu Organization IDs)
+  partners: {
+    badge: "MẠNG LƯỚI ĐỒNG HÀNH",
     title: "Mạng Lưới Đối Tác Đồng Hành",
     subtitle: "Các cơ quan chỉ đạo, cơ quan chủ trì, đơn vị thường trực và đối tác chiến lược",
-    order: 5,
-    isVisible: true,
-    props: {
-      title: "Mạng Lưới Đối Tác Đồng Hành",
-      subtitle: "Các cơ quan chỉ đạo, cơ quan chủ trì, đơn vị thường trực và đối tác chiến lược",
-      partners: [
-        {
-          id: "p_org_bvhttdl",
-          name: "Bộ Văn hóa, Thể thao và Du lịch",
-          shortName: "BVHTTDL",
-          logoUrl: "/images/partners/bvhttdl.png",
-          category: "STEERING",
-          roleDescription: "Cơ quan chỉ đạo định hướng chính sách và thể chế di sản văn hóa quốc gia.",
-          websiteUrl: "https://bvhttdl.gov.vn",
-          relatedEvents: ["Kỳ Diễn đàn 2026", "Giải thưởng Phát triển Bền vững"],
-          order: 1,
-          isApproved: true,
-          updatedAt: "03/11/2026 09:00:00",
-        },
-        {
-          id: "p_org_unesco",
-          name: "Ủy ban Quốc gia UNESCO Việt Nam",
-          shortName: "UNESCO VN",
-          logoUrl: "/images/partners/unesco.png",
-          category: "STEERING",
-          roleDescription:
-            "Bảo trợ chuyên môn và kết nối mạng lưới các khu di sản thế giới tại Việt Nam.",
-          websiteUrl: "https://unesco.org.vn",
-          relatedEvents: ["Kỳ Diễn đàn 2026"],
-          order: 2,
-          isApproved: true,
-          updatedAt: "03/11/2026 09:00:00",
-        },
-        {
-          id: "p_org_vcha",
-          name: "Hội Di sản Văn hóa Việt Nam",
-          shortName: "VCHA",
-          logoUrl: "/images/partners/vcha.png",
-          category: "HOSTING",
-          roleDescription:
-            "Cơ quan chủ trì học thuật, thẩm định đề án và bảo trợ khoa học cho Diễn đàn.",
-          websiteUrl: "https://hoidisan.vn",
-          relatedEvents: ["Kỳ Diễn đàn 2026", "Hội đồng Khoa học"],
-          order: 3,
-          isApproved: true,
-          updatedAt: "03/11/2026 09:00:00",
-        },
-        {
-          id: "p_org_vnu",
-          name: "Đại học Quốc gia Hà Nội – Khoa Các khoa học liên ngành",
-          shortName: "VNU-SIS",
-          logoUrl: "/images/partners/vnu.png",
-          category: "HOSTING",
-          roleDescription: "Đơn vị phối hợp nghiên cứu, khảo sát thực địa và đào tạo nhân lực di sản.",
-          websiteUrl: "https://vnu.edu.vn",
-          relatedEvents: ["Kỳ Diễn đàn 2026", "Báo cáo Kinh tế Di sản 2026"],
-          order: 4,
-          isApproved: true,
-          updatedAt: "03/11/2026 09:00:00",
-        },
-        {
-          id: "p_org_hue",
-          name: "Trung tâm Bảo tồn Di tích Cố đô Huế",
-          shortName: "HMCC",
-          logoUrl: "/images/partners/hue-monuments.png",
-          category: "ORGANIZING",
-          roleDescription:
-            "Đơn vị phối hợp thực địa, chia sẻ mô hình trùng tu và tổ chức không gian trải nghiệm.",
-          websiteUrl: "https://hueworldheritage.org.vn",
-          relatedEvents: ["Kỳ Diễn đàn 2026"],
-          order: 5,
-          isApproved: true,
-          updatedAt: "03/11/2026 09:00:00",
-        },
-        {
-          id: "p_org_thanglong",
-          name: "Trung tâm Bảo tồn Di sản Thăng Long – Hà Nội",
-          shortName: "TL-HN",
-          logoUrl: "/images/partners/thanglong.png",
-          category: "ORGANIZING",
-          roleDescription:
-            "Đơn vị phối hợp tổ chức các phiên thảo luận chuyên đề và triển lãm số hóa di sản.",
-          websiteUrl: "https://hoangthanhthanglong.vn",
-          relatedEvents: ["Kỳ Diễn đàn 2026"],
-          order: 6,
-          isApproved: true,
-          updatedAt: "03/11/2026 09:00:00",
-        },
-        {
-          id: "p_org_vcb",
-          name: "Ngân hàng TMCP Ngoại thương Việt Nam",
-          shortName: "Vietcombank",
-          logoUrl: "/images/partners/vietcombank.png",
-          category: "STRATEGIC",
-          roleDescription:
-            "Nhà tài trợ Kim Cương, đồng hành tài chính và các gói tín dụng xanh cho di sản.",
-          websiteUrl: "https://vietcombank.com.vn",
-          relatedEvents: ["Kỳ Diễn đàn 2026", "Giải thưởng Phát triển Bền vững"],
-          order: 7,
-          isApproved: true,
-          updatedAt: "03/11/2026 09:00:00",
-        },
-        {
-          id: "p_org_vtv",
-          name: "Đài Truyền hình Việt Nam",
-          shortName: "VTV",
-          logoUrl: "/images/partners/vtv.png",
-          category: "MEDIA",
-          roleDescription: "Bảo trợ truyền hình, phát sóng trực tiếp phiên toàn thể và phóng sự chuyên đề.",
-          websiteUrl: "https://vtv.vn",
-          relatedEvents: ["Kỳ Diễn đàn 2026"],
-          order: 8,
-          isApproved: true,
-          updatedAt: "03/11/2026 09:00:00",
-        },
-      ],
-    },
+    ids: ["p_1", "p_2", "p_3", "p_4", "p_5", "p_7", "p_8", "p_9", "p_11", "p_12"],
   },
-];
+};
+
+export const DEFAULT_ABOUT_SECTIONS: PageSection[] = pagePropsToSections(DEFAULT_ABOUT_PROPS);

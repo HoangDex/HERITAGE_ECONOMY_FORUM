@@ -7,6 +7,8 @@
 
 import { revalidatePath } from "next/cache";
 import {
+  createCategorySchema,
+  updateCategorySchema,
   createProjectSchema,
   updateProjectSchema,
   createOrganizationSchema,
@@ -20,6 +22,10 @@ import {
 } from "../schemas/master-data.schema";
 import { masterDataService } from "../services/master-data.service";
 import type {
+  MasterDataCategory,
+  MasterDataAwardCategory,
+  CreateCategoryDTO,
+  UpdateCategoryDTO,
   MasterDataProject,
   CreateProjectDTO,
   UpdateProjectDTO,
@@ -456,6 +462,164 @@ export async function deleteAwardAction(id: string): Promise<ApiResponse<null>> 
     return {
       success: false,
       error: error instanceof Error ? error.message : "Lỗi khi xóa giải thưởng",
+    };
+  }
+}
+
+// ========================================================
+// 6. CATEGORIES (CHUYÊN MỤC TIN TỨC - CHỈ GỒM ID & NAME)
+// ========================================================
+export async function createCategoryAction(
+  input: CreateCategoryDTO
+): Promise<ApiResponse<MasterDataCategory>> {
+  const validation = createCategorySchema.safeParse(input);
+  if (!validation.success) {
+    return {
+      success: false,
+      error: validation.error.issues[0]?.message || "Tên danh mục không hợp lệ",
+    };
+  }
+
+  try {
+    const cat = await masterDataService.createCategory(validation.data);
+    revalidateMasterData(["/", "/news"]);
+    return {
+      success: true,
+      data: cat,
+      message: "Thêm danh mục thành công",
+    };
+  } catch (error) {
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : "Lỗi khi thêm danh mục",
+    };
+  }
+}
+
+export async function updateCategoryAction(
+  id: string,
+  input: UpdateCategoryDTO
+): Promise<ApiResponse<MasterDataCategory>> {
+  const validation = updateCategorySchema.safeParse(input);
+  if (!validation.success) {
+    return {
+      success: false,
+      error: validation.error.issues[0]?.message || "Dữ liệu cập nhật danh mục không hợp lệ",
+    };
+  }
+
+  try {
+    const updated = await masterDataService.updateCategory(id, validation.data);
+    if (!updated) return { success: false, error: "Không tìm thấy danh mục" };
+
+    revalidateMasterData(["/", "/news"]);
+    return {
+      success: true,
+      data: updated,
+      message: "Cập nhật danh mục thành công",
+    };
+  } catch (error) {
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : "Lỗi khi cập nhật danh mục",
+    };
+  }
+}
+
+export async function deleteCategoryAction(id: string): Promise<ApiResponse<null>> {
+  try {
+    const deleted = await masterDataService.deleteCategory(id);
+    if (!deleted) return { success: false, error: "Không tìm thấy danh mục để xóa" };
+
+    revalidateMasterData(["/", "/news"]);
+    return {
+      success: true,
+      data: null,
+      message: "Đã xóa danh mục thành công",
+    };
+  } catch (error) {
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : "Lỗi khi xóa danh mục",
+    };
+  }
+}
+
+// ========================================================
+// 7. AWARD CATEGORIES (HẠNG MỤC GIẢI THƯỞNG - CHỈ GỒM ID & NAME)
+// ========================================================
+export async function createAwardCategoryAction(
+  input: CreateCategoryDTO
+): Promise<ApiResponse<MasterDataAwardCategory>> {
+  const validation = createCategorySchema.safeParse(input);
+  if (!validation.success) {
+    return {
+      success: false,
+      error: validation.error.issues[0]?.message || "Tên hạng mục giải thưởng không hợp lệ",
+    };
+  }
+
+  try {
+    const cat = await masterDataService.createAwardCategory(validation.data);
+    revalidateMasterData(["/", "/awards"]);
+    return {
+      success: true,
+      data: cat,
+      message: "Thêm hạng mục giải thưởng thành công",
+    };
+  } catch (error) {
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : "Lỗi khi thêm hạng mục giải thưởng",
+    };
+  }
+}
+
+export async function updateAwardCategoryAction(
+  id: string,
+  input: UpdateCategoryDTO
+): Promise<ApiResponse<MasterDataAwardCategory>> {
+  const validation = updateCategorySchema.safeParse(input);
+  if (!validation.success) {
+    return {
+      success: false,
+      error: validation.error.issues[0]?.message || "Dữ liệu cập nhật hạng mục không hợp lệ",
+    };
+  }
+
+  try {
+    const updated = await masterDataService.updateAwardCategory(id, validation.data);
+    if (!updated) return { success: false, error: "Không tìm thấy hạng mục giải thưởng" };
+
+    revalidateMasterData(["/", "/awards"]);
+    return {
+      success: true,
+      data: updated,
+      message: "Cập nhật hạng mục giải thưởng thành công",
+    };
+  } catch (error) {
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : "Lỗi khi cập nhật hạng mục giải thưởng",
+    };
+  }
+}
+
+export async function deleteAwardCategoryAction(id: string): Promise<ApiResponse<null>> {
+  try {
+    const deleted = await masterDataService.deleteAwardCategory(id);
+    if (!deleted) return { success: false, error: "Không tìm thấy hạng mục giải thưởng để xóa" };
+
+    revalidateMasterData(["/", "/awards"]);
+    return {
+      success: true,
+      data: null,
+      message: "Đã xóa hạng mục giải thưởng thành công",
+    };
+  } catch (error) {
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : "Lỗi khi xóa hạng mục giải thưởng",
     };
   }
 }

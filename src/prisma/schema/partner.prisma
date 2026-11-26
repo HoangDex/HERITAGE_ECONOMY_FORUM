@@ -8,30 +8,15 @@ enum PartnerCategory {
 }
 
 model Organization {
-  id         String             @id @default(cuid())
-  name       String             @db.VarChar(255)
-  shortName  String?            @db.VarChar(100)
+  id         String          @id @default(cuid())
+  name       String          @db.VarChar(255)
+  shortName  String?         @db.VarChar(100)
   category   PartnerCategory
-  logoUrl    String             @db.VarChar(255)
-  websiteUrl String?            @db.VarChar(255)
-  pages      PageOrganization[] // Đối tác này hiển thị ở những Page nào
-  createdAt  DateTime           @default(now())
-  updatedAt  DateTime           @updatedAt
+  logoUrl    String          @db.VarChar(255)
+  websiteUrl String?         @db.VarChar(255)
+  createdAt  DateTime        @default(now())
+  updatedAt  DateTime        @updatedAt
 
+  @@index([category])
   @@map("organizations")
-}
-
-model PageOrganization {
-  id             String       @id @default(cuid())
-  pageSlug       String       @db.VarChar(150) // Query qua slug trang CMS
-  pageName       String?      @db.VarChar(150) // Query qua tên trang CMS
-  page           Page         @relation(fields: [pageSlug], references: [slug], onDelete: Cascade)
-  organizationId String
-  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-  roleLabel      String       @db.VarChar(150) // "Cơ quan Chủ trì & Đăng cai", "Nhà Tài trợ Chiến lược"
-  displayOrder   Int          @default(1)
-
-  @@unique([pageSlug, organizationId])
-  @@index([pageSlug])
-  @@map("page_organizations")
 }

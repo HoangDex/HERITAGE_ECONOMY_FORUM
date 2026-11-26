@@ -75,6 +75,7 @@ Trong giai đoạn 2026 - 2028, khung hướng dẫn sẽ được áp dụng th
 
 Các kết quả thí điểm sẽ là cơ sở thực tiễn quan trọng để Diễn đàn kiến nghị hoàn thiện Nghị định của Chính phủ về cơ chế tài chính đặc thù trong quản lý di sản văn hóa.
     `,
+    categoryId: 2,
     category: "nghien-cuu-chinh-sach",
     categoryName: "Nghiên cứu & Chính sách",
     coverImage:
@@ -115,6 +116,7 @@ Sự thành công của Tràng An bắt nguồn từ cơ chế phối hợp ch�
 
 Từ thực tiễn Tràng An, Diễn đàn Kinh tế Di sản đang phối hợp với các tỉnh thành nhằm chuyển giao bộ chỉ số đo lường tác động kinh tế - xã hội, giúp các khu di sản khác như Phong Nha - Kẻ Bàng, Vịnh Hạ Long và Cao nguyên đá Đồng Văn xây dựng mô hình sinh kế bản địa hài hòa.
     `,
+    categoryId: 3,
     category: "kinh-te-di-san",
     categoryName: "Kinh tế Di sản",
     coverImage:
@@ -152,6 +154,7 @@ Chuỗi sự kiện bao gồm 03 phiên bàn tròn chuyên sâu:
 
 Ban Tổ chức cho biết, kết quả của chuỗi tọa đàm sẽ được đúc kết thành Sách Trắng về Làng Nghề Thủ Công Việt Nam 2026 và công bố tại phiên toàn thể diễn đàn.
     `,
+    categoryId: 1,
     category: "hoat-dong",
     categoryName: "Hoạt động Diễn đàn",
     coverImage:
@@ -188,6 +191,7 @@ Dự án sử dụng công nghệ GIS đa tầng kết hợp ảnh vệ tinh đ�
 
 Dự kiến, hệ thống sẽ mở quyền truy cập miễn phí cho các cơ quan quản lý, viện nghiên cứu và sinh viên trên toàn quốc từ quý I năm 2027.
     `,
+    categoryId: 3,
     category: "kinh-te-di-san",
     categoryName: "Kinh tế Di sản",
     coverImage:
@@ -225,6 +229,7 @@ Báo cáo nghiên cứu mới nhất của HEF đề xuất gói chính sách kh
 
 Bản kiến nghị chính sách chi tiết đã được gửi tới các bộ ngành liên quan để phục vụ quá trình sửa đổi, bổ sung Luật Di sản Văn hóa trong kỳ họp Quốc hội tới.
     `,
+    categoryId: 2,
     category: "nghien-cuu-chinh-sach",
     categoryName: "Nghiên cứu & Chính sách",
     coverImage:
@@ -261,6 +266,7 @@ Tại Hội nghị Văn hóa Toàn quốc, yêu cầu phát triển các ngành 
 2. **Kinh tế số và bảo tàng thực tế ảo:** Số hóa 3D các cổ vật, di tích quốc gia đặc biệt để tạo tác quyền số, phát triển các tour tham quan thực tế ảo và giáo dục di sản xuyên biên giới.
 3. **Thương mại hóa thủ công mỹ nghệ cao cấp:** Kết nối nghệ nhân các làng nghề truyền thống với các nhà thiết kế đương đại để đưa sản phẩm di sản vào phân khúc quà tặng ngoại giao và tiêu dùng quốc tế.
     `,
+    categoryId: 2,
     category: "nghien-cuu-chinh-sach",
     categoryName: "Nghiên cứu & Chính sách",
     coverImage:
@@ -297,6 +303,7 @@ Với sự tham gia của hơn 800 đại biểu đại diện cho các ban bộ
 3. **Phiên Chuyên Đề 2 (Sáng 16/11):** Chuyển đổi số, Bảo tàng ảo và Ứng dụng Bản đồ GIS Di sản.
 4. **Phiên Chuyên Đề 3 (Chiều 16/11):** Sinh kế cộng đồng bản địa và chuỗi giá trị thủ công mỹ nghệ làng nghề.
     `,
+    categoryId: 1,
     category: "hoat-dong",
     categoryName: "Hoạt động Diễn đàn",
     coverImage:
@@ -331,6 +338,7 @@ Mấu chốt để doanh nghiệp mặn mà với di sản nằm ở tính dự 
 2. **Quy chuẩn hợp đồng mẫu nhượng quyền (BOT/BTO văn hóa):** Giảm thiểu chi phí đàm phán pháp lý giữa chính quyền địa phương và nhà đầu tư.
 3. **Cơ chế chia sẻ rủi ro mùa vụ:** Giảm tiền thuê mặt bằng trong mùa thấp điểm du lịch để doanh nghiệp yên tâm duy trì chất lượng dịch vụ.
     `,
+    categoryId: 2,
     category: "goc-chuyen-gia",
     categoryName: "Góc chuyên gia",
     coverImage:
@@ -366,6 +374,7 @@ Trong 6 tháng thử nghiệm, mô hình showroom ảo đã ghi nhận:
 - Mức tăng trưởng doanh thu sản phẩm tinh hoa cao cấp đạt 35%.
 - Đào tạo kỹ năng số cho 120 nghệ nhân trẻ tại làng nghề.
     `,
+    categoryId: 3,
     category: "kinh-te-di-san",
     categoryName: "Kinh tế Di sản",
     coverImage:
@@ -401,6 +410,7 @@ Hội đồng Giải thưởng gồm các nhà khoa học, chuyên gia bảo t�
 3. Sáng kiến Ứng dụng Công nghệ & Số hóa Di sản.
 4. Doanh nghiệp Đồng hành & Tài trợ Văn hóa tiêu biểu.
     `,
+    categoryId: 3,
     category: "dau-an-thanh-tuu",
     categoryName: "Dấu ấn & Thành tựu",
     coverImage:
@@ -432,6 +442,7 @@ Biên bản ghi nhớ tập trung vào 3 trọng tâm phối hợp:
 
 Thỏa thuận này đánh dấu bước chuyển mình quan trọng của HEF từ một diễn đàn thảo luận hướng tới một mạng lưới hành động thực chất và hiệu quả.
     `,
+    categoryId: 1,
     category: "truyen-thong",
     categoryName: "Truyền thông",
     coverImage:

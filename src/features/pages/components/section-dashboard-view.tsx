@@ -154,12 +154,38 @@ export function SectionDashboardView({
     }
 
     try {
+      const mergedSectionProps = {
+        ...propsData,
+        ...(sectionTitle ? { title: sectionTitle } : {}),
+        ...(sectionSubtitle ? { subtitle: sectionSubtitle } : {}),
+      };
+
+      // Gọi API riêng cho từng section: PUT /api/[namepage]/[section]
+      const apiRes = await fetch(`/api/${pageSlug}/${activeSection.id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(mergedSectionProps),
+      });
+
+      if (apiRes.ok) {
+        const json = await apiRes.json();
+        if (json?.data?.updatedPage) {
+          onSectionUpdated(json.data.updatedPage);
+          showNotification(
+            "success",
+            `Đã lưu section "${activeSection.id}" qua API /api/${pageSlug}/${activeSection.id}`
+          );
+          return;
+        }
+      }
+
+      // Fallback qua Server Action / TanStack Query Mutation
       const updatedPage = await updateSectionMutation.mutateAsync({
         sectionId: activeSection.id,
         dto: {
           title: sectionTitle,
           subtitle: sectionSubtitle,
-          props: propsData,
+          props: mergedSectionProps,
         },
       });
 

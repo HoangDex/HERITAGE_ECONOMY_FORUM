@@ -1,15 +1,33 @@
 /**
  * LAYER 1: TYPES & INTERFACES CHO DANH MỤC DỮ LIỆU DÙNG CHUNG (MASTER DATA CATALOGS)
  * Các thực thể lưu trữ dưới CSDL quan hệ MySQL và được tái sử dụng xuyên suốt trên nhiều Trang.
+ * Category và AwardCategory chỉ gồm 2 trường: `id` và `name`.
  */
+
+export interface MasterDataCategory {
+  id: string;
+  name: string;
+}
+
+export interface CreateCategoryDTO {
+  name: string;
+}
+
+export type UpdateCategoryDTO = Partial<CreateCategoryDTO>;
+
+export type MasterDataAwardCategory = MasterDataCategory;
+export type MasterDataProjectCategory = MasterDataCategory;
 
 export interface MasterDataProject {
   id: string;
   name: string;
   slug: string;
   location: string;
+  categoryId?: string;
   category: string;
   status: string;
+  description?: string | null;
+  thumbnailUrl?: string | null;
   annualRevenue?: string | null;
   jobsCreated: number;
   conservationFundShare?: string | null;
@@ -23,6 +41,7 @@ export interface CreateProjectDTO {
   name: string;
   slug?: string;
   location: string;
+  categoryId?: string;
   category: string;
   status?: string;
   description?: string;
@@ -75,12 +94,16 @@ export interface MasterDataNews {
   title: string;
   slug: string;
   excerpt: string;
+  coverImageUrl?: string | null;
+  category: {
+    id: number;
+    name: string;
+  };
   categoryName: string;
   authorName?: string | null;
   authorTitle?: string | null;
   status: string;
-  isFeatured: boolean;
-  viewsCount: number;
+  readingTimeMinutes: number;
   pageSlug?: string | null;
   pageName?: string | null;
   reusedPages: string[];
@@ -91,12 +114,13 @@ export interface CreateNewsDTO {
   title: string;
   slug?: string;
   excerpt: string;
+  categoryId?: number;
   categoryName?: string;
   authorName?: string;
   authorTitle?: string;
   coverImageUrl?: string;
   status?: "DRAFT" | "PUBLISHED" | "ARCHIVED";
-  isFeatured?: boolean;
+  readingTimeMinutes?: number;
   pageSlug?: string;
   pageName?: string;
   publishedAt?: string;
@@ -129,13 +153,6 @@ export interface CreateSpeakerDTO {
 
 export type UpdateSpeakerDTO = Partial<CreateSpeakerDTO>;
 
-export interface MasterDataAwardCategory {
-  id: string;
-  name: string;
-  slug: string;
-  description: string;
-}
-
 export interface MasterDataAward {
   id: string;
   year: number;
@@ -155,8 +172,6 @@ export interface CreateAwardDTO {
   isOpen?: boolean;
   categories?: Array<{
     name: string;
-    slug?: string;
-    description?: string;
   }>;
   reusedPages?: string[];
 }
@@ -165,10 +180,13 @@ export type UpdateAwardDTO = Partial<CreateAwardDTO>;
 
 export interface MasterDataOverview {
   projects: MasterDataProject[];
+  projectCategories?: MasterDataProjectCategory[];
   organizations: MasterDataOrganization[];
   news: MasterDataNews[];
+  categories?: MasterDataCategory[];
   speakers: MasterDataSpeaker[];
   awards: MasterDataAward[];
+  awardCategories?: MasterDataAwardCategory[];
   stats: {
     totalProjects: number;
     totalOrganizations: number;
@@ -180,6 +198,27 @@ export interface MasterDataOverview {
 
 export interface IMasterDataRepository {
   getOverview(): Promise<MasterDataOverview>;
+
+  // Project Categories (ProjectCategory: { id, name })
+  getProjectCategories(): Promise<MasterDataProjectCategory[]>;
+  getProjectCategoryById(id: string): Promise<MasterDataProjectCategory | null>;
+  createProjectCategory(dto: CreateCategoryDTO): Promise<MasterDataProjectCategory>;
+  updateProjectCategory(id: string, dto: UpdateCategoryDTO): Promise<MasterDataProjectCategory | null>;
+  deleteProjectCategory(id: string): Promise<boolean>;
+
+  // Categories (News Category: { id, name })
+  getCategories(): Promise<MasterDataCategory[]>;
+  getCategoryById(id: string): Promise<MasterDataCategory | null>;
+  createCategory(dto: CreateCategoryDTO): Promise<MasterDataCategory>;
+  updateCategory(id: string, dto: UpdateCategoryDTO): Promise<MasterDataCategory | null>;
+  deleteCategory(id: string): Promise<boolean>;
+
+  // Award Categories (AwardCategory: { id, name })
+  getAwardCategories(): Promise<MasterDataAwardCategory[]>;
+  getAwardCategoryById(id: string): Promise<MasterDataAwardCategory | null>;
+  createAwardCategory(dto: CreateCategoryDTO): Promise<MasterDataAwardCategory>;
+  updateAwardCategory(id: string, dto: UpdateCategoryDTO): Promise<MasterDataAwardCategory | null>;
+  deleteAwardCategory(id: string): Promise<boolean>;
 
   // Projects CRUD
   getProjects(): Promise<MasterDataProject[]>;
@@ -219,6 +258,27 @@ export interface IMasterDataRepository {
 
 export interface IMasterDataService {
   getMasterDataOverview(): Promise<MasterDataOverview>;
+
+  // Project Categories ({ id, name })
+  getProjectCategories(): Promise<MasterDataProjectCategory[]>;
+  getProjectCategoryById(id: string): Promise<MasterDataProjectCategory | null>;
+  createProjectCategory(dto: CreateCategoryDTO): Promise<MasterDataProjectCategory>;
+  updateProjectCategory(id: string, dto: UpdateCategoryDTO): Promise<MasterDataProjectCategory | null>;
+  deleteProjectCategory(id: string): Promise<boolean>;
+
+  // Categories ({ id, name })
+  getCategories(): Promise<MasterDataCategory[]>;
+  getCategoryById(id: string): Promise<MasterDataCategory | null>;
+  createCategory(dto: CreateCategoryDTO): Promise<MasterDataCategory>;
+  updateCategory(id: string, dto: UpdateCategoryDTO): Promise<MasterDataCategory | null>;
+  deleteCategory(id: string): Promise<boolean>;
+
+  // Award Categories ({ id, name })
+  getAwardCategories(): Promise<MasterDataAwardCategory[]>;
+  getAwardCategoryById(id: string): Promise<MasterDataAwardCategory | null>;
+  createAwardCategory(dto: CreateCategoryDTO): Promise<MasterDataAwardCategory>;
+  updateAwardCategory(id: string, dto: UpdateCategoryDTO): Promise<MasterDataAwardCategory | null>;
+  deleteAwardCategory(id: string): Promise<boolean>;
 
   // Projects
   getProjects(): Promise<MasterDataProject[]>;

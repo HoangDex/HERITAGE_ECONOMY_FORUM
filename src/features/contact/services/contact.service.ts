@@ -11,9 +11,11 @@ export class ContactService implements IContactService {
     return contactRepository.getContactPageData();
   }
 
-  async submitContact(
-    data: unknown
-  ): Promise<{ success: boolean; message: string; trackingCode?: string }> {
+  async submitContact(data: unknown): Promise<{
+    success: boolean;
+    message: string;
+    trackingCode?: string;
+  }> {
     const parsed = contactRequestSchema.safeParse(data);
     if (!parsed.success) {
       const err = parsed.error.issues[0]?.message || "Thông tin không hợp lệ";

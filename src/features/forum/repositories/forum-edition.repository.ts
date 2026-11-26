@@ -433,41 +433,44 @@ export class ForumEditionRepository implements IForumRepository {
     if (year === 2025) return HEF_2025_EDITION;
     if (year === 2026) {
       try {
-        const [page, masterSpeakers] = await Promise.all([
-          pageRepository.findBySlug("forum"),
-          masterDataRepository.getSpeakers(),
-        ]);
+        const page = await pageRepository.findBySlug("forum");
+        const props = page?.props || {};
+        const heroSec = props.hero || {};
+        const speakerIds = Array.isArray(props.speakers?.ids) ? props.speakers.ids : [];
 
-        if (page && page.sections && page.sections.length > 0) {
-          const heroSec = page.sections.find((s) => s.type === "FORUM_HERO" || s.type === "HERO");
-          const hProps = heroSec?.props as Record<string, unknown> | undefined;
+        const masterSpeakers =
+          speakerIds.length > 0
+            ? await masterDataRepository.getSpeakersByIds(speakerIds)
+            : await masterDataRepository.getSpeakers();
 
-          let speakers = HEF_2026_EDITION.speakers;
-          if (masterSpeakers.length > 0) {
-            speakers = masterSpeakers.map((sp) => ({
-              id: sp.id,
-              name: sp.name,
-              degree: sp.degree || undefined,
-              title: sp.title,
-              organization: sp.organization,
-              avatarUrl: sp.avatarUrl,
-              bio: sp.bio || "",
-              sessionTitle: "Phiên Chuyên Đề",
-              topicSummary: "Kinh tế Di sản và Phát triển bền vững",
-              slug: sp.slug,
-            }));
-          }
-
-          return {
-            ...HEF_2026_EDITION,
-            title: (hProps?.title as string) || HEF_2026_EDITION.title,
-            theme: (hProps?.theme as string) || HEF_2026_EDITION.theme,
-            datesText: (hProps?.datesText as string) || HEF_2026_EDITION.datesText,
-            venueName: (hProps?.venueName as string) || HEF_2026_EDITION.venueName,
-            venueAddress: (hProps?.venueAddress as string) || HEF_2026_EDITION.venueAddress,
-            speakers,
-          };
+        let speakers = HEF_2026_EDITION.speakers;
+        if (masterSpeakers.length > 0) {
+          speakers = masterSpeakers.map((sp) => ({
+            id: sp.id,
+            name: sp.name,
+            degree: sp.degree || undefined,
+            title: sp.title,
+            organization: sp.organization,
+            avatarUrl: sp.avatarUrl,
+            bio: sp.bio || "",
+            sessionTitle: "Phiên Chuyên Đề",
+            topicSummary: "Kinh tế Di sản và Phát triển bền vững",
+            slug: sp.slug,
+          }));
         }
+
+        const heroStats = Array.isArray(heroSec.stats) ? heroSec.stats : [];
+
+        return {
+          ...HEF_2026_EDITION,
+          title: heroSec.title || HEF_2026_EDITION.title,
+          theme: heroSec.quote || heroSec.subtitle || HEF_2026_EDITION.theme,
+          datesText: heroStats[0]?.value || HEF_2026_EDITION.datesText,
+          venueName: heroStats[1]?.value || HEF_2026_EDITION.venueName,
+          venueAddress: heroStats[2]?.value || HEF_2026_EDITION.venueAddress,
+          scaleDescription: heroStats[3]?.value || HEF_2026_EDITION.scaleDescription,
+          speakers,
+        };
       } catch {
         // Fallback
       }

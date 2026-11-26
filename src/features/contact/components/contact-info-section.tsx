@@ -3,19 +3,20 @@ import type { ContactInfo, ContactFaq } from "../types/contact.types";
 
 interface ContactInfoSectionProps {
   info: ContactInfo;
+  faqTitle?: string;
   faqs: ContactFaq[];
 }
 
-export function ContactInfoSection({ info, faqs }: ContactInfoSectionProps) {
+export function ContactInfoSection({ info, faqTitle, faqs }: ContactInfoSectionProps) {
   return (
     <div className="space-y-8">
-      {/* Thông tin thường trực */}
+      {/* Thông tin thường trực (từ props.info) */}
       <div className="p-6 sm:p-8 bg-white rounded-3xl border border-[#dfd7c8] shadow-xs space-y-5">
         <div className="space-y-1">
           <span className="text-xs font-semibold uppercase tracking-wider text-[#0D4838] block">
             Thông tin liên hệ
           </span>
-          <h3 className="text-xl font-bold text-[#292929] leading-snug">{info.secretariatTitle}</h3>
+          <h3 className="text-xl font-bold text-[#292929] leading-snug">{info.title}</h3>
         </div>
 
         <div className="space-y-3.5 text-xs sm:text-sm text-[#292929]">
@@ -53,11 +54,11 @@ export function ContactInfoSection({ info, faqs }: ContactInfoSectionProps) {
         </div>
       </div>
 
-      {/* Câu hỏi thường gặp FAQ */}
+      {/* Câu hỏi thường gặp FAQ (từ props.faq) */}
       <div className="p-6 sm:p-8 bg-[#F5EFE5] rounded-3xl border border-[#dfd7c8] space-y-4">
         <div className="flex items-center gap-2 text-[#0D4838] font-bold text-sm uppercase tracking-wider">
           <HelpCircle className="w-4 h-4" />
-          <span>Giải Đáp Thường Gặp (FAQ)</span>
+          <span>{faqTitle || "Giải Đáp Thường Gặp (FAQ)"}</span>
         </div>
 
         <div className="space-y-3 divide-y divide-[#dfd7c8]/60">

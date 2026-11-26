@@ -1,509 +1,312 @@
 /**
- * DỮ LIỆU SECTIONS MẶC ĐỊNH CHO TRANG CHỦ (HOME - 8 SECTIONS)
- * Tách biệt thành file riêng để đảm bảo tính module và rõ ràng nghiệp vụ.
+ * DỮ LIỆU PROPS MẶC ĐỊNH CHO TRANG CHỦ (HOME - 7 SECTIONS)
+ * Chia thành 7 section có tên ngắn gọn: hero, pillars, event, showcase, news, partners, cta.
+ * Các mục chọn lọc từ schema khác (ForumEdition, Award, HeritageProject, News, Organization)
+ * được lưu dưới dạng mảng `ids: string[]` để khi hiển thị sẽ truy vấn theo các ID đó.
  */
 
-import type { AnyHomeSectionDTO } from "../../schemas/sections/home-sections.schema";
+import {
+  pagePropsToSections,
+  type PagePropsMap,
+  type PageSection,
+} from "../../types/page.types";
 
-export const DEFAULT_HOME_SECTIONS: AnyHomeSectionDTO[] = [
-  {
-    id: "sec_home_hero",
-    type: "HOME_HERO",
-    title: "Di sản kiến tạo giá trị – Phát triển hướng tương lai",
-    subtitle: "HERITAGE ECONOMY FORUM",
-    order: 1,
-    isVisible: true,
-    props: {
-      title: "HERITAGE ECONOMY FORUM",
-      vietnameseTitle: "DIỄN ĐÀN KINH TẾ DI SẢN",
-      slogan: "Di sản kiến tạo giá trị – Phát triển hướng tương lai",
-      description:
-        "Diễn đàn kết nối tri thức, nguồn lực và sáng kiến để phát huy giá trị di sản, thúc đẩy kinh tế sáng tạo và phát triển bền vững.",
-      primaryCta: {
-        label: "Khám phá diễn đàn",
-        href: "/dien-dan",
+export const DEFAULT_HOME_PROPS: PagePropsMap = {
+  // 1. Khối Hero mở đầu
+  hero: {
+    badge: "NỀN TẢNG ĐỐI THOẠI & KẾT NỐI QUỐC GIA",
+    subBadge: "HERITAGE ECONOMY FORUM",
+    title: "DIỄN ĐÀN KINH TẾ DI SẢN",
+    quote: "Di sản kiến tạo giá trị – Phát triển hướng tương lai",
+    description:
+      "Diễn đàn kết nối tri thức, nguồn lực và sáng kiến để phát huy giá trị di sản, thúc đẩy kinh tế sáng tạo và phát triển bền vững.",
+    imageUrl:
+      "https://images.unsplash.com/photo-1528127269322-539801943592?auto=format&fit=crop&w=1200&h=750&q=85",
+    imageAlt: "Quần thể di sản văn hóa Việt Nam - Di sản kiến tạo giá trị phát triển bền vững",
+    videoUrl:
+      "https://upload.wikimedia.org/wikipedia/commons/transcoded/b/be/Ha_Long_Bay%2C_Vietnam_-_Dec_2024.webm/Ha_Long_Bay%2C_Vietnam_-_Dec_2024.webm.1080p.vp9.webm",
+    videoTitle: "Video nền: Non nước Di sản",
+    actions: [
+      { label: "Khám phá diễn đàn", href: "/forum", icon: "Compass" },
+      { label: "Đăng ký tham dự", href: "/contact?loai=tham-du#contact-form", icon: "Calendar" },
+    ],
+    stats: [
+      { value: "500+", label: "Đại biểu dự kiến" },
+      { value: "04", label: "Phiên chuyên đề" },
+      { value: "30+", label: "Mô hình di sản" },
+    ],
+    cards: [
+      {
+        badge: "ĐỊA ĐIỂM CHÍNH THỨC",
+        subBadge: "Kỳ 2026",
+        title: "Hoàng thành Thăng Long, Hà Nội",
+        imageUrl:
+          "https://images.unsplash.com/photo-1528127269322-539801943592?auto=format&fit=crop&w=1200&h=750&q=85",
+        imageAlt: "Hoàng thành Thăng Long, Hà Nội",
       },
-      secondaryCta: {
-        label: "Đăng ký tham dự",
-        href: "/lien-he?loai=tham-du#contact-form",
-      },
-      imageUrl:
-        "https://images.unsplash.com/photo-1528127269322-539801943592?auto=format&fit=crop&w=1200&h=750&q=85",
-      imageAlt: "Quần thể di sản văn hóa Việt Nam - Di sản kiến tạo giá trị phát triển bền vững",
-      badgeText: "NỀN TẢNG ĐỐI THOẠI & KẾT NỐI QUỐC GIA",
-      videoUrl:
-        "https://upload.wikimedia.org/wikipedia/commons/transcoded/b/be/Ha_Long_Bay%2C_Vietnam_-_Dec_2024.webm/Ha_Long_Bay%2C_Vietnam_-_Dec_2024.webm.1080p.vp9.webm",
-      videoTitle: "Video nền: Non nước Di sản",
-      locationBadge: "Hoàng thành Thăng Long, Hà Nội",
-      editionBadge: "Kỳ 2026",
-      metrics: [
-        { value: 500, suffix: "+", label: "Đại biểu dự kiến" },
-        { value: 4, prefix: "0", label: "Phiên chuyên đề" },
-        { value: 30, suffix: "+", label: "Mô hình di sản" },
-      ],
-    },
+    ],
   },
-  {
-    id: "sec_home_pillars",
-    type: "HOME_INTRO_PILLARS",
-    title: "05 Trụ Cột Hoạt Động & Giới Thiệu Nhanh",
-    subtitle: "Định hướng chiến lược dài hạn của Diễn đàn",
-    order: 2,
-    isVisible: true,
-    props: {
-      quickIntro: {
-        content:
-          "Diễn đàn Kinh tế Di sản là không gian đối thoại liên ngành giữa nhà khoa học, nhà quản lý, doanh nghiệp và cộng đồng. Thông qua nghiên cứu, trao đổi chính sách, kết nối hợp tác và triển khai mô hình thực tiễn, Diễn đàn góp phần chuyển hóa nguồn lực di sản thành giá trị kinh tế, văn hóa và xã hội có trách nhiệm.",
-        subContent:
-          "Lấy di sản làm nguồn lực sáng tạo, lấy cộng đồng bản địa làm chủ thể bảo tồn và hưởng lợi trực tiếp từ chuỗi giá trị tăng trưởng.",
+
+  // 2. Khối Định vị & Trụ cột chiến lược
+  pillars: {
+    badge: "ĐỊNH VỊ DIỄN ĐÀN",
+    title: "Không Gian Đối Thoại & Chuyển Hóa Nguồn Lực Di Sản",
+    description:
+      "Diễn đàn Kinh tế Di sản là không gian đối thoại liên ngành giữa nhà khoa học, nhà quản lý, doanh nghiệp và cộng đồng. Thông qua nghiên cứu, trao đổi chính sách, kết nối hợp tác và triển khai mô hình thực tiễn, Diễn đàn góp phần chuyển hóa nguồn lực di sản thành giá trị kinh tế, văn hóa và xã hội có trách nhiệm.",
+    quote:
+      "Lấy di sản làm nguồn lực sáng tạo, lấy cộng đồng bản địa làm chủ thể bảo tồn và hưởng lợi trực tiếp từ chuỗi giá trị tăng trưởng.",
+    actions: [{ label: "Tìm hiểu tôn chỉ & cơ cấu tổ chức", href: "/about" }],
+    subBadge: "NỀN TẢNG HÀNH ĐỘNG",
+    subtitle: "05 Trụ Cột Chiến Lược",
+    cards: [
+      {
+        badge: "TRỤ CỘT 01",
+        icon: "BookOpen",
+        title: "Nghiên cứu",
+        subtitle: "Khảo sát & Dữ liệu",
+        description:
+          "Khảo sát, lượng hóa giá trị kinh tế của di sản, xây dựng cơ sở lý luận và chỉ số phát triển bền vững cho các địa phương.",
       },
-      pillars: [
-        {
-          id: "pillar_research",
-          orderNumber: "01",
-          title: "Nghiên cứu",
-          subtitle: "Khảo sát & Dữ liệu",
-          description:
-            "Khảo sát, lượng hóa giá trị kinh tế của di sản, xây dựng cơ sở lý luận và chỉ số phát triển bền vững cho các địa phương.",
-          iconName: "BookOpen",
-        },
-        {
-          id: "pillar_dialogue",
-          orderNumber: "02",
-          title: "Đối thoại",
-          subtitle: "Chính sách & Bàn tròn",
-          description:
-            "Tạo lập bàn tròn đối thoại cởi mở giữa cơ quan quản lý, viện nghiên cứu, doanh nghiệp và cộng đồng để tháo gỡ điểm nghẽn thể chế.",
-          iconName: "MessageSquare",
-        },
-        {
-          id: "pillar_connect",
-          orderNumber: "03",
-          title: "Kết nối",
-          subtitle: "Mạng lưới & Nguồn lực",
-          description:
-            "Liên kết chuỗi giá trị công – tư (PPP), kết nối chuyên gia di sản quốc tế với các dự án thực địa và quỹ bảo trợ tài chính.",
-          iconName: "Network",
-        },
-        {
-          id: "pillar_recognize",
-          orderNumber: "04",
-          title: "Ghi nhận",
-          subtitle: "Giải thưởng & Tôn vinh",
-          description:
-            "Tôn vinh các mô hình xuất sắc qua Giải thưởng Phát triển Bền vững Chủ động, lan tỏa chuẩn mực thực hành trách nhiệm.",
-          iconName: "Award",
-        },
-        {
-          id: "pillar_develop",
-          orderNumber: "05",
-          title: "Phát triển",
-          subtitle: "Ươm tạo & Sinh kế",
-          description:
-            "Đồng hành ươm tạo các sáng kiến di sản, chuyển giao giải pháp chuyển đổi số và phát triển sinh kế bao trùm cho người dân.",
-          iconName: "TrendingUp",
-        },
-      ],
-    },
+      {
+        badge: "TRỤ CỘT 02",
+        icon: "MessageSquare",
+        title: "Đối thoại",
+        subtitle: "Chính sách & Bàn tròn",
+        description:
+          "Tạo lập bàn tròn đối thoại cởi mở giữa cơ quan quản lý, viện nghiên cứu, doanh nghiệp và cộng đồng để tháo gỡ điểm nghẽn thể chế.",
+      },
+      {
+        badge: "TRỤ CỘT 03",
+        icon: "Network",
+        title: "Kết nối",
+        subtitle: "Mạng lưới & Nguồn lực",
+        description:
+          "Liên kết chuỗi giá trị công – tư (PPP), kết nối chuyên gia di sản quốc tế với các dự án thực địa và quỹ bảo trợ tài chính.",
+      },
+      {
+        badge: "TRỤ CỘT 04",
+        icon: "Award",
+        title: "Ghi nhận",
+        subtitle: "Giải thưởng & Tôn vinh",
+        description:
+          "Tôn vinh các mô hình xuất sắc qua Giải thưởng Phát triển Bền vững Chủ động, lan tỏa chuẩn mực thực hành trách nhiệm.",
+      },
+      {
+        badge: "TRỤ CỘT 05",
+        icon: "TrendingUp",
+        title: "Phát triển",
+        subtitle: "Ươm tạo & Sinh kế",
+        description:
+          "Đồng hành ươm tạo các sáng kiến di sản, chuyển giao giải pháp chuyển đổi số và phát triển sinh kế bao trùm cho người dân.",
+      },
+    ],
   },
-  {
-    id: "sec_home_event",
-    type: "HOME_EVENT_HIGHLIGHT",
+
+  // 3. Khối Kỳ Diễn Đàn Nổi Bật (tham chiếu ForumEdition qua ids)
+  event: {
+    badge: "KỲ DIỄN ĐÀN THƯỜNG NIÊN 2026",
     title: "Kỳ Diễn Đàn Nổi Bật 2026",
     subtitle: "Không gian hội tụ các nhà khoa học, nhà quản lý và doanh nghiệp",
-    order: 3,
-    isVisible: true,
-    props: {
-      id: "event_hef_2026",
-      edition: "Kỳ Diễn Đàn Thường Niên 2026",
-      statusBadge: "ĐANG MỞ ĐĂNG KÝ ĐẠI BIỂU",
-      title: "Kinh Tế Di Sản Trong Kỷ Nguyên Số: Thể Chế, Nguồn Lực & Mô Hình Đột Phá",
-      theme:
-        "Tập trung nhận diện giá trị kinh tế của di sản kiến trúc đô thị, công nghiệp văn hóa và phương thức huy động vốn tư nhân vào bảo tồn thích ứng.",
-      dates: "15 – 17 tháng 11 năm 2026",
-      location: "Trung tâm Hội nghị Quốc tế & Hoàng thành Thăng Long, Thủ đô Hà Nội",
-      description:
-        "Quy tụ hơn 500 đại biểu là lãnh đạo các bộ ban ngành, đại sứ quán, tổ chức quốc tế (UNESCO, ICOMOS), chuyên gia kinh tế, các nhà nghiên cứu và lãnh đạo hiệp hội doanh nghiệp toàn quốc.",
-      bannerUrl:
-        "https://images.unsplash.com/photo-1541432901042-2d8bd64b4a9b?auto=format&fit=crop&w=1200&h=650&q=80",
-      attendeesExpected: 500,
-      registrationDeadline: "10/11/2026",
-      registrationUrl: "/contact?loai=tham-du#contact-form",
-      sessions: [
-        {
-          id: "ses_plenary",
-          order: 1,
-          time: "08:00 - 11:30 | 15/11/2026",
-          title: "Phiên Toàn Thể: Định Vị Kinh Tế Di Sản Trong Chiến Lược Quốc Gia",
-          description:
-            "Công bố báo cáo thường niên về đóng góp kinh tế của di sản văn hóa vào GDP và đề xuất khung chính sách đặc thù.",
-          room: "Đại sảnh Hội nghị Thăng Long",
-          chairperson: "GS.TS. Trần Quốc Vượng",
-          imageUrl:
-            "https://images.unsplash.com/photo-1541432901042-2d8bd64b4a9b?auto=format&fit=crop&w=1200&q=80",
-        },
-        {
-          id: "ses_topic_1",
-          order: 2,
-          time: "13:30 - 17:00 | 15/11/2026",
-          title: "Chuyên Đề 1: Đối Tác Công Tư (PPP) Trong Bảo Tồn Thích Ứng",
-          description:
-            "Kinh nghiệm quốc tế và giải pháp tháo gỡ cơ chế đầu tư tư nhân vào hạ tầng di tích và công nghiệp văn hóa sáng tạo.",
-          room: "Phòng Hội thảo Quốc tế A",
-          chairperson: "PGS.TS. Đặng Hoàng Lan",
-          imageUrl:
-            "https://images.unsplash.com/photo-1528127269322-539801943592?auto=format&fit=crop&w=1200&q=80",
-        },
-        {
-          id: "ses_topic_2",
-          order: 3,
-          time: "08:30 - 12:00 | 16/11/2026",
-          title: "Chuyên Đề 2: Chuyển Đổi Số & Số Hóa 3D/VR Di Sản",
-          description:
-            "Ứng dụng công nghệ bản sao số (Digital Twin), trí tuệ nhân tạo và bảo tàng ảo trong nâng cao trải nghiệm giáo dục và du lịch.",
-          room: "Phòng Hội thảo B",
-          chairperson: "KTS. Lê Hoàng Phương",
-          imageUrl:
-            "https://images.unsplash.com/photo-1508739773434-c26b3d09e071?auto=format&fit=crop&w=1200&q=80",
-        },
-        {
-          id: "ses_topic_3",
-          order: 4,
-          time: "14:00 - 17:30 | 16/11/2026",
-          title: "Chuyên Đề 3: Sinh Kế Cộng Đồng & Kinh Tế Làng Nghề Truyền Thống",
-          description:
-            "Xây dựng chuỗi giá trị bền vững cho nghệ nhân, doanh nghiệp bản địa và bảo vệ bản quyền tri thức bản địa.",
-          room: "Phòng Hội thảo C",
-          chairperson: "TS. Nguyễn Thị Bích Liên",
-          imageUrl:
-            "https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=1200&q=80",
-        },
-      ],
-    },
-  },
-  {
-    id: "sec_home_awards",
-    type: "HOME_AWARDS_SHOWCASE",
-    title: "Giải Thưởng Phát Triển Bền Vững Chủ Động",
-    subtitle: "Kiến tạo giá trị – Phụng sự vị nhân sinh",
-    order: 4,
-    isVisible: true,
-    props: {
-      badge: "GIẢI THƯỞNG QUỐC GIA 2026",
-      awardName: "Giải Thưởng Phát Triển Bền Vững Chủ Động",
-      subtitle: "Kiến tạo giá trị – Phụng sự vị nhân sinh",
-      description:
-        "Hệ thống giải thưởng tôn vinh các tổ chức, doanh nghiệp, cộng đồng và cá nhân có sáng kiến xuất sắc trong bảo tồn di sản gắn liền phát triển kinh tế tuần hoàn, tạo sinh kế công bằng và bảo vệ môi trường.",
-      criteria: [
-        "Tính xác thực, tôn trọng nguyên bản và chiều sâu lịch sử văn hóa",
-        "Hiệu quả kinh tế tuần hoàn và năng lực tự chủ tài chính cho công tác duy tu",
-        "Mức độ tạo sinh kế và hưởng lợi trực tiếp của cộng đồng người dân sở tại",
-        "Ứng dụng sáng tạo chuyển đổi số, vật liệu thân thiện và giải pháp xanh",
-      ],
-      nominationDeadline: "15/10/2026",
-      regulationsUrl: "/giai-thuong",
-      nominationUrl: "/lien-he?loai=giai-thuong#contact-form",
-      bannerUrl:
-        "https://images.unsplash.com/photo-1579783902614-a3fb3927b675?auto=format&fit=crop&w=1200&h=650&q=80",
-    },
-  },
-  {
-    id: "sec_home_projects",
-    type: "HOME_FEATURED_PROJECTS",
-    title: "Mô Hình & Sáng Kiến Điển Hình",
-    subtitle: "Các dự án cân bằng giữa giữ gìn bản sắc và tạo sinh kế cộng đồng",
-    order: 5,
-    isVisible: true,
-    props: {
-      title: "Mô Hình & Sáng Kiến Điển Hình",
-      subtitle: "Các dự án cân bằng giữa giữ gìn bản sắc và tạo sinh kế cộng đồng",
-      projects: [
-        {
-          id: "proj_pho_co_hoi_an",
-          name: "Bảo Tồn Thích Ứng Kiến Trúc Gỗ Phố Cổ Hội An",
-          slug: "bao-ton-thich-ung-kien-truc-go-pho-co-hoi-an",
-          location: "Thành phố Hội An, Tỉnh Quảng Nam",
-          category: "Di sản Kiến trúc Đô thị",
-          description:
-            "Mô hình đối tác công tư kết hợp cộng đồng trong việc trùng tu nhà cổ, khai thác du lịch trải nghiệm cao cấp và chia sẻ lợi ích với gia chủ.",
-          thumbnailUrl:
-            "https://images.unsplash.com/photo-1559592413-7cec4d0cae2b?auto=format&fit=crop&w=800&h=520&q=80",
-          annualRevenue: "48,5 tỷ VNĐ",
-          jobsCreated: 320,
-          conservationShare: "15% doanh thu vé",
-        },
-        {
-          id: "proj_trang_an_ninh_binh",
-          name: "Mô Hình Sinh Kế Cộng Đồng Quần Thể Tràng An",
-          slug: "mo-hinh-sinh-ke-cong-dong-quan-the-trang-an",
-          location: "Tỉnh Ninh Bình",
-          category: "Di sản Kép (Thiên nhiên & Văn hóa)",
-          description:
-            "Chuyển đổi nghề nghiệp cho hơn 2.000 nông dân thành người chèo đò di sản kiêm đại sứ văn hóa, tạo chuỗi giá trị dịch vụ sinh thái bền vững.",
-          thumbnailUrl:
-            "https://images.unsplash.com/photo-1528127269322-539801943592?auto=format&fit=crop&w=800&h=520&q=80",
-          annualRevenue: "180 tỷ VNĐ",
-          jobsCreated: 2400,
-          conservationShare: "Tài trợ 100% tái tạo cảnh quan",
-        },
-        {
-          id: "proj_lang_nghe_bat_trang",
-          name: "Số Hóa & Chuỗi Cung Ứng Làng Gốm Bát Tràng",
-          slug: "so-hoa-va-chuoi-cung-ung-lang-gom-bat-trang",
-          location: "Gia Lâm, Hà Nội",
-          category: "Di sản Làng nghề Thủ công",
-          description:
-            "Ứng dụng thương mại điện tử xuyên biên giới, bảo tàng số tương tác và chuẩn hóa quy trình xuất khẩu cho các nghệ nhân gốm truyền thống.",
-          thumbnailUrl:
-            "https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?auto=format&fit=crop&w=800&h=520&q=80",
-          annualRevenue: "92 tỷ VNĐ",
-          jobsCreated: 850,
-          conservationShare: "Thành lập Quỹ ươm mầm nghệ nhân",
-        },
-      ],
-      viewAllLink: "/du-an",
-    },
-  },
-  {
-    id: "sec_home_news",
-    type: "HOME_NEWS_FEED",
-    title: "Tin Tức & Góc Chuyên Gia",
-    subtitle: "Thông tin hoạt động, nghiên cứu và quan điểm chính sách",
-    order: 6,
-    isVisible: true,
-    props: {
-      title: "Tin Tức & Góc Chuyên Gia",
-      subtitle: "Thông tin hoạt động, nghiên cứu và quan điểm chính sách",
-      featuredNews: {
-        id: "news_1",
-        title:
-          "Khung Thể Chế Đối Tác Công Tư (PPP) Trong Bảo Tồn Di Sản: Cơ Hội Cho Doanh Nghiệp Trách Nhiệm",
-        slug: "khung-the-che-doi-tac-cong-tu-ppp-trong-bao-ton-di-san",
-        category: "Chính Sách & Thể Chế",
-        publishedAt: "02/11/2026",
-        author: "GS.TS. Trần Quốc Vượng",
-        summary:
-          "Bảo tồn di sản không thể chỉ dựa vào ngân sách nhà nước hạn hẹp. Cần một hành lang pháp lý minh bạch cho các hợp đồng PPP để doanh nghiệp yên tâm đầu tư dài hạn.",
-        thumbnailUrl:
-          "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=800&h=500&q=80",
-        isFeatured: true,
+    subBadge: "ĐANG MỞ ĐĂNG KÝ ĐẠI BIỂU",
+    ids: ["hef-edition-2026"],
+    groups: [
+      {
+        badge: "CHỦ ĐỀ NGHỊ SỰ TOÀN THỂ",
+        title: "Kinh Tế Di Sản Trong Kỷ Nguyên Số: Thể Chế, Nguồn Lực & Mô Hình Đột Phá",
+        description:
+          "Quy tụ hơn 500 đại biểu là lãnh đạo các bộ ban ngành, đại sứ quán, tổ chức quốc tế (UNESCO, ICOMOS), chuyên gia kinh tế, các nhà nghiên cứu và lãnh đạo hiệp hội doanh nghiệp toàn quốc.",
+        imageUrl:
+          "https://images.unsplash.com/photo-1541432901042-2d8bd64b4a9b?auto=format&fit=crop&w=1200&h=650&q=80",
+        subBadge: "KỲ DIỄN ĐÀN THƯỜNG NIÊN 2026",
+        quote:
+          "Tập trung nhận diện giá trị kinh tế của di sản kiến trúc đô thị, công nghiệp văn hóa và phương thức huy động vốn tư nhân vào bảo tồn thích ứng.",
+        stats: [
+          { label: "THỜI GIAN DIỄN RA", value: "15 – 17 tháng 11 năm 2026", icon: "Calendar" },
+          {
+            label: "ĐỊA ĐIỂM TỔ CHỨC",
+            value: "Trung tâm Hội nghị Quốc tế & Hoàng thành Thăng Long, Thủ đô Hà Nội",
+            icon: "MapPin",
+          },
+          { label: "QUY MÔ ĐẠI BIỂU", value: "500+ Đại biểu", icon: "Users" },
+          { label: "HẠN CHÓT ĐĂNG KÝ", value: "Trước ngày 10/11/2026", icon: "Clock" },
+        ],
       },
-      latestNews: [
-        {
-          id: "news_2",
-          title: "Công Bố Báo Cáo Kinh Tế Di Sản Việt Nam 2026: Đóng Góp 3,8% GDP Toàn Quốc",
-          slug: "cong-bo-bao-cao-kinh-te-di-san-viet-nam-2026",
-          category: "Nghiên Cứu & Dữ Liệu",
-          publishedAt: "30/10/2026",
-          author: "Ban Nội dung HEF",
-          summary:
-            "Lần đầu tiên một bộ chỉ số toàn diện lượng hóa doanh thu từ dịch vụ phụ trợ di sản, bất động sản văn hóa và sản phẩm sáng tạo được công bố.",
-          thumbnailUrl:
-            "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=600&h=400&q=80",
-        },
-        {
-          id: "news_3",
-          title: "Kinh Nghiệm Phục Hồi Đô Thị Di Sản Từ Kyoto: Bài Học Thực Tiễn Cho Phố Cổ Hà Nội",
-          slug: "kinh-nghiem-phuc-hoi-do-thi-di-san-kyoto-va-ha-noi",
-          category: "Kinh Nghiệm Quốc Tế",
-          publishedAt: "28/10/2026",
-          author: "KTS. Lê Hoàng Phương",
-          summary:
-            "Phân tích cơ chế ưu đãi thuế chuyển nhượng quyền phát triển (TDR) giúp duy trì những dãy nhà cổ mà không kìm hãm sự năng động của thị trường.",
-          thumbnailUrl:
-            "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&w=600&h=400&q=80",
-        },
-        {
-          id: "news_4",
-          title: "Phát Động Giải Thưởng Phát Triển Bền Vững Chủ Động: Nhận Hồ Sơ Đến Hết 15/10",
-          slug: "phat-dong-giai-thuong-phat-trien-ben-vung-chu-dong-2026",
-          category: "Giải Thưởng",
-          publishedAt: "25/10/2026",
-          author: "Hội đồng Bình chọn",
-          summary:
-            "Mở cổng tiếp nhận hồ sơ trực tuyến cho 4 hạng mục: Di sản Kiến trúc, Di sản Phi vật thể, Làng nghề và Giải pháp Chuyển đổi số.",
-          thumbnailUrl:
-            "https://images.unsplash.com/photo-1531545514256-b1400bc00f31?auto=format&fit=crop&w=600&h=400&q=80",
-        },
-      ],
-      viewAllLink: "/news",
-    },
+      {
+        title: "Chương Trình Các Phiên Nghị Sự",
+        subtitle: "Lịch trình đối thoại khoa học, thảo luận chính sách và danh sách diễn giả tham luận chính thức.",
+        badge: "04 Phiên Chuyên Đề Chính Thức",
+        cards: [
+          {
+            badge: "Phiên 1",
+            subtitle: "08:00 - 11:30 | 15/11/2026",
+            subBadge: "Đại sảnh Hội nghị Thăng Long",
+            title: "Phiên Toàn Thể: Định Vị Kinh Tế Di Sản Trong Chiến Lược Quốc Gia",
+            description:
+              "Công bố báo cáo thường niên về đóng góp kinh tế của di sản văn hóa vào GDP và đề xuất khung chính sách đặc thù.",
+            note: "Chủ trì phiên: GS.TS. Trần Quốc Vượng",
+          },
+          {
+            badge: "Phiên 2",
+            subtitle: "13:30 - 17:00 | 15/11/2026",
+            subBadge: "Phòng Hội thảo Quốc tế A",
+            title: "Chuyên Đề 1: Đối Tác Công Tư (PPP) Trong Bảo Tồn Thích Ứng",
+            description:
+              "Kinh nghiệm quốc tế và giải pháp tháo gỡ cơ chế đầu tư tư nhân vào hạ tầng di tích và công nghiệp văn hóa sáng tạo.",
+            note: "Chủ trì phiên: PGS.TS. Đặng Hoàng Lan",
+          },
+          {
+            badge: "Phiên 3",
+            subtitle: "08:30 - 12:00 | 16/11/2026",
+            subBadge: "Phòng Hội thảo B",
+            title: "Chuyên Đề 2: Chuyển Đổi Số & Số Hóa 3D/VR Di Sản",
+            description:
+              "Ứng dụng công nghệ bản sao số (Digital Twin), trí tuệ nhân tạo và bảo tàng ảo trong nâng cao trải nghiệm giáo dục và du lịch.",
+            note: "Chủ trì phiên: KTS. Lê Hoàng Phương",
+          },
+          {
+            badge: "Phiên 4",
+            subtitle: "14:00 - 17:30 | 16/11/2026",
+            subBadge: "Phòng Hội thảo C",
+            title: "Chuyên Đề 3: Sinh Kế Cộng Đồng & Kinh Tế Làng Nghề Truyền Thống",
+            description:
+              "Xây dựng chuỗi giá trị bền vững cho nghệ nhân, doanh nghiệp bản địa và bảo vệ bản quyền tri thức bản địa.",
+            note: "Chủ trì phiên: TS. Nguyễn Thị Bích Liên",
+          },
+        ],
+      },
+    ],
+    note: "Miễn phí tham dự phiên toàn thể cho các nhà khoa học, đại diện hiệp hội & sinh viên",
+    actions: [
+      { label: "Đăng ký tham dự đại biểu", href: "/contact?loai=tham-du#contact-form" },
+      { label: "Xem kỷ yếu chi tiết", href: "/forum" },
+    ],
   },
-  {
-    id: "sec_home_partners",
-    type: "HOME_PARTNERS_SLIDER",
-    title: "Mạng Lưới Đối Tác Đồng Hành",
-    subtitle: "Đơn vị Chỉ đạo, Chủ trì, Tổ chức và Đối tác Chiến lược",
-    order: 7,
-    isVisible: true,
-    props: {
-      title: "Mạng Lưới Đối Tác Đồng Hành",
-      subtitle: "Đơn vị Chỉ đạo, Chủ trì, Tổ chức và Đối tác Chiến lược",
-      partners: [
-        {
-          id: "p_1",
-          name: "Bộ Văn hóa, Thể thao và Du lịch",
-          shortName: "BVHTTDL",
-          category: "STEERING",
-          categoryLabel: "Cơ quan Chỉ đạo",
-          logoUrl: "/images/partners/bvhttdl.png",
-          websiteUrl: "https://bvhttdl.gov.vn",
-          order: 1,
-        },
-        {
-          id: "p_2",
-          name: "Ủy ban Quốc gia UNESCO Việt Nam",
-          shortName: "UNESCO VN",
-          category: "STEERING",
-          categoryLabel: "Cơ quan Đồng hành Quốc tế",
-          logoUrl: "/images/partners/unesco.png",
-          websiteUrl: "https://unesco.org.vn",
-          order: 2,
-        },
-        {
-          id: "p_3",
-          name: "Hội Di sản Văn hóa Việt Nam",
-          shortName: "VCHA",
-          category: "HOSTING",
-          categoryLabel: "Cơ quan Chủ trì Học thuật",
-          logoUrl: "/images/partners/vcha.png",
-          websiteUrl: "https://hoidisan.vn",
-          order: 3,
-        },
-        {
-          id: "p_4",
-          name: "Ủy ban Nhân dân Thành phố Hà Nội",
-          shortName: "UBND TP Hà Nội",
-          category: "HOSTING",
-          categoryLabel: "Cơ quan Đồng chủ trì & Đăng cai",
-          logoUrl: "/images/partners/hanoi.png",
-          websiteUrl: "https://hanoi.gov.vn",
-          order: 4,
-        },
-        {
-          id: "p_5",
-          name: "Đại học Quốc gia Hà Nội",
-          shortName: "VNU",
-          category: "HOSTING",
-          categoryLabel: "Đối tác Nghiên cứu & Đào tạo",
-          logoUrl: "/images/partners/vnu.png",
-          websiteUrl: "https://vnu.edu.vn",
-          order: 5,
-        },
-        {
-          id: "p_6",
-          name: "Viện Nghiên cứu Kinh tế Di sản",
-          shortName: "HEI",
-          category: "ORGANIZING",
-          categoryLabel: "Đơn vị Thường trực Tổ chức",
-          logoUrl: "/images/partners/hei.png",
-          websiteUrl: "https://hef.vn",
-          order: 6,
-        },
-        {
-          id: "p_7",
-          name: "Trung tâm Bảo tồn Di sản Thăng Long – Hà Nội",
-          shortName: "TL-HN",
-          category: "ORGANIZING",
-          categoryLabel: "Đơn vị Phối hợp Tổ chức",
-          logoUrl: "/images/partners/thanglong.png",
-          websiteUrl: "https://hoangthanhthanglong.vn",
-          order: 7,
-        },
-        {
-          id: "p_8",
-          name: "Trung tâm Bảo tồn Di tích Cố đô Huế",
-          shortName: "HMCC",
-          category: "ORGANIZING",
-          categoryLabel: "Đơn vị Phối hợp Thực địa",
-          logoUrl: "/images/partners/hue.png",
-          websiteUrl: "https://hueworldheritage.org.vn",
-          order: 8,
-        },
-        {
-          id: "p_9",
-          name: "Tập đoàn Sovico",
-          shortName: "Sovico Group",
-          category: "STRATEGIC",
-          categoryLabel: "Nhà Tài trợ Chiến lược",
-          logoUrl: "/images/partners/sovico.png",
-          websiteUrl: "https://sovicogroup.com",
-          order: 9,
-        },
-        {
-          id: "p_10",
-          name: "Tập đoàn Vingroup",
-          shortName: "Quỹ Thiện Tâm",
-          category: "STRATEGIC",
-          categoryLabel: "Nhà Tài trợ Chiến lược",
-          logoUrl: "/images/partners/vingroup.png",
-          websiteUrl: "https://vingroup.net",
-          order: 10,
-        },
-        {
-          id: "p_11",
-          name: "Ngân hàng TMCP Ngoại thương Việt Nam",
-          shortName: "Vietcombank",
-          category: "STRATEGIC",
-          categoryLabel: "Đối tác Tài chính Di sản",
-          logoUrl: "/images/partners/vietcombank.png",
-          websiteUrl: "https://vietcombank.com.vn",
-          order: 11,
-        },
-        {
-          id: "p_12",
-          name: "Đài Truyền hình Việt Nam",
-          shortName: "VTV",
-          category: "MEDIA",
-          categoryLabel: "Bảo trợ Truyền hình",
-          logoUrl: "/images/partners/vtv.png",
-          websiteUrl: "https://vtv.vn",
-          order: 12,
-        },
-        {
-          id: "p_13",
-          name: "Báo Nhân Dân",
-          shortName: "Báo Nhân Dân",
-          category: "MEDIA",
-          categoryLabel: "Bảo trợ Báo chí Chính trị",
-          logoUrl: "/images/partners/nhandan.png",
-          websiteUrl: "https://nhandan.vn",
-          order: 13,
-        },
-      ],
-    },
+
+  // 4. Khối Giải Thưởng & Mô Hình Dự Án Tiêu Biểu (lưu mảng ids của Award và HeritageProject)
+  showcase: {
+    badge: "GIẢI THƯỞNG & MÔ HÌNH TIÊU BIỂU",
+    title: "Giải Thưởng Phát Triển Bền Vững & Dự Án Kinh Tế Di Sản",
+    subtitle: "Tôn vinh các sáng kiến xuất sắc và trưng bày mô hình kinh tế di sản thực địa",
+    ids: ["her_1", "her_3", "her_4"],
+    groups: [
+      {
+        badge: "GIẢI THƯỞNG QUỐC GIA 2026",
+        subBadge: "Hạn đề cử: 15/10/2026",
+        title: "Giải Thưởng Phát Triển Bền Vững Chủ Động",
+        quote: "Kiến tạo giá trị – Phụng sự vị nhân sinh",
+        description:
+          "Hệ thống giải thưởng tôn vinh các tổ chức, doanh nghiệp, cộng đồng và cá nhân có sáng kiến xuất sắc trong bảo tồn di sản gắn liền phát triển kinh tế tuần hoàn, tạo sinh kế công bằng và bảo vệ môi trường.",
+        note: "04 TIÊU CHÍ ĐÁNH GIÁ TRỌNG TÂM:",
+        ids: ["award_2026"],
+        cards: [
+          { title: "Tính xác thực, tôn trọng nguyên bản và chiều sâu lịch sử văn hóa" },
+          { title: "Hiệu quả kinh tế tuần hoàn và năng lực tự chủ tài chính cho công tác duy tu" },
+          { title: "Mức độ tạo sinh kế và hưởng lợi trực tiếp của cộng đồng người dân sở tại" },
+          { title: "Ứng dụng sáng tạo chuyển đổi số, vật liệu thân thiện và giải pháp xanh" },
+        ],
+        actions: [
+          { label: "Nộp hồ sơ đề cử", href: "/contact?loai=giai-thuong#contact-form", icon: "Send" },
+          { label: "Xem quy chế giải thưởng", href: "/awards", icon: "FileText" },
+        ],
+      },
+      {
+        badge: "MÔ HÌNH THỰC TIỄN",
+        title: "Dự Án Kinh Tế Di Sản Tiêu Biểu",
+        actions: [{ label: "Khám phá dự án", href: "/projects" }],
+        ids: ["her_1", "her_3", "her_4"],
+      },
+    ],
   },
-  {
-    id: "sec_home_cta",
-    type: "HOME_CONVERSION_CTA",
+
+  // 5. Khối Tin Tức & Phân Tích Chuyên Sâu (lưu mảng ids của News: phần tử đầu là tiêu điểm, các phần tử sau là bài mới)
+  news: {
+    badge: "GÓC NHÌN HỌC THUẬT & HOẠT ĐỘNG",
+    title: "Tin Tức & Phân Tích Chuyên Sâu",
+    subtitle: "Cập nhật thông tin chính sách, kết quả nghiên cứu và góc nhìn đa chiều từ các chuyên gia hàng đầu.",
+    actions: [{ label: "Xem tất cả tin tức & bài viết", href: "/news" }],
+    subBadge: "BÀI VIẾT MỚI NHẤT",
+    note: "Cập nhật liên tục",
+    ids: ["news_feat_1", "news_lat_1", "news_lat_2", "news_lat_3"],
+  },
+
+  // 6. Khối Đối Tác & Cơ Quan Đồng Hành (lưu mảng ids của Organization theo từng nhóm)
+  partners: {
+    badge: "MẠNG LƯỚI ĐỐI TÁC ĐỒNG HÀNH",
+    title: "Đơn Vị Chỉ Đạo, Chủ Trì & Đối Tác Chiến Lược",
+    subtitle: "Sự gắn kết liên ngành giữa cơ quan quản lý, học thuật và doanh nghiệp",
+    ids: [
+      "p_1",
+      "p_2",
+      "p_3",
+      "p_4",
+      "p_5",
+      "p_6",
+      "p_7",
+      "p_8",
+      "p_9",
+      "p_10",
+      "p_11",
+      "p_12",
+      "p_13",
+    ],
+    groups: [
+      {
+        title: "BAN TỔ CHỨC & CƠ QUAN CHỦ TRÌ",
+        ids: ["p_1", "p_2", "p_3", "p_4", "p_5", "p_6", "p_7", "p_8"],
+      },
+      {
+        title: "ĐƠN VỊ TÀI TRỢ & ĐỒNG HÀNH",
+        ids: ["p_9", "p_10", "p_11", "p_12", "p_13"],
+      },
+    ],
+  },
+
+  // 7. Khối Kêu Gọi Hành Động & Bản Tin (CTA)
+  cta: {
+    badge: "THAM GIA CÙNG DIỄN ĐÀN",
     title: "Cùng Kiến Tạo Giá Trị Di Sản",
-    subtitle: "Đồng hành cùng Diễn đàn trong các hoạt động nghiên cứu, đề cử giải thưởng và hợp tác dự án",
-    order: 8,
-    isVisible: true,
-    props: {
-      title: "Cùng Kiến Tạo Giá Trị Di Sản",
-      subtitle:
-        "Đồng hành cùng Diễn đàn trong các hoạt động nghiên cứu, đề cử giải thưởng và hợp tác dự án",
-      cards: [
-        {
-          title: "Đăng ký tham dự",
-          description: "Tham dự các phiên nghị sự, đối thoại chính sách và kết nối chuyên gia.",
-          ctaText: "Đăng ký ngay",
-          ctaLink: "/lien-he?loai=tham-du#contact-form",
-        },
-        {
-          title: "Đề cử giải thưởng",
-          description: "Gửi hồ sơ tham gia Giải thưởng Phát triển Bền vững Chủ động 2026.",
-          ctaText: "Nộp hồ sơ đề cử",
-          ctaLink: "/lien-he?loai=giai-thuong#contact-form",
-        },
-        {
-          title: "Hợp tác chiến lược",
-          description: "Kết nối tài trợ, đồng hành học thuật và bảo trợ truyền thông.",
-          ctaText: "Liên hệ hợp tác",
-          ctaLink: "/lien-he?loai=hop-tac#contact-form",
-        },
-      ],
-    },
+    description:
+      "Mỗi sáng kiến, tham luận và nguồn lực của quý vị đều góp phần hồi sinh và phát huy bền vững kho tàng văn hóa di sản của dân tộc.",
+    cards: [
+      {
+        icon: "Calendar",
+        badge: "TUYẾN 01 – ĐẠI BIỂU",
+        title: "Đăng Ký Tham Dự Phiên Toàn Thể",
+        description:
+          "Trở thành đại biểu chính thức, kết nối cùng các chuyên gia hàng đầu và tiếp cận các báo cáo độc quyền.",
+        actionLabel: "Đăng ký tham dự",
+        href: "/contact?loai=tham-du#contact-form",
+      },
+      {
+        icon: "Award",
+        badge: "TUYẾN 02 – VINH DANH",
+        title: "Nộp Hồ Sơ Đề Cử Giải Thưởng",
+        description:
+          "Gửi đề cử công trình kiến trúc, mô hình du lịch hoặc sáng kiến bảo tồn di sản xuất sắc vì cộng đồng.",
+        actionLabel: "Nộp hồ sơ đề cử",
+        href: "/contact?loai=giai-thuong#contact-form",
+      },
+      {
+        icon: "Handshake",
+        badge: "TUYẾN 03 – ĐỒNG HÀNH",
+        title: "Đối Tác Chiến Lược & Tài Trợ",
+        description:
+          "Cùng xây dựng các dự án bảo tồn thực địa, tài trợ chuỗi nghiên cứu khoa học hoặc đăng cai tổ chức tại địa phương.",
+        actionLabel: "Liên hệ hợp tác",
+        href: "/contact?loai=hop-tac#contact-form",
+      },
+    ],
+    groups: [
+      {
+        badge: "BẢN TIN DIỄN ĐÀN & KỶ YẾU KHOA HỌC",
+        title: "Đăng Ký Nhận Báo Cáo Nghiên Cứu Định Kỳ",
+        description:
+          "Cập nhật sớm nhất tài liệu diễn đàn, kết quả thẩm định giải thưởng và cơ hội hợp tác kinh tế di sản.",
+        note: "Nhập địa chỉ email của bạn...",
+        actions: [{ label: "Nhận tin", href: "/contact#newsletter", icon: "Send" }],
+      },
+    ],
   },
-];
+};
+
+export const DEFAULT_HOME_SECTIONS: PageSection[] = pagePropsToSections(DEFAULT_HOME_PROPS);

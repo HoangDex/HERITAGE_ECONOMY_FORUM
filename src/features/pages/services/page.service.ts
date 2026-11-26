@@ -1,18 +1,22 @@
 /**
  * LAYER 4: BUSINESS LOGIC / SERVICE LAYER (Page & Sections CMS)
- * Chịu trách nhiệm toàn bộ nghiệp vụ quản lý cấu trúc trang, section và sắp xếp động
+ * Quản lý cấu trúc `props` JSON của từng Page theo từng section riêng biệt
+ * và hỗ trợ API cập nhật từng section `/api/[namepage]/[section]`.
  */
 
 import { pageRepository } from "../repositories/page.repository";
-import type {
-  PageEntity,
-  CreatePageDTO,
-  UpdatePageDTO,
-  AddSectionDTO,
-  UpdateSectionDTO,
-  IPageRepository,
-  IPageService,
-  PageSection,
+import {
+  pagePropsToSections,
+  type PageEntity,
+  type CreatePageDTO,
+  type UpdatePageDTO,
+  type AddSectionDTO,
+  type UpdateSectionDTO,
+  type IPageRepository,
+  type IPageService,
+  type PageSection,
+  type PagePropsMap,
+  type UniversalSectionProps,
 } from "../types/page.types";
 
 export class PageService implements IPageService {
@@ -33,7 +37,6 @@ export class PageService implements IPageService {
   }
 
   async createPage(dto: CreatePageDTO): Promise<PageEntity> {
-    // 1. Chuẩn hóa slug
     const cleanSlug = dto.slug
       .toLowerCase()
       .trim()
@@ -43,7 +46,6 @@ export class PageService implements IPageService {
     return this.repository.create({
       ...dto,
       slug: cleanSlug,
-      sections: dto.sections || [],
     });
   }
 
@@ -55,22 +57,43 @@ export class PageService implements IPageService {
     return this.repository.delete(id);
   }
 
+  async getSectionByKey(slug: string, sectionKey: string): Promise<UniversalSectionProps | null> {
+    if (!slug || !sectionKey) return null;
+    return this.repository.getSectionByKey(slug.toLowerCase().trim(), sectionKey.trim());
+  }
+
+  async updateSectionByKey(
+    slug: string,
+    sectionKey: string,
+    sectionProps: UniversalSectionProps
+  ): Promise<PageEntity | null> {
+    if (!slug || !sectionKey) return null;
+    return this.repository.updateSectionByKey(
+      slug.toLowerCase().trim(),
+      sectionKey.trim(),
+      sectionProps
+    );
+  }
+
   async addSection(pageId: string, sectionDto: AddSectionDTO): Promise<PageEntity | null> {
     const page = await this.repository.findById(pageId);
     if (!page) return null;
 
-    const newSection: PageSection = {
-      id: "sec_" + Math.random().toString(36).substring(2, 9),
-      type: sectionDto.type,
-      title: sectionDto.title,
-      subtitle: sectionDto.subtitle,
-      order: sectionDto.order ?? page.sections.length + 1,
-      isVisible: sectionDto.isVisible ?? true,
-      props: sectionDto.props || {},
+    const rawKey = (sectionDto.key || sectionDto.type || "section")
+      .toLowerCase()
+      .replace(/[^a-z]+/g, "");
+    const sectionKey = page.props[rawKey] ? `${rawKey}extra` : rawKey;
+
+    const updatedProps: PagePropsMap = {
+      ...page.props,
+      [sectionKey]: {
+        ...(sectionDto.props || {}),
+        title: sectionDto.title || sectionDto.props?.title || sectionKey,
+        subtitle: sectionDto.subtitle || sectionDto.props?.subtitle,
+      },
     };
 
-    const updatedSections = [...page.sections, newSection].sort((a, b) => a.order - b.order);
-    return this.repository.updateSections(pageId, updatedSections);
+    return this.repository.updatePropsBySlug(page.slug, updatedProps);
   }
 
   async updateSection(
@@ -81,21 +104,16 @@ export class PageService implements IPageService {
     const page = await this.repository.findById(pageId);
     if (!page) return null;
 
-    const updatedSections = page.sections.map((sec) => {
-      if (sec.id === sectionId) {
-        return {
-          ...sec,
-          title: sectionDto.title !== undefined ? sectionDto.title : sec.title,
-          subtitle: sectionDto.subtitle !== undefined ? sectionDto.subtitle : sec.subtitle,
-          order: sectionDto.order !== undefined ? sectionDto.order : sec.order,
-          isVisible: sectionDto.isVisible !== undefined ? sectionDto.isVisible : sec.isVisible,
-          props: sectionDto.props !== undefined ? { ...sec.props, ...sectionDto.props } : sec.props,
-        };
-      }
-      return sec;
-    });
+    const currentSection = page.props[sectionId] || {};
+    const nextSection: UniversalSectionProps = {
+      ...currentSection,
+      ...(sectionDto.props || {}),
+      ...(sectionDto.title !== undefined ? { title: sectionDto.title } : {}),
+      ...(sectionDto.subtitle !== undefined ? { subtitle: sectionDto.subtitle } : {}),
+      ...(sectionDto.isVisible !== undefined ? { isVisible: sectionDto.isVisible } : {}),
+    };
 
-    return this.repository.updateSections(pageId, updatedSections);
+    return this.repository.updateSectionByKey(page.slug, sectionId, nextSection);
   }
 
   async updateSections(pageId: string, sections: PageSection[]): Promise<PageEntity | null> {
@@ -110,31 +128,33 @@ export class PageService implements IPageService {
     const page = await this.repository.findById(pageId);
     if (!page) return null;
 
-    const filteredSections = page.sections.filter((s) => s.id !== sectionId);
-    return this.repository.updateSections(pageId, filteredSections);
+    const nextProps: PagePropsMap = { ...page.props };
+    delete nextProps[sectionId];
+
+    return this.repository.updatePropsBySlug(page.slug, nextProps);
   }
 
   async reorderSections(pageId: string, newOrderIds: string[]): Promise<PageEntity | null> {
     const page = await this.repository.findById(pageId);
     if (!page) return null;
 
-    const sectionMap = new Map(page.sections.map((s) => [s.id, s]));
-    const reordered: PageSection[] = [];
-
-    newOrderIds.forEach((id, index) => {
-      const section = sectionMap.get(id);
-      if (section) {
-        reordered.push({ ...section, order: index + 1 });
-        sectionMap.delete(id);
+    const nextProps: PagePropsMap = {};
+    for (const key of newOrderIds) {
+      if (page.props[key]) {
+        nextProps[key] = page.props[key];
       }
-    });
+    }
+    for (const [key, val] of Object.entries(page.props)) {
+      if (!nextProps[key]) {
+        nextProps[key] = val;
+      }
+    }
 
-    // Bổ sung các section còn sót lại nếu có
-    sectionMap.forEach((remainingSec) => {
-      reordered.push({ ...remainingSec, order: reordered.length + 1 });
-    });
-
-    return this.repository.updateSections(pageId, reordered);
+    const updated = await this.repository.updatePropsBySlug(page.slug, nextProps);
+    if (updated) {
+      updated.sections = pagePropsToSections(nextProps);
+    }
+    return updated;
   }
 
   async toggleSection(

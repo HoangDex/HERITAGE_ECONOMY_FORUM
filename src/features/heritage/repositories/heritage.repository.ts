@@ -1,7 +1,6 @@
 /**
  * LAYER 3: REPOSITORY / DATA ACCESS LAYER
- * Giao tiếp trực tiếp với cơ sở dữ liệu MySQL qua Prisma 7 Client.
- * Tách biệt hoàn toàn tầng lưu trữ khỏi Business Logic.
+ * Giao tiếp trực tiếp với bảng `projects` và `project_categories` qua Prisma 7 Client.
  */
 
 import { prisma } from "@/lib/prisma";
@@ -17,19 +16,19 @@ import type {
 
 export class HeritageRepository implements IHeritageRepository {
   /**
-   * Helper chuyển đổi DB Model sang Domain Entity
+   * Helper chuyển đổi DB Model `Project` (kèm `category: ProjectCategory`) sang Domain Entity
    */
   private mapToEntity(item: {
     id: string;
     name: string;
     slug: string;
     location: string;
-    category: string;
+    category?: { id: number | string; name: string } | null;
     status: string;
     description: string;
     highlights: unknown;
-    imageUrl?: string | null;
-    gallery?: unknown;
+    thumbnailUrl?: string | null;
+    galleryUrls?: unknown;
     annualRevenue: string | null;
     jobsCreated: number;
     conservationFundShare: string | null;
@@ -41,11 +40,11 @@ export class HeritageRepository implements IHeritageRepository {
       name: item.name,
       slug: item.slug,
       location: item.location,
-      category: item.category,
+      category: item.category?.name || "Đô thị Di sản",
       status: (item.status as ProjectStatus) || "Đang vận hành",
       description: item.description,
-      imageUrl: item.imageUrl || undefined,
-      gallery: Array.isArray(item.gallery) ? (item.gallery as string[]) : undefined,
+      imageUrl: item.thumbnailUrl || undefined,
+      gallery: Array.isArray(item.galleryUrls) ? (item.galleryUrls as string[]) : undefined,
       highlights: Array.isArray(item.highlights) ? (item.highlights as string[]) : [],
       economicMetrics: {
         annualRevenue: item.annualRevenue || "Đang cập nhật",
@@ -57,6 +56,18 @@ export class HeritageRepository implements IHeritageRepository {
     };
   }
 
+  private async resolveProjectCategoryId(categoryName: string): Promise<number> {
+    const cleanName = (categoryName || "Đô thị Di sản").trim();
+    const existing = await prisma.projectCategory.findFirst({
+      where: { name: cleanName },
+    });
+    if (existing) return existing.id;
+    const created = await prisma.projectCategory.create({
+      data: { name: cleanName },
+    });
+    return created.id;
+  }
+
   async findAll(filters?: HeritageFilterDTO): Promise<HeritageProject[]> {
     try {
       const where: Record<string, unknown> = {};
@@ -65,7 +76,7 @@ export class HeritageRepository implements IHeritageRepository {
         where.location = { contains: filters.location };
       }
       if (filters?.category) {
-        where.category = filters.category;
+        where.category = { name: filters.category };
       }
       if (filters?.status) {
         where.status = filters.status;
@@ -77,8 +88,9 @@ export class HeritageRepository implements IHeritageRepository {
         ];
       }
 
-      const projects = await prisma.heritageProject.findMany({
+      const projects = await prisma.project.findMany({
         where,
+        include: { category: true },
         orderBy: { createdAt: "desc" },
       });
 
@@ -89,7 +101,6 @@ export class HeritageRepository implements IHeritageRepository {
       // Fallback sang in-memory mock data nếu chưa kết nối MySQL
     }
 
-    // Fallback: Lọc từ mock data
     let result = INITIAL_HERITAGE_PROJECTS.map((item) => ({
       ...item,
       slug: item.slug || item.name.toLowerCase().replace(/[^a-z0-9]+/g, "-"),
@@ -115,8 +126,9 @@ export class HeritageRepository implements IHeritageRepository {
 
   async findById(id: string): Promise<HeritageProject | null> {
     try {
-      const project = await prisma.heritageProject.findUnique({
+      const project = await prisma.project.findUnique({
         where: { id },
+        include: { category: true },
       });
       if (project) return this.mapToEntity(project);
     } catch {
@@ -133,8 +145,9 @@ export class HeritageRepository implements IHeritageRepository {
 
   async findBySlug(slug: string): Promise<HeritageProject | null> {
     try {
-      const project = await prisma.heritageProject.findUnique({
+      const project = await prisma.project.findUnique({
         where: { slug },
+        include: { category: true },
       });
       if (project) return this.mapToEntity(project);
     } catch {
@@ -151,12 +164,13 @@ export class HeritageRepository implements IHeritageRepository {
 
   async create(data: CreateHeritageDTO & { slug: string }): Promise<HeritageProject> {
     try {
-      const project = await prisma.heritageProject.create({
+      const categoryId = await this.resolveProjectCategoryId(data.category);
+      const project = await prisma.project.create({
         data: {
           name: data.name,
           slug: data.slug,
           location: data.location,
-          category: data.category,
+          categoryId,
           status: data.status || "Đang vận hành",
           description: data.description,
           highlights: data.highlights,
@@ -164,10 +178,10 @@ export class HeritageRepository implements IHeritageRepository {
           jobsCreated: data.jobsCreated,
           conservationFundShare: data.conservationFundShare,
         },
+        include: { category: true },
       });
       return this.mapToEntity(project);
     } catch {
-      // Fallback: ghi vào bộ nhớ tạm
       const newMock: HeritageProject = {
         id: "her_" + Math.random().toString(36).substring(2, 9),
         name: data.name,
@@ -191,12 +205,16 @@ export class HeritageRepository implements IHeritageRepository {
 
   async update(id: string, data: UpdateHeritageDTO): Promise<HeritageProject | null> {
     try {
-      const updated = await prisma.heritageProject.update({
+      const categoryId = data.category
+        ? await this.resolveProjectCategoryId(data.category)
+        : undefined;
+
+      const updated = await prisma.project.update({
         where: { id },
         data: {
           name: data.name,
           location: data.location,
-          category: data.category,
+          ...(categoryId ? { categoryId } : {}),
           status: data.status,
           description: data.description,
           highlights: data.highlights,
@@ -204,6 +222,7 @@ export class HeritageRepository implements IHeritageRepository {
           jobsCreated: data.jobsCreated,
           conservationFundShare: data.conservationFundShare,
         },
+        include: { category: true },
       });
       return this.mapToEntity(updated);
     } catch {
@@ -228,7 +247,7 @@ export class HeritageRepository implements IHeritageRepository {
 
   async delete(id: string): Promise<boolean> {
     try {
-      await prisma.heritageProject.delete({ where: { id } });
+      await prisma.project.delete({ where: { id } });
       return true;
     } catch {
       const idx = INITIAL_HERITAGE_PROJECTS.findIndex((p) => p.id === id);
@@ -243,8 +262,8 @@ export class HeritageRepository implements IHeritageRepository {
   async getMetricsAggregate(): Promise<{ totalProjects: number; totalJobs: number }> {
     try {
       const [count, agg] = await Promise.all([
-        prisma.heritageProject.count(),
-        prisma.heritageProject.aggregate({
+        prisma.project.count(),
+        prisma.project.aggregate({
           _sum: { jobsCreated: true },
         }),
       ]);

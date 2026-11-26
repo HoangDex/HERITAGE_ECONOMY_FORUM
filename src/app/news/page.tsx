@@ -1,6 +1,8 @@
 import { Metadata } from "next";
 import { newsService, NewsPageView } from "@/features/news";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "Tin tức, Nghiên cứu & Góc nhìn Chuyên gia | Heritage Economy Forum",
   description:

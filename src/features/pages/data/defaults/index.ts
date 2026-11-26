@@ -1,16 +1,21 @@
 /**
  * BARREL EXPORT & TỔNG HỢP CÁC TRANG CỐT LÕI (DEFAULT HEF PAGES)
- * Tuân thủ Clean Architecture: Mỗi trang có file cấu hình sections riêng biệt.
+ * Cấu trúc Page gồm: id, slug, name, props (JSON chứa các section), isPublished.
  */
 
 import type { PageEntity } from "../../types/page.types";
-import { DEFAULT_HOME_SECTIONS } from "./home.default";
-import { DEFAULT_ABOUT_SECTIONS } from "./about.default";
+import { DEFAULT_HOME_PROPS, DEFAULT_HOME_SECTIONS } from "./home.default";
+import { DEFAULT_ABOUT_PROPS, DEFAULT_ABOUT_SECTIONS } from "./about.default";
 import {
+  DEFAULT_FORUM_PROPS,
   DEFAULT_FORUM_SECTIONS,
+  DEFAULT_AWARDS_PROPS,
   DEFAULT_AWARDS_SECTIONS,
+  DEFAULT_PROJECTS_PROPS,
   DEFAULT_PROJECTS_SECTIONS,
+  DEFAULT_NEWS_PROPS,
   DEFAULT_NEWS_SECTIONS,
+  DEFAULT_CONTACT_PROPS,
   DEFAULT_CONTACT_SECTIONS,
 } from "./other-pages.default";
 
@@ -23,6 +28,7 @@ export const DEFAULT_HEF_PAGES: PageEntity[] = [
     id: "page_home",
     slug: "home",
     name: "Trang chủ",
+    props: DEFAULT_HOME_PROPS,
     title: "Diễn đàn Kinh tế Di sản | Heritage Economy Forum",
     description: "Di sản kiến tạo giá trị – Phát triển hướng tương lai",
     isPublished: true,
@@ -36,6 +42,7 @@ export const DEFAULT_HEF_PAGES: PageEntity[] = [
     id: "page_about",
     slug: "about",
     name: "Giới thiệu",
+    props: DEFAULT_ABOUT_PROPS,
     title: "Về Diễn Đàn Kinh Tế Di Sản",
     description: "Tôn chỉ, sứ mệnh, Hội đồng Diễn đàn và Ban Điều hành",
     isPublished: true,
@@ -49,6 +56,7 @@ export const DEFAULT_HEF_PAGES: PageEntity[] = [
     id: "page_forum",
     slug: "forum",
     name: "Diễn đàn",
+    props: DEFAULT_FORUM_PROPS,
     title: "Các Kỳ Diễn Đàn & Phiên Thảo Luận",
     description: "Chương trình nghị sự, diễn giả và các phiên làm việc chuyên sâu",
     isPublished: true,
@@ -62,6 +70,7 @@ export const DEFAULT_HEF_PAGES: PageEntity[] = [
     id: "page_awards",
     slug: "awards",
     name: "Giải thưởng",
+    props: DEFAULT_AWARDS_PROPS,
     title: "Giải Thưởng Phát Triển Bền Vững Chủ Động",
     description: "Tôn vinh các sáng kiến tiêu biểu kiến tạo giá trị nhân văn và phát triển hài hòa",
     isPublished: true,
@@ -75,6 +84,7 @@ export const DEFAULT_HEF_PAGES: PageEntity[] = [
     id: "page_projects",
     slug: "projects",
     name: "Mô hình & Dự án",
+    props: DEFAULT_PROJECTS_PROPS,
     title: "Mô Hình & Sáng Kiến Điển Hình",
     description: "Các dự án thực địa bảo tồn di sản gắn với sinh kế bền vững",
     isPublished: true,
@@ -88,6 +98,7 @@ export const DEFAULT_HEF_PAGES: PageEntity[] = [
     id: "page_news",
     slug: "news",
     name: "Tin tức",
+    props: DEFAULT_NEWS_PROPS,
     title: "Tin Tức & Góc Chuyên Gia",
     description: "Thông tin hoạt động, nghiên cứu và bài viết chuyên sâu về kinh tế di sản",
     isPublished: true,
@@ -101,6 +112,7 @@ export const DEFAULT_HEF_PAGES: PageEntity[] = [
     id: "page_contact",
     slug: "contact",
     name: "Liên hệ",
+    props: DEFAULT_CONTACT_PROPS,
     title: "Liên Hệ & Đăng Ký Đồng Hành",
     description: "Kênh tiếp nhận đăng ký tham dự, đề cử giải thưởng và hợp tác chiến lược",
     isPublished: true,

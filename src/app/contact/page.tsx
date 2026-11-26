@@ -1,6 +1,8 @@
 import { Metadata } from "next";
 import { contactService, ContactPageView } from "@/features/contact";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "Liên hệ & Tiếp nhận Yêu cầu | Heritage Economy Forum",
   description:

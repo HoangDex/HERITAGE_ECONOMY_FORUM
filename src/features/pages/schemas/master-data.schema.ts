@@ -1,9 +1,23 @@
 /**
  * LAYER 2: ZOD VALIDATION SCHEMAS CHO MASTER DATA CATALOGS
  * Xác thực dữ liệu đầu vào cho các thao tác Thêm / Sửa / Xóa danh mục dùng chung.
+ * Các schema Category (Tin tức) và AwardCategory (Giải thưởng) chỉ gồm `id` và `name`.
  */
 
 import { z } from "zod";
+
+// ==========================================
+// 0. DANH MỤC (CATEGORY & AWARD CATEGORY - CHỈ GỒM ID & NAME)
+// ==========================================
+export const createCategorySchema = z.object({
+  name: z
+    .string()
+    .min(2, "Tên danh mục tối thiểu 2 ký tự")
+    .max(255, "Tên danh mục tối đa 255 ký tự")
+    .trim(),
+});
+
+export const updateCategorySchema = createCategorySchema.partial();
 
 // ==========================================
 // 1. DỰ ÁN DI SẢN (PROJECTS)
@@ -34,16 +48,12 @@ export const updateProjectSchema = createProjectSchema.partial();
 export const createOrganizationSchema = z.object({
   name: z.string().min(2, "Tên cơ quan/đối tác tối thiểu 2 ký tự").max(255),
   shortName: z.string().optional(),
-  category: z.enum([
-    "STEERING",
-    "HOSTING",
-    "ORGANIZING",
-    "COMPANION",
-    "STRATEGIC",
-    "MEDIA",
-  ], {
-    error: "Phân loại đối tác không hợp lệ",
-  }),
+  category: z.enum(
+    ["STEERING", "HOSTING", "ORGANIZING", "COMPANION", "STRATEGIC", "MEDIA"],
+    {
+      error: "Phân loại đối tác không hợp lệ",
+    }
+  ),
   logoUrl: z.string().min(1, "Đường dẫn logo là bắt buộc"),
   websiteUrl: z.string().optional(),
   reusedPages: z
@@ -66,12 +76,13 @@ export const createNewsSchema = z.object({
   title: z.string().min(3, "Tiêu đề bài viết tối thiểu 3 ký tự").max(255),
   slug: z.string().optional(),
   excerpt: z.string().min(5, "Tóm tắt bài viết tối thiểu 5 ký tự"),
+  categoryId: z.coerce.number().int().positive().optional(),
   categoryName: z.string().default("Thời sự Di sản"),
   authorName: z.string().optional(),
   authorTitle: z.string().optional(),
   coverImageUrl: z.string().optional(),
   status: z.enum(["DRAFT", "PUBLISHED", "ARCHIVED"]).default("PUBLISHED"),
-  isFeatured: z.boolean().default(false),
+  readingTimeMinutes: z.coerce.number().int().positive().default(5),
   pageSlug: z.string().optional(),
   pageName: z.string().optional(),
   publishedAt: z.string().optional(),
@@ -96,7 +107,7 @@ export const createSpeakerSchema = z.object({
 export const updateSpeakerSchema = createSpeakerSchema.partial();
 
 // ==========================================
-// 5. GIẢI THƯỞNG & HẠNG MỤC (AWARDS)
+// 5. GIẢI THƯỞNG & HẠNG MỤC (AWARDS - CATEGORY CHỈ CÓ NAME)
 // ==========================================
 export const createAwardSchema = z.object({
   year: z.coerce.number().min(2020).max(2050),
@@ -107,9 +118,7 @@ export const createAwardSchema = z.object({
   categories: z
     .array(
       z.object({
-        name: z.string().min(2, "Tên hạng mục tối thiểu 2 ký tự"),
-        slug: z.string().optional(),
-        description: z.string().default(""),
+        name: z.string().min(2, "Tên hạng mục tối thiểu 2 ký tự").max(255).trim(),
       })
     )
     .optional(),
