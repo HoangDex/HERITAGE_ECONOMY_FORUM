@@ -1,12 +1,9 @@
 "use client";
 
 import React, { useState } from "react";
-import {
-  ExecutiveSection,
-  PersonDetailDialog,
-  type Person,
-  type ExecutiveDepartment,
-} from "@/features/about";
+import { ExecutiveSection } from "@/features/about/components/executive-section";
+import { PersonDetailDialog } from "@/features/about/components/person-detail-dialog";
+import type { Person, ExecutiveDepartment } from "@/features/about/types/about.types";
 
 interface ExecutiveDedicatedViewProps {
   head: Person;

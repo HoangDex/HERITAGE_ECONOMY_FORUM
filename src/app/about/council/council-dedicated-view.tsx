@@ -1,7 +1,9 @@
 "use client";
 
 import React, { useState } from "react";
-import { CouncilSection, PersonDetailDialog, type Person } from "@/features/about";
+import { CouncilSection } from "@/features/about/components/council-section";
+import { PersonDetailDialog } from "@/features/about/components/person-detail-dialog";
+import type { Person } from "@/features/about/types/about.types";
 
 interface CouncilDedicatedViewProps {
   president: Person;
