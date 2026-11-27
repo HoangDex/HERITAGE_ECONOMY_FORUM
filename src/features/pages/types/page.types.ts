@@ -124,6 +124,19 @@ export interface FormFieldConfigItem {
   options?: string[];
 }
 
+export interface CriteriaItem {
+  title: string;
+  weight?: string;
+  description?: string;
+  evidences?: string[];
+}
+
+export interface ProcessStepItem {
+  time?: string;
+  title: string;
+  description?: string;
+}
+
 /**
  * Cấu trúc chuẩn của một Section bên trong `Page.props`
  */
@@ -149,9 +162,9 @@ export interface UniversalSectionProps {
   workingHours?: string;
   consentText?: string;
   submitLabel?: string;
+  action?: ActionItem;
   /**
-   * Mảng ID tham chiếu sang các schema danh mục (News, Project, Organization, Speaker, Award, ForumEdition).
-   * Chỉ dùng cho các section hiển thị một vài mục chọn lọc.
+   * Mảng ID tham chiếu sang các schema danh mục (News, Project, Organization, Guest, Award).
    */
   ids?: Array<string | number>;
   actions?: ActionItem[];
@@ -161,6 +174,10 @@ export interface UniversalSectionProps {
   categories?: GroupItem[];
   questions?: FaqQuestionItem[];
   fields?: Record<string, FormFieldConfigItem>;
+  items?: CriteriaItem[];
+  steps?: ProcessStepItem[];
+  awards?: unknown[];
+  members?: unknown[];
   [key: string]: unknown;
 }
 

@@ -14,6 +14,7 @@ import {
   aboutPageSectionsListSchema,
   pageSectionsListSchema,
 } from "@/features/pages/schemas";
+import { validatePagePropsContract } from "@/features/pages/schemas/contracts";
 
 interface RouteContext {
   params: Promise<{ slug: string }>;
@@ -99,6 +100,14 @@ export async function PUT(request: NextRequest, context: RouteContext) {
     const metaValidation = updatePageSchema.safeParse(body);
     if (!metaValidation.success) {
       return apiValidationError(metaValidation.error);
+    }
+
+    // 2b. Khóa hợp đồng API (Strict Contract) cho props của 3 trang: awards, contact, news
+    if (body.props !== undefined) {
+      const contractResult = validatePagePropsContract(existingPage.slug, body.props);
+      if (!contractResult.success && contractResult.error) {
+        return apiValidationError(contractResult.error);
+      }
     }
 
     // 3. Nếu có cập nhật mảng sections, validate theo từng trang chuyên biệt

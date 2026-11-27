@@ -17,6 +17,8 @@ import { FadeIn, StaggerContainer, StaggerItem, InteractiveCard } from "@/compon
 import type { AwardCategory } from "../types/awards.types";
 
 interface AwardsCategoriesSectionProps {
+  title?: string;
+  description?: string;
   categories: AwardCategory[];
 }
 
@@ -31,21 +33,19 @@ const ICON_MAP: Record<string, React.ElementType> = {
   HeartHandshake,
 };
 
-export function AwardsCategoriesSection({ categories }: AwardsCategoriesSectionProps) {
+export function AwardsCategoriesSection({
+  title,
+  description,
+  categories,
+}: AwardsCategoriesSectionProps) {
   return (
     <section id="hang-muc" className="py-14 scroll-mt-20">
       <div className="container mx-auto px-4 sm:px-8 max-w-7xl space-y-8">
         <FadeIn direction="up" className="space-y-3">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider bg-[#0D4838]/10 text-[#0D4838]">
-            Cơ Cấu Giải Thưởng
-          </div>
           <h2 className="text-2xl sm:text-4xl font-extrabold text-[#292929] tracking-tight">
-            08 Hạng Mục Xét Chọn Tham Khảo
+            {title || ""}
           </h2>
-          <p className="text-[#5c554b] max-w-3xl text-base">
-            Bao quát toàn diện các khía cạnh từ sáng kiến khoa học, mô hình kinh doanh di sản, ứng
-            dụng công nghệ, đóng góp cộng đồng cho tới thành tựu cống hiến trọn đời.
-          </p>
+          <p className="text-[#5c554b] max-w-3xl text-base">{description || ""}</p>
         </FadeIn>
 
         <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">

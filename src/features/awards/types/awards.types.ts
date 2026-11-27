@@ -29,13 +29,18 @@ export interface AwardProcessStep {
   actionLabel?: string;
 }
 
+export interface AwardActionLink {
+  label: string;
+  href: string;
+}
+
 export interface AwardJudge {
   id: string;
   name: string;
   title: string;
   organization: string;
   avatarUrl: string;
-  role: "Chủ tịch Hội đồng" | "Phó Chủ tịch" | "Thành viên Thường trực" | "Chuyên gia Thẩm định";
+  role: "Chủ tịch Hội đồng" | "Phó Chủ tịch" | "Thành viên Thường trực" | "Chuyên gia Thẩm định" | string;
 }
 
 export interface AwardsPageData {
@@ -43,10 +48,20 @@ export interface AwardsPageData {
   englishTitle: string;
   slogan: string;
   philosophy: string;
-  rulesVersion: string;
+  heroActions?: AwardActionLink[];
+  categoriesTitle?: string;
+  categoriesDescription?: string;
   categories: AwardCategory[];
+  criteriaTitle?: string;
+  criteriaDescription?: string;
+  criteriaAction?: AwardActionLink;
+  rulesVersion: string;
   criteriaList: AwardCriteria[];
+  processTitle?: string;
+  processDescription?: string;
   processSteps: AwardProcessStep[];
+  councilTitle?: string;
+  councilDescription?: string;
   judges: AwardJudge[];
 }
 

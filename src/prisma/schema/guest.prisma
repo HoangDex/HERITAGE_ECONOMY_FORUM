@@ -1,0 +1,10 @@
+model Guest {
+    id           Int     @id @default(autoincrement())
+    name         String  @db.VarChar(200)
+    title        String? @db.VarChar(200)
+    organization String? @db.VarChar(200)
+    avatar       String? @db.VarChar(255)
+    quote        String? @db.Text
+
+    @@map("guests")
+}

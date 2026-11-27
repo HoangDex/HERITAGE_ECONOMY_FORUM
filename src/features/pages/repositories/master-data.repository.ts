@@ -368,89 +368,44 @@ export class MasterDataRepository implements IMasterDataRepository {
   }
 
   async getAwardCategories(): Promise<MasterDataAwardCategory[]> {
-    try {
-      const items = await prisma.awardCategory.findMany();
-      if (items.length > 0) {
-        return items.map((c) => ({ id: String(c.id), name: c.name }));
-      }
-    } catch {
-      // Fallback
-    }
     return this.inMemoryAwardCategories;
   }
 
   async getAwardCategoryById(id: string): Promise<MasterDataAwardCategory | null> {
-    try {
-      const item = await prisma.awardCategory.findUnique({ where: { id: parseCategoryId(id) } });
-      if (item) return { id: String(item.id), name: item.name };
-    } catch {
-      // Fallback
-    }
     return this.inMemoryAwardCategories.find((c) => matchesCategoryId(c.id, id)) || null;
   }
 
   async createAwardCategory(dto: CreateCategoryDTO): Promise<MasterDataAwardCategory> {
-    try {
-      const created = await prisma.awardCategory.create({
-        data: { name: dto.name },
-      });
-      const entity = { id: String(created.id), name: created.name };
-      this.inMemoryAwardCategories.push(entity);
-      if (this.inMemoryAwards[0]) {
-        this.inMemoryAwards[0].categories.push(entity);
-      }
-      return entity;
-    } catch {
-      const nextId = String(this.inMemoryAwardCategories.length + 1);
-      const mock = {
-        id: nextId,
-        name: dto.name,
-      };
-      this.inMemoryAwardCategories.push(mock);
-      if (this.inMemoryAwards[0]) {
-        this.inMemoryAwards[0].categories.push(mock);
-      }
-      return mock;
+    const nextId = String(this.inMemoryAwardCategories.length + 1);
+    const mock = {
+      id: nextId,
+      name: dto.name,
+    };
+    this.inMemoryAwardCategories.push(mock);
+    if (this.inMemoryAwards[0]) {
+      this.inMemoryAwards[0].categories.push(mock);
     }
+    return mock;
   }
 
   async updateAwardCategory(
     id: string,
     dto: UpdateCategoryDTO
   ): Promise<MasterDataAwardCategory | null> {
-    try {
-      const updated = await prisma.awardCategory.update({
-        where: { id: parseCategoryId(id) },
-        data: { name: dto.name },
-      });
-      const entity = { id: String(updated.id), name: updated.name };
-      const idx = this.inMemoryAwardCategories.findIndex((c) => matchesCategoryId(c.id, id));
-      if (idx !== -1) this.inMemoryAwardCategories[idx] = entity;
-      for (const aw of this.inMemoryAwards) {
-        aw.categories = aw.categories.map((c) => (matchesCategoryId(c.id, id) ? entity : c));
-      }
-      return entity;
-    } catch {
-      const idx = this.inMemoryAwardCategories.findIndex((c) => matchesCategoryId(c.id, id));
-      if (idx === -1) return null;
-      const updated = {
-        ...this.inMemoryAwardCategories[idx],
-        ...(dto.name ? { name: dto.name } : {}),
-      };
-      this.inMemoryAwardCategories[idx] = updated;
-      for (const aw of this.inMemoryAwards) {
-        aw.categories = aw.categories.map((c) => (matchesCategoryId(c.id, id) ? updated : c));
-      }
-      return updated;
+    const idx = this.inMemoryAwardCategories.findIndex((c) => matchesCategoryId(c.id, id));
+    if (idx === -1) return null;
+    const updated = {
+      ...this.inMemoryAwardCategories[idx],
+      ...(dto.name ? { name: dto.name } : {}),
+    };
+    this.inMemoryAwardCategories[idx] = updated;
+    for (const aw of this.inMemoryAwards) {
+      aw.categories = aw.categories.map((c) => (matchesCategoryId(c.id, id) ? updated : c));
     }
+    return updated;
   }
 
   async deleteAwardCategory(id: string): Promise<boolean> {
-    try {
-      await prisma.awardCategory.delete({ where: { id: parseCategoryId(id) } });
-    } catch {
-      // Fallback
-    }
     const idx = this.inMemoryAwardCategories.findIndex((c) => matchesCategoryId(c.id, id));
     if (idx !== -1) {
       this.inMemoryAwardCategories.splice(idx, 1);
@@ -1258,24 +1213,26 @@ export class MasterDataRepository implements IMasterDataRepository {
   }
 
   // ========================================================
-  // 4. SPEAKERS CRUD + RESOLVE BY IDS
+  // 4. SPEAKERS / GUESTS CRUD + RESOLVE BY IDS
   // ========================================================
   async getSpeakers(): Promise<MasterDataSpeaker[]> {
     try {
-      const items = await prisma.speaker.findMany({
-        orderBy: { name: "asc" },
+      const items = await prisma.guest.findMany({
+        orderBy: { id: "asc" },
       });
 
       if (items.length > 0) {
         return items.map((s) => ({
-          id: s.id,
+          id: String(s.id),
           name: s.name,
-          slug: s.slug,
-          degree: s.degree,
-          title: s.title,
-          organization: s.organization,
-          avatarUrl: s.avatarUrl,
-          bio: s.bio,
+          slug: generateSlug(s.name),
+          degree: null,
+          title: s.title || "",
+          organization: s.organization || "",
+          avatarUrl:
+            s.avatar ||
+            "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&h=300&q=80",
+          bio: s.quote,
           reusedPages: [
             "Trang Giới thiệu (props.council.ids)",
             "Trang Diễn đàn (props.speakers.ids)",
@@ -1297,69 +1254,68 @@ export class MasterDataRepository implements IMasterDataRepository {
 
   async getSpeakerById(id: string): Promise<MasterDataSpeaker | null> {
     try {
-      const s = await prisma.speaker.findUnique({
-        where: { id },
+      const s = await prisma.guest.findUnique({
+        where: { id: parseCategoryId(id) },
       });
       if (s) {
         return {
-          id: s.id,
+          id: String(s.id),
           name: s.name,
-          slug: s.slug,
-          degree: s.degree,
-          title: s.title,
-          organization: s.organization,
-          avatarUrl: s.avatarUrl,
-          bio: s.bio,
+          slug: generateSlug(s.name),
+          degree: null,
+          title: s.title || "",
+          organization: s.organization || "",
+          avatarUrl:
+            s.avatar ||
+            "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&h=300&q=80",
+          bio: s.quote,
           reusedPages: ["Trang Giới thiệu", "Trang Diễn đàn (/forum)"],
         };
       }
     } catch {
       // Fallback
     }
-    return this.inMemorySpeakers.find((s) => s.id === id || s.slug === id) || null;
+    return this.inMemorySpeakers.find((s) => matchesCategoryId(s.id, id) || s.slug === id) || null;
   }
 
   async createSpeaker(dto: CreateSpeakerDTO): Promise<MasterDataSpeaker> {
     const slug = dto.slug || generateSlug(dto.name);
+    const defaultAvatar =
+      dto.avatarUrl ||
+      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&h=300&q=80";
     try {
-      const created = await prisma.speaker.create({
+      const created = await prisma.guest.create({
         data: {
           name: dto.name,
-          slug,
-          degree: dto.degree,
           title: dto.title,
           organization: dto.organization,
-          avatarUrl:
-            dto.avatarUrl ||
-            "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&h=300&q=80",
-          bio: dto.bio,
+          avatar: defaultAvatar,
+          quote: dto.bio,
         },
       });
 
       const entity: MasterDataSpeaker = {
-        id: created.id,
+        id: String(created.id),
         name: created.name,
-        slug: created.slug,
-        degree: created.degree,
-        title: created.title,
-        organization: created.organization,
-        avatarUrl: created.avatarUrl,
-        bio: created.bio,
+        slug,
+        degree: dto.degree || null,
+        title: created.title || "",
+        organization: created.organization || "",
+        avatarUrl: created.avatar || defaultAvatar,
+        bio: created.quote,
         reusedPages: dto.reusedPages || ["Trang Giới thiệu", "Trang Diễn đàn (/forum)"],
       };
       this.inMemorySpeakers.push(entity);
       return entity;
     } catch {
       const mockEntity: MasterDataSpeaker = {
-        id: "spk_" + Math.random().toString(36).substring(2, 9),
+        id: String(this.inMemorySpeakers.length + 1),
         name: dto.name,
         slug,
         degree: dto.degree,
         title: dto.title,
         organization: dto.organization,
-        avatarUrl:
-          dto.avatarUrl ||
-          "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&h=300&q=80",
+        avatarUrl: defaultAvatar,
         bio: dto.bio,
         reusedPages: dto.reusedPages || ["Trang Giới thiệu", "Trang Diễn đàn (/forum)"],
       };
@@ -1370,36 +1326,36 @@ export class MasterDataRepository implements IMasterDataRepository {
 
   async updateSpeaker(id: string, dto: UpdateSpeakerDTO): Promise<MasterDataSpeaker | null> {
     try {
-      const updated = await prisma.speaker.update({
-        where: { id },
+      const updated = await prisma.guest.update({
+        where: { id: parseCategoryId(id) },
         data: {
           name: dto.name,
-          slug: dto.slug,
-          degree: dto.degree,
           title: dto.title,
           organization: dto.organization,
-          avatarUrl: dto.avatarUrl,
-          bio: dto.bio,
+          avatar: dto.avatarUrl,
+          quote: dto.bio,
         },
       });
 
       const entity: MasterDataSpeaker = {
-        id: updated.id,
+        id: String(updated.id),
         name: updated.name,
-        slug: updated.name,
-        degree: updated.degree,
-        title: updated.title,
-        organization: updated.organization,
-        avatarUrl: updated.avatarUrl,
-        bio: updated.bio,
+        slug: generateSlug(updated.name),
+        degree: dto.degree || null,
+        title: updated.title || "",
+        organization: updated.organization || "",
+        avatarUrl:
+          updated.avatar ||
+          "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&h=300&q=80",
+        bio: updated.quote,
         reusedPages: dto.reusedPages || ["Trang Giới thiệu", "Trang Diễn đàn (/forum)"],
       };
 
-      const idx = this.inMemorySpeakers.findIndex((s) => s.id === id);
+      const idx = this.inMemorySpeakers.findIndex((s) => matchesCategoryId(s.id, id));
       if (idx !== -1) this.inMemorySpeakers[idx] = entity;
       return entity;
     } catch {
-      const idx = this.inMemorySpeakers.findIndex((s) => s.id === id);
+      const idx = this.inMemorySpeakers.findIndex((s) => matchesCategoryId(s.id, id));
       if (idx === -1) return null;
       this.inMemorySpeakers[idx] = {
         ...this.inMemorySpeakers[idx],
@@ -1411,11 +1367,11 @@ export class MasterDataRepository implements IMasterDataRepository {
 
   async deleteSpeaker(id: string): Promise<boolean> {
     try {
-      await prisma.speaker.delete({ where: { id } });
+      await prisma.guest.delete({ where: { id: parseCategoryId(id) } });
     } catch {
       // In-memory fallback
     }
-    const idx = this.inMemorySpeakers.findIndex((s) => s.id === id);
+    const idx = this.inMemorySpeakers.findIndex((s) => matchesCategoryId(s.id, id));
     if (idx !== -1) {
       this.inMemorySpeakers.splice(idx, 1);
       return true;
@@ -1428,19 +1384,11 @@ export class MasterDataRepository implements IMasterDataRepository {
   // ========================================================
   async getAwards(): Promise<MasterDataAward[]> {
     try {
-      const [items, dbCategories] = await Promise.all([
-        prisma.award.findMany({
-          orderBy: { year: "desc" },
-        }),
-        prisma.awardCategory.findMany(),
-      ]);
+      const items = await prisma.award.findMany({
+        orderBy: { year: "desc" },
+      });
 
       if (items.length > 0) {
-        const mappedCategories: MasterDataAwardCategory[] = dbCategories.map((c) => ({
-          id: String(c.id),
-          name: c.name,
-        }));
-
         return items.map((a) => ({
           id: a.id,
           year: a.year,
@@ -1448,10 +1396,10 @@ export class MasterDataRepository implements IMasterDataRepository {
           theme: a.theme,
           nominationDeadline: a.nominationDeadline.toISOString(),
           isOpen: a.isOpen,
-          categories: mappedCategories,
+          categories: this.inMemoryAwardCategories,
           reusedPages: [
             "Trang chủ (props.showcase.groups.ids)",
-            "Trang Giải thưởng (props.categories.ids)",
+            "Trang Giải thưởng (/awards)",
           ],
         }));
       }
@@ -1470,10 +1418,7 @@ export class MasterDataRepository implements IMasterDataRepository {
 
   async getAwardById(id: string): Promise<MasterDataAward | null> {
     try {
-      const [a, dbCategories] = await Promise.all([
-        prisma.award.findUnique({ where: { id } }),
-        prisma.awardCategory.findMany(),
-      ]);
+      const a = await prisma.award.findUnique({ where: { id } });
       if (a) {
         return {
           id: a.id,
@@ -1482,10 +1427,7 @@ export class MasterDataRepository implements IMasterDataRepository {
           theme: a.theme,
           nominationDeadline: a.nominationDeadline.toISOString(),
           isOpen: a.isOpen,
-          categories: dbCategories.map((c) => ({
-            id: String(c.id),
-            name: c.name,
-          })),
+          categories: this.inMemoryAwardCategories,
           reusedPages: ["Trang chủ", "Trang Giải thưởng (/awards)"],
         };
       }
@@ -1507,18 +1449,12 @@ export class MasterDataRepository implements IMasterDataRepository {
         },
       });
 
-      const createdCategories: MasterDataAwardCategory[] = [];
-      if (dto.categories && dto.categories.length > 0) {
-        for (const c of dto.categories) {
-          const cat = await prisma.awardCategory.create({
-            data: { name: c.name },
-          });
-          createdCategories.push({
-            id: String(cat.id),
-            name: cat.name,
-          });
-        }
-      }
+      const createdCategories: MasterDataAwardCategory[] = (dto.categories || []).map(
+        (c, i) => ({
+          id: String(i + 1),
+          name: c.name,
+        })
+      );
 
       const entity: MasterDataAward = {
         id: created.id,
@@ -1527,7 +1463,7 @@ export class MasterDataRepository implements IMasterDataRepository {
         theme: created.theme,
         nominationDeadline: created.nominationDeadline.toISOString(),
         isOpen: created.isOpen,
-        categories: createdCategories,
+        categories: createdCategories.length > 0 ? createdCategories : this.inMemoryAwardCategories,
         reusedPages: dto.reusedPages || ["Trang chủ", "Trang Giải thưởng (/awards)"],
       };
       this.inMemoryAwards.push(entity);
@@ -1541,7 +1477,7 @@ export class MasterDataRepository implements IMasterDataRepository {
         nominationDeadline: dto.nominationDeadline,
         isOpen: dto.isOpen ?? true,
         categories: (dto.categories || []).map((c, i) => ({
-          id: "cat_" + i + "_" + Math.random().toString(36).substring(2, 6),
+          id: String(i + 1),
           name: c.name,
         })),
         reusedPages: dto.reusedPages || ["Trang chủ", "Trang Giải thưởng (/awards)"],
@@ -1553,21 +1489,18 @@ export class MasterDataRepository implements IMasterDataRepository {
 
   async updateAward(id: string, dto: UpdateAwardDTO): Promise<MasterDataAward | null> {
     try {
-      const [updated, dbCategories] = await Promise.all([
-        prisma.award.update({
-          where: { id },
-          data: {
-            year: dto.year,
-            name: dto.name,
-            theme: dto.theme,
-            nominationDeadline: dto.nominationDeadline
-              ? new Date(dto.nominationDeadline)
-              : undefined,
-            isOpen: dto.isOpen,
-          },
-        }),
-        prisma.awardCategory.findMany(),
-      ]);
+      const updated = await prisma.award.update({
+        where: { id },
+        data: {
+          year: dto.year,
+          name: dto.name,
+          theme: dto.theme,
+          nominationDeadline: dto.nominationDeadline
+            ? new Date(dto.nominationDeadline)
+            : undefined,
+          isOpen: dto.isOpen,
+        },
+      });
 
       const entity: MasterDataAward = {
         id: updated.id,
@@ -1576,10 +1509,7 @@ export class MasterDataRepository implements IMasterDataRepository {
         theme: updated.theme,
         nominationDeadline: updated.nominationDeadline.toISOString(),
         isOpen: updated.isOpen,
-        categories: dbCategories.map((c) => ({
-          id: String(c.id),
-          name: c.name,
-        })),
+        categories: this.inMemoryAwardCategories,
         reusedPages: ["Trang chủ", "Trang Giải thưởng (/awards)"],
       };
 

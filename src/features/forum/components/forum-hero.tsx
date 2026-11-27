@@ -11,10 +11,8 @@ import {
   MapPin,
   Users,
   ArrowRight,
-  Sparkles,
   Building,
   AlertCircle,
-  History,
   CheckCircle2,
 } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
@@ -37,34 +35,11 @@ export function ForumHero({ edition }: ForumHeroProps) {
 
       <div className="container mx-auto px-4 sm:px-8 max-w-6xl relative z-10">
         <FadeIn direction="up" className="max-w-3xl space-y-5">
-          {/* Hàng trên: Bộ chọn năm (Lọc theo năm) & Badge trạng thái */}
+          {/* Hàng trên: Huy hiệu kỳ diễn đàn 2026 & Badge trạng thái */}
           <div className="flex flex-wrap items-center gap-2.5">
-            {/* Bộ chọn kỳ diễn đàn */}
-            <div className="inline-flex items-center p-1 bg-white rounded-full border border-[#dfd7c8] shadow-2xs text-xs font-semibold">
-              <Link
-                href="/forum"
-                className={cn(
-                  "px-3 py-1 rounded-full transition-all cursor-pointer",
-                  edition.year === 2026
-                    ? "bg-[#0D4838] text-white shadow-xs"
-                    : "text-[#5c554b] hover:text-[#0D4838]"
-                )}
-              >
-                Kỳ 2026 • Kế hoạch
-              </Link>
-              <Link
-                href="/forum/2025"
-                className={cn(
-                  "px-3 py-1 rounded-full transition-all cursor-pointer flex items-center gap-1",
-                  edition.year === 2025
-                    ? "bg-[#0D4838] text-white shadow-xs"
-                    : "text-[#5c554b] hover:text-[#0D4838]"
-                )}
-              >
-                <History className="w-3 h-3" />
-                <span>Kỳ 2025 • Đã bế mạc</span>
-              </Link>
-            </div>
+            <Badge className="bg-[#0D4838] text-white text-xs font-semibold px-3.5 py-1 rounded-full">
+              Kỳ 2026 • Kế hoạch
+            </Badge>
 
             {/* Trạng thái xác nhận lịch của kỳ 2026 */}
             {!edition.isDateConfirmed ? (
@@ -152,7 +127,7 @@ export function ForumHero({ edition }: ForumHeroProps) {
                   "w-full sm:w-auto bg-[#0D4838] hover:bg-[#073327] text-white gap-2 shadow-sm font-semibold h-11 px-6 justify-center cursor-pointer"
                 )}
               >
-                <span>Xem kết quả kỳ 2025</span>
+                <span>Xem kết quả kỳ {edition.year}</span>
                 <ArrowRight className="w-4 h-4" />
               </a>
             )}

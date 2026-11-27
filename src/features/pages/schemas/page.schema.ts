@@ -123,6 +123,19 @@ export const formFieldConfigItemSchema = z.object({
   options: z.array(z.string()).optional(),
 });
 
+export const criteriaItemSchema = z.object({
+  title: z.string(),
+  weight: z.string().optional(),
+  description: z.string().optional(),
+  evidences: z.array(z.string()).optional(),
+});
+
+export const processStepItemSchema = z.object({
+  time: z.string().optional(),
+  title: z.string(),
+  description: z.string().optional(),
+});
+
 export const universalSectionPropsSchema = z
   .object({
     id: stringOrNumberIdSchema.optional(),
@@ -146,6 +159,7 @@ export const universalSectionPropsSchema = z
     workingHours: z.string().optional(),
     consentText: z.string().optional(),
     submitLabel: z.string().optional(),
+    action: actionItemSchema.optional(),
     ids: z.array(stringOrNumberIdSchema).optional(),
     actions: z.array(actionItemSchema).optional(),
     stats: z.array(statItemSchema).optional(),
@@ -154,6 +168,10 @@ export const universalSectionPropsSchema = z
     categories: z.array(groupItemSchema).optional(),
     questions: z.array(faqQuestionItemSchema).optional(),
     fields: z.record(z.string(), formFieldConfigItemSchema).optional(),
+    items: z.array(criteriaItemSchema).optional(),
+    steps: z.array(processStepItemSchema).optional(),
+    awards: z.array(z.unknown()).optional(),
+    members: z.array(z.unknown()).optional(),
   })
   .passthrough();
 

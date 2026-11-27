@@ -1,32 +1,30 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
-import { ArrowRight, Building2, ShieldCheck, Sparkles } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
+import { Building2, Sparkles } from "lucide-react";
 import { FadeIn, StaggerContainer, StaggerItem, InteractiveCard } from "@/components/animations";
 import type { AwardJudge } from "../types/awards.types";
 
 interface AwardsCouncilSectionProps {
+  title?: string;
+  description?: string;
   judges: AwardJudge[];
 }
 
-export function AwardsCouncilSection({ judges }: AwardsCouncilSectionProps) {
+export function AwardsCouncilSection({
+  title,
+  description,
+  judges,
+}: AwardsCouncilSectionProps) {
   return (
     <section className="py-16 bg-gradient-to-b from-[#F7F5EE]/40 via-white to-[#F7F5EE]/40 border-t border-[#dfd7c8]">
       <div className="container mx-auto px-4 sm:px-8 max-w-7xl space-y-12">
         <FadeIn direction="up" className="space-y-3">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider bg-[#0D4838]/10 text-[#0D4838]">
-            <ShieldCheck className="w-3.5 h-3.5 text-[#C29B57]" />
-            <span>Ban Giám Khảo Độc Lập</span>
-          </div>
           <h2 className="text-2xl sm:text-4xl font-serif font-bold text-[#0D4838] tracking-tight">
-            Hội Đồng Thẩm Định Giải Thưởng
+            {title || ""}
           </h2>
           <p className="text-[#4A5E57] max-w-3xl text-sm sm:text-base leading-relaxed">
-            Hội đồng giám khảo độc lập quy tụ các nhà khoa học, chuyên gia bảo tồn hàng đầu và đại
-            diện tổ chức quốc tế uy tín, bảo đảm tính khách quan, khoa học và minh bạch cao nhất.
+            {description || ""}
           </p>
         </FadeIn>
 

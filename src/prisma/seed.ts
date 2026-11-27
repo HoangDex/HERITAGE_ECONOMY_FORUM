@@ -322,60 +322,53 @@ async function main() {
   }
   console.log(`✅ Đã khởi tạo ${newsData.length} Tin tức / Bài viết mẫu.`);
 
-  // 5. Khởi tạo Diễn giả (Speakers)
-  const speakersData = [
+  // 5. Khởi tạo Khách mời / Diễn giả (Guests)
+  const guestsData = [
     {
-      id: "spk_1",
+      id: 1,
       name: "GS.TS. Trần Quốc Vượng",
-      slug: "gs-ts-tran-quoc-vuong",
-      degree: "Giáo sư, Tiến sĩ",
       title: "Chủ tịch Hội đồng Khoa học",
       organization: "Hội Di sản Văn hóa Việt Nam",
-      avatarUrl:
+      avatar:
         "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&h=300&q=80",
-      bio: "Chuyên gia đầu ngành về khảo cổ học và kinh tế di sản với hơn 40 năm cống hiến.",
+      quote: "Chuyên gia đầu ngành về khảo cổ học và kinh tế di sản với hơn 40 năm cống hiến.",
     },
     {
-      id: "spk_2",
+      id: 2,
       name: "TS. Nguyễn Thị Bích Liên",
-      slug: "ts-nguyen-thi-bich-lien",
-      degree: "Tiến sĩ",
       title: "Viện trưởng",
       organization: "Viện Nghiên cứu Kinh tế Di sản (HEI)",
-      avatarUrl:
+      avatar:
         "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=300&h=300&q=80",
-      bio: "Chuyên gia tư vấn chính sách di sản cho UNESCO và các địa phương.",
+      quote: "Chuyên gia tư vấn chính sách di sản cho UNESCO và các địa phương.",
     },
     {
-      id: "spk_3",
+      id: 3,
       name: "KTS. Lê Hoàng Phương",
-      slug: "kts-le-hoang-phuong",
-      degree: "Kiến trúc sư",
       title: "Giám đốc Quy hoạch Di sản",
       organization: "Viện Quy hoạch Đô thị & Nông thôn Quốc gia",
-      avatarUrl:
+      avatar:
         "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=300&h=300&q=80",
-      bio: "Chủ trì nhiều đồ án bảo tồn di tích đô thị và làng cổ tại Việt Nam.",
+      quote: "Chủ trì nhiều đồ án bảo tồn di tích đô thị và làng cổ tại Việt Nam.",
     },
   ];
 
-  for (const spk of speakersData) {
-    await prisma.speaker.upsert({
-      where: { slug: spk.slug },
+  for (const guest of guestsData) {
+    await prisma.guest.upsert({
+      where: { id: guest.id },
       update: {
-        name: spk.name,
-        degree: spk.degree,
-        title: spk.title,
-        organization: spk.organization,
-        avatarUrl: spk.avatarUrl,
-        bio: spk.bio,
+        name: guest.name,
+        title: guest.title,
+        organization: guest.organization,
+        avatar: guest.avatar,
+        quote: guest.quote,
       },
-      create: spk,
+      create: guest,
     });
   }
-  console.log(`✅ Đã khởi tạo ${speakersData.length} Diễn giả Diễn đàn mẫu.`);
+  console.log(`✅ Đã khởi tạo ${guestsData.length} Diễn giả / Khách mời mẫu.`);
 
-  // 6. Khởi tạo Giải Thưởng Quốc Gia & Hạng Mục (Awards & AwardCategory chỉ có id và name)
+  // 6. Khởi tạo Giải Thưởng Quốc Gia
   await prisma.award.upsert({
     where: { year: 2026 },
     update: {
@@ -395,41 +388,7 @@ async function main() {
       rulesUrl: "/awards/the-le-giai-thuong-2026.pdf",
     },
   });
-
-  const awardCategories = [
-    {
-      id: 1,
-      name: "Bảo Tồn Thích Ứng Xuất Sắc",
-    },
-    {
-      id: 2,
-      name: "Mô Hình Sinh Kế Di Sản Bản Địa",
-    },
-    {
-      id: 3,
-      name: "Đổi Mới Sáng Tạo & Số Hóa Di Sản",
-    },
-    {
-      id: 4,
-      name: "Doanh Nghiệp Tiên Phong Vì Di Sản",
-    },
-  ];
-
-  for (const ac of awardCategories) {
-    await prisma.awardCategory.upsert({
-      where: { id: ac.id },
-      update: {
-        name: ac.name,
-      },
-      create: {
-        id: ac.id,
-        name: ac.name,
-      },
-    });
-  }
-  console.log(
-    `✅ Đã khởi tạo Giải thưởng 2026 và ${awardCategories.length} Hạng mục giải thưởng.`
-  );
+  console.log("✅ Đã khởi tạo Giải thưởng 2026.");
 
   // 7. Khởi tạo 7 Pages cốt lõi cùng toàn bộ Section Props JSON vào CSDL
   for (const p of DEFAULT_HEF_PAGES) {

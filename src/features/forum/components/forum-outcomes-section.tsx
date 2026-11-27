@@ -1,6 +1,6 @@
 /**
- * COMPONENT: FORUM OUTCOMES SECTION (KẾT QUẢ KỲ DIỄN ĐÀN ĐÃ KẾT THÚC)
- * Ưu tiên hiển thị trên kỳ đã kết thúc (như 2025): Tuyên bố chung Hà Nội, MOU hợp tác và chỉ số HEI
+ * COMPONENT: FORUM OUTCOMES SECTION (KẾT QUẢ KỲ DIỄN ĐÀN)
+ * Hiển thị tuyên bố chung, MOU hợp tác và chỉ số tác động
  */
 
 "use client";

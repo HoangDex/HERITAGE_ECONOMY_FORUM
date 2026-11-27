@@ -12,28 +12,18 @@ model Award {
   @@map("awards")
 }
 
-model AwardCategory {
-  id          Int               @id @default(autoincrement())
-  name        String            @db.VarChar(255)
-  nominations AwardNomination[]
-
-  @@map("award_categories")
-}
-
 model AwardNomination {
-  id            String        @id @default(cuid())
-  categoryId    Int
-  category      AwardCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
-  applicantName String        @db.VarChar(150)
-  applicantOrg  String        @db.VarChar(255)
-  email         String        @db.VarChar(191)
-  phone         String        @db.VarChar(50)
-  projectName   String        @db.VarChar(255)
-  dossierUrl    String?       @db.VarChar(255)
-  status        String        @default("SUBMITTED") @db.VarChar(50)
-  createdAt     DateTime      @default(now())
-  updatedAt     DateTime      @updatedAt
+  id            String   @id @default(cuid())
+  categoryName  String   @db.VarChar(255)
+  applicantName String   @db.VarChar(150)
+  applicantOrg  String   @db.VarChar(255)
+  email         String   @db.VarChar(191)
+  phone         String   @db.VarChar(50)
+  projectName   String   @db.VarChar(255)
+  dossierUrl    String?  @db.VarChar(255)
+  status        String   @default("SUBMITTED") @db.VarChar(50)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 
-  @@index([categoryId])
   @@map("award_nominations")
 }

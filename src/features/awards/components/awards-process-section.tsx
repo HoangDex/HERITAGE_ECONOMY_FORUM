@@ -5,24 +5,24 @@ import { FadeIn, StaggerContainer, StaggerItem, InteractiveCard } from "@/compon
 import type { AwardProcessStep } from "../types/awards.types";
 
 interface AwardsProcessSectionProps {
+  title?: string;
+  description?: string;
   steps: AwardProcessStep[];
 }
 
-export function AwardsProcessSection({ steps }: AwardsProcessSectionProps) {
+export function AwardsProcessSection({
+  title,
+  description,
+  steps,
+}: AwardsProcessSectionProps) {
   return (
     <section className="py-14">
       <div className="container mx-auto px-4 sm:px-8 max-w-7xl space-y-8">
         <FadeIn direction="up" className="space-y-3">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider bg-[#0D4838]/10 text-[#0D4838]">
-            Quy Trình Xét Chọn
-          </div>
           <h2 className="text-2xl sm:text-4xl font-extrabold text-[#292929] tracking-tight">
-            Sơ Đồ 07 Bước Đánh Giá Minh Bạch
+            {title || ""}
           </h2>
-          <p className="text-[#5c554b] max-w-3xl text-base">
-            Quy trình khép kín đảm bảo tính độc lập, khách quan từ khâu tiếp nhận hồ sơ, thẩm định
-            chuyên ngành, khảo sát thực tế đến công bố vinh danh.
-          </p>
+          <p className="text-[#5c554b] max-w-3xl text-base">{description || ""}</p>
         </FadeIn>
 
         <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">

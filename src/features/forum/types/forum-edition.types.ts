@@ -60,7 +60,7 @@ export interface ForumGalleryItem {
 
 export interface ForumEdition {
   id: string;
-  slug: string; // "2026", "2025"
+  slug: string; // "2026"
   year: number;
   title: string;
   theme: string;

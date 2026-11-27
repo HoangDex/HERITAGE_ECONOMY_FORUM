@@ -11,7 +11,8 @@ import { NextRequest } from "next/server";
 import { revalidatePath } from "next/cache";
 import { apiSuccess, apiError, apiValidationError } from "@/lib/api-response";
 import { pageService } from "@/features/pages/services/page.service";
-import { universalSectionPropsSchema } from "@/features/pages/schemas/page.schema";
+import { validateSectionPropsContract } from "@/features/pages/schemas/contracts";
+import type { UniversalSectionProps } from "@/features/pages/types/page.types";
 
 export interface SectionRouteContext {
   params: Promise<{ namepage?: string; slug?: string; section: string }>;
@@ -76,41 +77,18 @@ export async function GET(request: NextRequest, context: SectionRouteContext) {
   }
 }
 
-async function handleUpsertSection(request: NextRequest, context: SectionRouteContext) {
+async function handleUpsertSection(
+  request: NextRequest,
+  context: SectionRouteContext,
+  isPartial = false
+) {
   try {
     const rawParams = await context.params;
     const pageSlug = resolvePageSlug(rawParams, request.url);
     const sectionKey = rawParams.section.trim();
     const body = await request.json();
 
-    // Hỗ trợ section dạng chuỗi đơn (ví dụ: featured_news: "news_1")
-    if (typeof body === "string") {
-      const updatedPage = await pageService.updateSectionByKey(
-        pageSlug,
-        sectionKey,
-        body as unknown as Record<string, unknown>
-      );
-      if (!updatedPage) {
-        return apiError(
-          `Không tìm thấy trang '${pageSlug}' để cập nhật section '${sectionKey}'`,
-          404
-        );
-      }
-      revalidatePageRoutes(updatedPage.slug, updatedPage.id);
-      return apiSuccess(
-        {
-          page: updatedPage.slug,
-          section: sectionKey,
-          props: updatedPage.props[sectionKey],
-          updatedPage,
-        },
-        {
-          message: `Đã cập nhật section '${sectionKey}' của trang '${updatedPage.name}' thành công`,
-        }
-      );
-    }
-
-    // Hỗ trợ cả body trực tiếp là UniversalSectionProps hoặc { props: UniversalSectionProps }
+    // Hỗ trợ cả body trực tiếp hoặc { props: ... }
     const payload =
       body &&
       typeof body === "object" &&
@@ -119,41 +97,29 @@ async function handleUpsertSection(request: NextRequest, context: SectionRouteCo
         ? body.props
         : body;
 
-    if (typeof payload === "string") {
-      const updatedPage = await pageService.updateSectionByKey(
-        pageSlug,
-        sectionKey,
-        payload as unknown as Record<string, unknown>
-      );
-      if (!updatedPage) {
-        return apiError(
-          `Không tìm thấy trang '${pageSlug}' để cập nhật section '${sectionKey}'`,
-          404
-        );
-      }
-      revalidatePageRoutes(updatedPage.slug, updatedPage.id);
-      return apiSuccess(
-        {
-          page: updatedPage.slug,
-          section: sectionKey,
-          props: updatedPage.props[sectionKey],
-          updatedPage,
-        },
-        {
-          message: `Đã cập nhật section '${sectionKey}' của trang '${updatedPage.name}' thành công`,
-        }
+    // Kiểm tra hợp đồng API (Strict Contract cho awards, contact, news; Universal cho các trang khác)
+    const contractCheck = validateSectionPropsContract(
+      pageSlug,
+      sectionKey,
+      payload,
+      isPartial
+    );
+
+    if (contractCheck.unknownSection) {
+      return apiError(
+        `Section '${sectionKey}' không hợp lệ cho trang '${pageSlug}'. Các section được phép: ${contractCheck.allowedSections?.join(", ")}`,
+        400
       );
     }
 
-    const validation = universalSectionPropsSchema.safeParse(payload);
-    if (!validation.success) {
-      return apiValidationError(validation.error);
+    if (!contractCheck.success && contractCheck.error) {
+      return apiValidationError(contractCheck.error);
     }
 
     const updatedPage = await pageService.updateSectionByKey(
       pageSlug,
       sectionKey,
-      validation.data
+      contractCheck.data as UniversalSectionProps
     );
 
     if (!updatedPage) {
@@ -182,9 +148,9 @@ async function handleUpsertSection(request: NextRequest, context: SectionRouteCo
 }
 
 export async function PUT(request: NextRequest, context: SectionRouteContext) {
-  return handleUpsertSection(request, context);
+  return handleUpsertSection(request, context, false);
 }
 
 export async function PATCH(request: NextRequest, context: SectionRouteContext) {
-  return handleUpsertSection(request, context);
+  return handleUpsertSection(request, context, true);
 }

@@ -168,125 +168,120 @@ export const DEFAULT_FORUM_SECTIONS: PageSection[] = pagePropsToSections(DEFAULT
 // ========================================================
 export const DEFAULT_AWARDS_PROPS: PagePropsMap = {
   hero: {
-    badge: "Hệ Thống Giải Thưởng Quốc Gia 2026",
-    subBadge: "ACTIVE SUSTAINABLE HERITAGE AWARDS (ASHA 2026)",
     title: "GIẢI THƯỞNG PHÁT TRIỂN BỀN VỮNG CHỦ ĐỘNG",
+    subtitle: "ACTIVE SUSTAINABLE HERITAGE AWARDS (ASHA 2026)",
     quote: "Kiến tạo giá trị – Phụng sự vị nhân sinh",
     description:
       "Tôn vinh những tổ chức, doanh nghiệp, cộng đồng và cá nhân có đóng góp xuất sắc trong việc chuyển hóa tài nguyên di sản văn hóa thành động lực phát triển kinh tế - xã hội bền vững, bảo vệ tính nguyên vẹn của di sản và mang lại sinh kế lâu dài cho người dân.",
-    note: "15/10/2026",
-    ids: ["award_2026"],
     actions: [
-      { label: "Nộp hồ sơ đề cử", href: "/contact?loai=giai-thuong#contact-form" },
-      { label: "Tải quy chế giải thưởng", href: "#quy-che" },
+      { label: "Nộp Hồ Sơ Đề Cử Trực Tuyến", href: "/contact?loai=giai-thuong#contact-form" },
+      { label: "Tải Bản Quy Chế Xét Chọn (PDF)", href: "#quy-che" },
     ],
   },
   categories: {
-    badge: "HẠNG MỤC XÉT GIẢI",
-    title: "Các Hạng Mục Giải Thưởng Chính Thức",
-    subtitle: "Tham chiếu trực tiếp từ danh mục hạng mục Giải thưởng trong CSDL",
-    ids: ["cat_1", "cat_2", "cat_3", "cat_4"],
+    title: "08 Hạng Mục Xét Chọn Tham Khảo",
+    description:
+      "Bao quát toàn diện các khía cạnh từ sáng kiến khoa học, mô hình kinh doanh di sản, ứng dụng công nghệ, đóng góp cộng đồng cho tới thành tựu cống hiến trọn đời.",
+    awards: [],
   },
   criteria: {
-    badge: "KHUNG THẨM ĐỊNH ĐỘC LẬP",
-    title: "Bộ Tiêu Chí Bình Chọn & Đánh Giá Định Lượng",
-    subtitle: "Khung thẩm định độc lập gồm 04 nhóm tiêu chuẩn cốt lõi",
-    note: "Quy chế ban hành kèm Quyết định số 18/QĐ-HEF/2026 của Hội đồng Diễn đàn",
-    cards: [
+    title: "Khung Đánh Giá Định Lượng",
+    description:
+      "Bộ tiêu chí 4 trụ cột với tỷ trọng đánh giá minh bạch, được Hội đồng Khoa học phê duyệt.",
+    action: {
+      label: "Tải Toàn Văn Quy chế ban hành kèm Quyết định số 18/QĐ-HEF/2026 của Hội đồng Diễn đàn",
+      href: "/awards/the-le-giai-thuong-2026.pdf",
+    },
+    items: [
       {
-        badge: "30%",
         title: "Tính Nguyên Bản & Tôn Trọng Di Sản",
+        weight: "30%",
         description:
           "Dự án tuân thủ nghiêm ngặt các công ước quốc tế và quy định pháp luật về bảo tồn, bảo vệ tối đa tính xác thực và không gian cảnh quan lịch sử.",
-        stats: [
-          { label: "Minh chứng", value: "Văn bản thẩm định của cơ quan chuyên môn văn hóa" },
-          { label: "Minh chứng", value: "Tư liệu hình ảnh đối chiếu trước và sau can thiệp" },
+        evidences: [
+          "Văn bản thẩm định của cơ quan chuyên môn văn hóa",
+          "Tư liệu hình ảnh đối chiếu trước và sau can thiệp",
         ],
       },
       {
-        badge: "25%",
         title: "Hiệu Quả Kinh Tế & Sinh Kế Bản Địa",
+        weight: "25%",
         description:
           "Tạo việc làm ổn định, chia sẻ lợi ích công bằng với người dân địa phương, đóng góp vào ngân sách tái đầu tư bảo tồn di sản.",
-        stats: [
-          { label: "Minh chứng", value: "Báo cáo tài chính hoặc bảng kê doanh thu minh bạch" },
-          { label: "Minh chứng", value: "Tỷ lệ trích quỹ tái đầu tư bảo tồn tối thiểu 15%" },
+        evidences: [
+          "Báo cáo tài chính hoặc bảng kê doanh thu minh bạch",
+          "Tỷ lệ trích quỹ tái đầu tư bảo tồn tối thiểu 15%",
         ],
       },
       {
-        badge: "25%",
         title: "Đổi Mới Sáng Tạo & Thích Ứng Công Nghệ",
+        weight: "25%",
         description:
           "Ứng dụng chuyển đổi số, thiết kế sáng tạo, phương pháp tiếp cận mới trong quản lý và trải nghiệm di sản văn hóa.",
-        stats: [
-          { label: "Minh chứng", value: "Bằng chứng ứng dụng công nghệ (web, app, VR/AR nếu có)" },
-          { label: "Minh chứng", value: "Tài liệu chuyển giao quy trình hoặc sổ tay hướng dẫn thực hành" },
+        evidences: [
+          "Bằng chứng ứng dụng công nghệ (web, app, VR/AR nếu có)",
+          "Tài liệu chuyển giao quy trình hoặc sổ tay hướng dẫn thực hành",
         ],
       },
       {
-        badge: "20%",
         title: "Quản Trị Bền Vững & Trách Nhiệm Xã Hội",
+        weight: "20%",
         description:
           "Có kế hoạch quản lý môi trường, cơ chế giám sát cộng đồng và chiến lược phát triển ổn định dài hạn.",
-        stats: [
-          { label: "Minh chứng", value: "Kế hoạch quản lý rủi ro và tác động môi trường" },
-          { label: "Minh chứng", value: "Biên bản cam kết và đánh giá định kỳ từ cộng đồng cư dân" },
+        evidences: [
+          "Kế hoạch quản lý rủi ro và tác động môi trường",
+          "Biên bản cam kết và đánh giá định kỳ từ cộng đồng cư dân",
         ],
       },
     ],
   },
   process: {
-    badge: "QUY TRÌNH XÉT CHỌN",
-    title: "Quy Trình 07 Bước Xét Chọn Vinh Danh",
-    subtitle: "Quy trình bình chọn minh bạch, độc lập và khách quan",
-    cards: [
+    title: "Sơ Đồ 07 Bước Đánh Giá Minh Bạch",
+    description:
+      "Quy trình khép kín đảm bảo tính độc lập, khách quan từ khâu tiếp nhận hồ sơ, thẩm định chuyên ngành, khảo sát thực tế đến công bố vinh danh.",
+    steps: [
       {
-        badge: "Tháng 06 – 15/10/2026",
+        time: "Tháng 06 – 15/10/2026",
         title: "Phát Động & Tiếp Nhận",
         description: "Mở cổng nhận hồ sơ đề cử trực tuyến và hồ sơ gửi trực tiếp.",
-        actionLabel: "Nộp hồ sơ trực tuyến",
       },
       {
-        badge: "16/10 – 22/10/2026",
+        time: "16/10 – 22/10/2026",
         title: "Thẩm Tra Tính Hợp Lệ",
         description: "Ban Thư ký đối chiếu điều kiện tiêu chuẩn hồ sơ theo quy chế.",
       },
       {
-        badge: "23/10 – 02/11/2026",
+        time: "23/10 – 02/11/2026",
         title: "Thẩm Định Thực Địa",
         description: "Đoàn chuyên gia khảo sát, phỏng vấn độc lập tại công trình/dự án.",
       },
       {
-        badge: "01/11 – 08/11/2026",
+        time: "01/11 – 08/11/2026",
         title: "Bình Chọn Trực Tuyến",
         description: "Công chúng tham gia bình chọn trên cổng thông tin chính thức.",
       },
       {
-        badge: "09/11 – 11/11/2026",
+        time: "09/11 – 11/11/2026",
         title: "Hội Đồng Chung Khảo",
         description: "Hội đồng gồm 11 chuyên gia bỏ phiếu kín chọn công trình xuất sắc.",
       },
       {
-        badge: "14/11/2026",
+        time: "14/11/2026",
         title: "Công Bố Kết Quả",
         description: "Niêm yết danh sách đạt giải trên cổng thông tin và thông cáo báo chí.",
       },
       {
-        badge: "19/11/2026",
+        time: "19/11/2026",
         title: "Lễ Trao Giải Trọng Thể",
         description: "Vinh danh truyền hình trực tiếp tại Phiên Toàn thể Diễn đàn.",
       },
     ],
   },
-  cta: {
-    badge: "TIẾP NHẬN HỒ SƠ ĐỀ CỬ",
-    title: "GỬI ĐỀ CỬ CÔNG TRÌNH / DỰ ÁN CỦA QUÝ VỊ",
+  council: {
+    title: "Hội Đồng Thẩm Định Giải Thưởng",
     description:
-      "Ban Tổ chức chào đón tất cả các công trình kiến trúc bảo tồn, mô hình sinh kế di sản, hợp tác xã văn hóa và giải pháp chuyển đổi số từ mọi miền đất nước.",
-    note: "+84 (0) 24 3823 6688",
-    actions: [
-      { label: "Nộp Hồ Sơ Đề Cử Ngay", href: "/contact?loai=giai-thuong#contact-form" },
-    ],
+      "Hội đồng giám khảo độc lập quy tụ các nhà khoa học, chuyên gia bảo tồn hàng đầu và đại diện tổ chức quốc tế uy tín, bảo đảm tính khách quan, khoa học và minh bạch cao nhất.",
+    members: [],
   },
 };
 

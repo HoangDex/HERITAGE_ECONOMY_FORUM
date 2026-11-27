@@ -1,40 +1,43 @@
-import { FileText, CheckCircle2, Download } from "lucide-react";
+import { CheckCircle2, Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import type { AwardCriteria } from "../types/awards.types";
+import type { AwardCriteria, AwardActionLink } from "../types/awards.types";
 
 interface AwardsCriteriaRulesSectionProps {
+  title?: string;
+  description?: string;
+  action?: AwardActionLink;
   criteriaList: AwardCriteria[];
   rulesVersion: string;
 }
 
 export function AwardsCriteriaRulesSection({
+  title,
+  description,
+  action,
   criteriaList,
-  rulesVersion,
 }: AwardsCriteriaRulesSectionProps) {
   return (
     <section id="quy-che" className="py-14 bg-white/70 border-y border-[#dfd7c8] scroll-mt-20">
       <div className="container mx-auto px-4 sm:px-8 max-w-7xl space-y-8">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
           <div className="space-y-3">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider bg-[#C29B57]/15 text-[#0D4838]">
-              Bộ Tiêu Chí & Quy Chế
-            </div>
             <h2 className="text-2xl sm:text-4xl font-extrabold text-[#292929] tracking-tight">
-              Khung Đánh Giá Định Lượng
+              {title || ""}
             </h2>
-            <p className="text-[#5c554b] max-w-2xl text-base">
-              Bộ tiêu chí 4 trụ cột với tỷ trọng đánh giá minh bạch, được Hội đồng Khoa học phê
-              duyệt.
-            </p>
+            <p className="text-[#5c554b] max-w-2xl text-base">{description || ""}</p>
           </div>
 
-          <div className="shrink-0">
-            <Button className="bg-[#0D4838] hover:bg-[#0D4838]/90 text-white gap-2 font-medium">
-              <Download className="w-4 h-4" />
-              Tải Toàn Văn {rulesVersion}
-            </Button>
-          </div>
+          {action && (
+            <div className="shrink-0">
+              <a href={action.href}>
+                <Button className="bg-[#0D4838] hover:bg-[#0D4838]/90 text-white gap-2 font-medium cursor-pointer">
+                  <Download className="w-4 h-4" />
+                  {action.label}
+                </Button>
+              </a>
+            </div>
+          )}
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -67,16 +70,6 @@ export function AwardsCriteriaRulesSection({
               </div>
             </div>
           ))}
-        </div>
-
-        <div className="p-4 rounded-xl bg-[#F5EFE5] border border-[#dfd7c8] flex items-center justify-between flex-wrap gap-3 text-xs text-[#5c554b]">
-          <div className="flex items-center gap-2">
-            <FileText className="w-4 h-4 text-[#0D4838] shrink-0" />
-            <span>
-              Văn bản áp dụng: <strong>{rulesVersion}</strong>. Mọi sửa đổi phải được Hội đồng công
-              bố trước kỳ đề cử 30 ngày.
-            </span>
-          </div>
         </div>
       </div>
     </section>

@@ -342,95 +342,8 @@ export const HEF_2026_EDITION: ForumEdition = {
   ],
 };
 
-export const HEF_2025_EDITION: ForumEdition = {
-  id: "hef-edition-2025",
-  slug: "2025",
-  year: 2025,
-  title: "Diễn đàn Kinh tế Di sản 2025",
-  theme: "Khơi nguồn Vốn Văn hóa – Phát triển Kinh tế Bền vững",
-  datesText: "20 – 22 tháng 11 năm 2025",
-  startDateIso: "2025-11-20T08:00:00+07:00",
-  endDateIso: "2025-11-22T17:30:00+07:00",
-  isDateConfirmed: true,
-  venueName: "Trung tâm Hội nghị Quốc tế Hà Nội",
-  venueAddress: "11 Lê Hồng Phong, Ba Đình, Hà Nội",
-  scaleDescription: "Hơn 650 đại biểu chính thức, 35 diễn giả, 150 cơ quan báo chí",
-  organizer: "Hội đồng Diễn đàn Kinh tế Di sản",
-  status: "concluded",
-  outcomesSummary:
-    "Kỳ 2025 đã thông qua Tuyên bố chung Hà Nội về Kinh tế Di sản; ký kết 12 biên bản ghi nhớ hợp tác công – tư (PPP) với tổng quy mô cam kết 450 tỷ VNĐ; chính thức công bố Bộ chỉ tiêu Đo lường Tác động Kinh tế Di sản (HEI Index).",
-  sessions: [
-    {
-      id: "session-2025-1",
-      order: 1,
-      title: "Tổng kết & Tuyên bố Chung 2025",
-      subTitle: "Đánh giá kết quả triển khai Đề án và cam kết liên minh hành động",
-      description: "Tổng hợp các kiến nghị gửi Thủ tướng Chính phủ và Ban Kinh tế Trung ương.",
-      date: "22/11/2025",
-      timeRange: "14:00 – 17:00",
-      room: "Hội trường Hoa Sen",
-      speakers: [],
-    },
-  ],
-  timeline: [
-    {
-      id: "tl-2025-1",
-      period: "morning",
-      time: "08:30 – 11:30",
-      title: "Phiên Tổng kết & Ký kết Hợp tác Chiến lược",
-      speakerOrChair: "Ban Thường trực Diễn đàn",
-      room: "Hội trường Hoa Sen",
-      sessionOrder: 1,
-    },
-  ],
-  speakers: [
-    {
-      id: "sp-2025-1",
-      name: "GS.TS. Nguyễn Văn Thịnh",
-      degree: "GS.TS",
-      title: "Chủ tịch Hội đồng Khoa học",
-      organization: "Viện Nghiên cứu Kinh tế Di sản",
-      avatarUrl:
-        "https://images.unsplash.com/photo-1556157382-97eda2d62296?auto=format&fit=crop&w=600&h=750&q=80",
-      bio: "Báo cáo tổng kết kỳ 2025 và định hướng chiến lược 2026-2030.",
-      sessionTitle: "Phiên Tổng kết",
-      topicSummary: "Kết quả và bài học sau 1 năm triển khai liên minh.",
-      slug: "gs-ts-nguyen-van-thinh",
-    },
-  ],
-  resources: [
-    {
-      id: "res-2025-1",
-      title: "Báo cáo Kết quả Kỳ Diễn đàn 2025 & Tuyên bố chung Hà Nội",
-      type: "report",
-      fileSize: "4.5 MB",
-      downloadUrl: "#bao-cao-2025",
-      category: "bao-cao",
-    },
-    {
-      id: "res-2025-2",
-      title: "Kỷ yếu Khoa học Toàn văn Kỳ Diễn đàn 2025 (ISBN: 978-604-0-12345-6)",
-      type: "pdf",
-      fileSize: "22.0 MB",
-      downloadUrl: "#ky-yeu-2025",
-      category: "ky-yeu",
-    },
-  ],
-  gallery: [
-    {
-      id: "gal-2025-1",
-      type: "photo",
-      title: "Toàn cảnh Lễ Bế mạc Kỳ Diễn đàn 2025",
-      url: "https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=800&h=500&q=80",
-      thumbnailUrl:
-        "https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=400&h=260&q=80",
-    },
-  ],
-};
-
 export class ForumEditionRepository implements IForumRepository {
   async getEditionByYear(year: number): Promise<ForumEdition | null> {
-    if (year === 2025) return HEF_2025_EDITION;
     if (year === 2026) {
       try {
         const page = await pageRepository.findBySlug("forum");
@@ -480,7 +393,7 @@ export class ForumEditionRepository implements IForumRepository {
   }
 
   async getAllEditions(): Promise<ForumEdition[]> {
-    return [HEF_2026_EDITION, HEF_2025_EDITION];
+    return [HEF_2026_EDITION];
   }
 }
 

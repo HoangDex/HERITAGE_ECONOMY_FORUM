@@ -9,19 +9,18 @@ import { apiPaginated, apiSuccess, apiError, apiValidationError } from "@/lib/ap
 import { newsRepository } from "@/features/news/repositories/news.repository";
 import { masterDataRepository } from "@/features/pages/repositories/master-data.repository";
 import { createNewsSchema } from "@/features/pages/schemas/master-data.schema";
+import { NewsQuerySchema } from "@/features/pages/schemas/contracts/news.contract";
 
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
-    const page = Math.max(1, Number(searchParams.get("page")) || 1);
-    const limit = Math.max(1, Math.min(100, Number(searchParams.get("limit")) || 6));
-    const category = searchParams.get("category") || undefined;
-    const rawCategoryIds = searchParams.get("categoryIds") || "";
-    const categoryIds = rawCategoryIds
-      .split(",")
-      .map((id) => id.trim())
-      .filter(Boolean);
-    const search = searchParams.get("search") || undefined;
+    const rawQuery = Object.fromEntries(searchParams.entries());
+    const queryValidation = NewsQuerySchema.safeParse(rawQuery);
+    if (!queryValidation.success) {
+      return apiValidationError(queryValidation.error);
+    }
+
+    const { page, limit, categoryIds, category, search } = queryValidation.data;
 
     const newsPagination = await newsRepository.getPaginatedNews({
       page,
